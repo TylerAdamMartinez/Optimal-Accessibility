@@ -3,7 +3,6 @@
 <p align="center" style="display: flex;" >
 <img src="https://visitor-badge.glitch.me/badge?page_id=tyleradammartinez.Optimal-Accessibility" />
  <a href="https://github.com/TylerAdamMartinez/Optimal-Accessibility/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/TylerAdamMartinez/Optimal-Accessibility"></a>
-<img alt="GitHub package.json dependency version (prod)" src="https://img.shields.io/github/package-json/dependency-version/tyleradammartinez/Optimal-Accessibility/react">
  </p>
 
 The goal of this project is to create a web application that calculates the accessibility rating of academic posters. 
