@@ -17,9 +17,15 @@
   align-self: center;
 }
 
+#NavItemsBox {
+  align-self: center;
+}
+
 #NavItemsBox ul {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 2rem;
   padding-inline-start: 0px;
   margin-block-start: 0px;
   margin-block-end: 0px;
@@ -27,4 +33,5 @@
 
 #NavItemsBox ul li{
   list-style-type: none;
+  color: #f6f6f6;
 }
