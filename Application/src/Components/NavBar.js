@@ -1,4 +1,7 @@
 import './NavBar.css';
+import AddIcon from '@mui/icons-material/Add';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import HelpIcon from '@mui/icons-material/Help';
 
 function NavBar() {
   return (
@@ -10,9 +13,9 @@ function NavBar() {
       <span></span>
       <div id="NavItemsBox">
         <ul>
-          <li>question mark</li>
-          <li>add assest</li>
-          <li>user logout button</li>
+          <li><HelpIcon fontSize="large"/></li>
+          <li><AddIcon fontSize="large"/></li>
+          <li><AccountCircleIcon fontSize="large"/></li>
         </ul>
       </div>
       <span></span>
