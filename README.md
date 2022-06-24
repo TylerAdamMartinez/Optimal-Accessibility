@@ -14,17 +14,18 @@ The goal of this project is to create a web application that calculates the acce
 
 ### Responsibilities Listed
 #### Tyler Adam Martinez
-* 
+* Client User Interface (frontend)
 
 #### Hank Peeples
-* 
+* Image Processing/Computer Vision
 
 ---
 
 ### Required to run
 * Node.js
 * create-react-app
+* @mui/icons-material
 
 ### How to run the project
-1. Go to the project's root directory
+1. Go to the project's Application directory
 2. Run the terminal command: `npm run`
