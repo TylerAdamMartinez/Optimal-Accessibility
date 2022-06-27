@@ -1,6 +1,7 @@
 import './App.css';
 import NavBar from './Components/NavBar.js';
 import MyPostersSection from './Components/MyPostersSection';
+import OverallAccessibilitySection from './Components/OverallAccessibilitySection';
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <NavBar />
       <div className="App">
         <MyPostersSection />
+        <OverallAccessibilitySection />
       </div>
     </>
   );
