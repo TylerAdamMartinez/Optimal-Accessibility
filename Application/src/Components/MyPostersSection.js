@@ -11,6 +11,10 @@ function MyPostersSection() {
                     <MyPoster PosterName="My Poster 1" Id={1} />
                     <MyPoster PosterName="My Poster 2" Id={2} />
                     <MyPoster PosterName="My Poster 3" Id={3} />
+                    <MyPoster PosterName="My Poster 4" Id={4} />
+                    <MyPoster PosterName="My Poster 5" Id={5} />
+                    <MyPoster PosterName="My Poster 6" Id={6} />
+                    <MyPoster PosterName="My Poster 7" Id={7} />
                 </span>
             </div>
         </div>
