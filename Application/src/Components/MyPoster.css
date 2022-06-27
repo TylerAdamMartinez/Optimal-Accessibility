@@ -1,7 +1,7 @@
 #MyPoster {
     background-color: #e8e8e8;
     display: grid;
-    grid-template-rows: 3fr 1fr 1fr;
+    grid-template-rows: 5fr 1fr 1fr;
     grid-template-columns: 1fr;
     border-radius: 15px;
     margin: 1em;
@@ -24,7 +24,7 @@
 #PosterNameSection {
     background-color: #f6f6f6;
     display: flex;
-    align-content: center;
+    align-self: start;
     justify-content: center;
     grid-column: 1 / 2;
     grid-row: 2 / 3;
