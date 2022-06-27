@@ -1,0 +1,37 @@
+#MyPoster {
+    background-color: #e8e8e8;
+    display: grid;
+    grid-template-rows: 3fr 1fr 1fr;
+    grid-template-columns: 1fr;
+    border-radius: 15px;
+    margin: 1em;
+}
+
+#PosterImage {
+    padding: 1em;
+    grid-row: 1 / 2;
+    grid-column: 1 / 2;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+#PosterImage img {
+    width: 150px;
+    height: auto;
+}
+
+#PosterNameSection {
+    background-color: #f6f6f6;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+}
+
+
+#PosterNameSection h3 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
