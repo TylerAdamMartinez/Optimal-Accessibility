@@ -1,33 +1,42 @@
-// import { getColors } from './Color';
-// import { getText } from './Text';
+import { getText } from './Text';
 import { getImageGrid } from './Structure';
 import { useState, useEffect } from 'react';
 
 function TestImageComponent() {
 	const [imageGrid, setImageGrid] = useState({});
-	const image = require('./assets/Poster2.jpg');
+	const image = require('./assets/Poster.png');
 
 	const imageStyles = {
 		width: '31%',
 		height: '31%',
-		marginTop: '9px',
-		marginLeft: '11.5px',
+		marginTop: '7px',
+		marginLeft: '9.5px',
 	};
 
-	// getColors(image);
-	// getText(image);
+	useEffect(() => {
+		getImageGrid(image)
+			.then((val) => {
+				setImageGrid(val);
+				console.log(imageGrid);
+			})
+			.catch((e) => console.log(e));
+	}, [image]);
 
 	useEffect(() => {
-		getImageGrid(image).then((val) => {
-			setImageGrid(val);
-		});
-	}, []);
+		getText(imageGrid)
+			.then((val) => {
+				setImageGrid(val);
+			})
+			.catch((e) => console.log(e));
+	}, [imageGrid]);
 
-	return (
+	console.log(imageGrid);
+
+	return imageGrid.topLeft !== undefined ? (
 		<div
 			style={{
-				width: '1300px',
-				height: '600px',
+				width: '65%',
+				height: '65%',
 				backgroundColor: '#2f2f2f',
 				margin: 80,
 				flexDirection: 'row',
@@ -36,18 +45,21 @@ function TestImageComponent() {
 		>
 			<img alt='Test poster' src={image} style={{ width: '100%', height: '100%' }} />
 			<div style={{ height: '100%', width: '100%' }}>
-				<img alt='Test topLeft' src={imageGrid.topLeft} style={imageStyles} />
-				<img alt='Test topMiddle' src={imageGrid.topMiddle} style={imageStyles} />
-				<img alt='Test topRight' src={imageGrid.topRight} style={imageStyles} />
-				<img alt='Test middleLeft' src={imageGrid.middleLeft} style={imageStyles} />
-				<img alt='Test middle' src={imageGrid.middle} style={imageStyles} />
-				<img alt='Test middleRight' src={imageGrid.middleRight} style={imageStyles} />
-				<img alt='Test bottomLeft' src={imageGrid.bottomLeft} style={imageStyles} />
-				<img alt='Test bottomMiddle' src={imageGrid.bottomMiddle} style={imageStyles} />
-				<img alt='Test bottomRight' src={imageGrid.bottomRight} style={imageStyles} />
+				<img alt='Test topLeft' src={imageGrid.topLeft.img} style={imageStyles} />
+				<img alt='Test topMiddle' src={imageGrid.topMiddle.img} style={imageStyles} />
+				<img alt='Test topRight' src={imageGrid.topRight.img} style={imageStyles} />
+				<img alt='Test middleLeft' src={imageGrid.middleLeft.img} style={imageStyles} />
+				<img alt='Test middle' src={imageGrid.middle.img} style={imageStyles} />
+				<img alt='Test middleRight' src={imageGrid.middleRight.img} style={imageStyles} />
+				<img alt='Test bottomLeft' src={imageGrid.bottomLeft.img} style={imageStyles} />
+				<img alt='Test bottomMiddle' src={imageGrid.bottomMiddle.img} style={imageStyles} />
+				<img alt='Test bottomRight' src={imageGrid.bottomRight.img} style={imageStyles} />
+			</div>
+			<div style={{ padding: '20px' }}>
+				<p style={{ color: 'white' }}>{imageGrid.topLeft.text}</p>
 			</div>
 		</div>
-	);
+	) : null;
 }
 
 export default TestImageComponent;

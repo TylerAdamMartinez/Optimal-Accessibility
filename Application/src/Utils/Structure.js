@@ -1,19 +1,55 @@
 import { Image } from 'image-js';
 
 export async function getImageGrid(image) {
-	console.clear();
+	// console.clear();
 	const ogImage = await Image.load(image);
 	const { width, height } = ogImage;
 	let newImages = {
-		topLeft: null,
-		topMiddle: null,
-		topRight: null,
-		middleLeft: null,
-		middle: null,
-		middleRight: null,
-		bottomLeft: null,
-		bottomMiddle: null,
-		bottomRight: null,
+		topLeft: {
+			img: null,
+			text: null,
+			color: null,
+		},
+		topMiddle: {
+			img: null,
+			text: null,
+			color: null,
+		},
+		topRight: {
+			img: null,
+			text: null,
+			color: null,
+		},
+		middleLeft: {
+			img: null,
+			text: null,
+			color: null,
+		},
+		middle: {
+			img: null,
+			text: null,
+			color: null,
+		},
+		middleRight: {
+			img: null,
+			text: null,
+			color: null,
+		},
+		bottomLeft: {
+			img: null,
+			text: null,
+			color: null,
+		},
+		bottomMiddle: {
+			img: null,
+			text: null,
+			color: null,
+		},
+		bottomRight: {
+			img: null,
+			text: null,
+			color: null,
+		},
 	};
 
 	// split width and height for 9 section grid
@@ -22,7 +58,7 @@ export async function getImageGrid(image) {
 
 	// ignoring formatter because it likes to newline the methods
 	// prettier-ignore
-	newImages.topLeft = ogImage.crop({
+	newImages.topLeft.img = ogImage.crop({
 			x: 0,
 			y: 0,
 			height: squareHeight,
@@ -30,7 +66,7 @@ export async function getImageGrid(image) {
 	}).toDataURL();
 
 	// prettier-ignore
-	newImages.topMiddle = ogImage.crop({
+	newImages.topMiddle.img = ogImage.crop({
 			x: squareWidth,
 			y: 0,
 			height: squareHeight,
@@ -38,7 +74,7 @@ export async function getImageGrid(image) {
 	}).toDataURL();
 
 	// prettier-ignore
-	newImages.topRight = ogImage.crop({
+	newImages.topRight.img = ogImage.crop({
 			x: squareWidth * 2,
 			y: 0,
 			height: squareHeight,
@@ -46,7 +82,7 @@ export async function getImageGrid(image) {
 	}).toDataURL();
 
 	// prettier-ignore
-	newImages.middleLeft = ogImage.crop({
+	newImages.middleLeft.img = ogImage.crop({
 			x: 0,
 			y: squareHeight,
 			height: squareHeight,
@@ -54,7 +90,7 @@ export async function getImageGrid(image) {
 	}).toDataURL();
 
 	// prettier-ignore
-	newImages.middle = ogImage.crop({
+	newImages.middle.img = ogImage.crop({
 			x: squareWidth,
 			y: squareHeight,
 			height: squareHeight,
@@ -62,7 +98,7 @@ export async function getImageGrid(image) {
 	}).toDataURL();
 
 	// prettier-ignore
-	newImages.middleRight = ogImage.crop({
+	newImages.middleRight.img = ogImage.crop({
 			x: squareWidth * 2,
 			y: squareHeight,
 			height: squareHeight,
@@ -70,7 +106,7 @@ export async function getImageGrid(image) {
 	}).toDataURL();
 
 	// prettier-ignore
-	newImages.bottomLeft = ogImage.crop({
+	newImages.bottomLeft.img = ogImage.crop({
 			x: 0,
 			y: squareHeight * 2,
 			height: squareHeight,
@@ -78,7 +114,7 @@ export async function getImageGrid(image) {
 	}).toDataURL();
 
 	// prettier-ignore
-	newImages.bottomMiddle = ogImage.crop({
+	newImages.bottomMiddle.img = ogImage.crop({
 			x: squareWidth,
 			y: squareHeight * 2,
 			height: squareHeight,
@@ -86,7 +122,7 @@ export async function getImageGrid(image) {
 	}).toDataURL();
 
 	// prettier-ignore
-	newImages.bottomRight = ogImage.crop({
+	newImages.bottomRight.img = ogImage.crop({
 			x: squareWidth * 2,
 			y: squareHeight * 2,
 			height: squareHeight,
