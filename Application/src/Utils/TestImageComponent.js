@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 function TestImageComponent() {
 	const [imageGrid, setImageGrid] = useState({});
-	const image = require('./assets/Poster2.jpg');
+	const image = require('./assets/Poster.png');
 
 	const imageStyles = {
 		width: '31%',
@@ -17,6 +17,7 @@ function TestImageComponent() {
 		getImageGrid(image)
 			.then((val) => {
 				setImageGrid(val);
+				console.log(imageGrid);
 			})
 			.catch((e) => console.log(e));
 	}, [image]);
@@ -29,7 +30,7 @@ function TestImageComponent() {
 			.catch((e) => console.log(e));
 	}, [imageGrid]);
 
-	// console.log(imageGrid);
+	console.log(imageGrid);
 
 	return imageGrid.topLeft !== undefined ? (
 		<div
@@ -53,6 +54,9 @@ function TestImageComponent() {
 				<img alt='Test bottomLeft' src={imageGrid.bottomLeft.img} style={imageStyles} />
 				<img alt='Test bottomMiddle' src={imageGrid.bottomMiddle.img} style={imageStyles} />
 				<img alt='Test bottomRight' src={imageGrid.bottomRight.img} style={imageStyles} />
+			</div>
+			<div style={{ padding: '20px' }}>
+				<p style={{ color: 'white' }}>{imageGrid.topLeft.text}</p>
 			</div>
 		</div>
 	) : null;
