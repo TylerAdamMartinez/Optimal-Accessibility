@@ -56,78 +56,86 @@ export async function getImageGrid(image) {
 	let squareWidth = width / 3;
 	let squareHeight = height / 3;
 
-	// ignoring formatter because it likes to newline the methods
-	// prettier-ignore
-	newImages.topLeft.img = ogImage.crop({
+	newImages.topLeft.img = ogImage
+		.crop({
 			x: 0,
 			y: 0,
 			height: squareHeight,
 			width: squareWidth,
-	}).toDataURL();
+		})
+		.toDataURL();
 
-	// prettier-ignore
-	newImages.topMiddle.img = ogImage.crop({
+	newImages.topMiddle.img = ogImage
+		.crop({
 			x: squareWidth,
 			y: 0,
 			height: squareHeight,
 			width: squareWidth,
-	}).toDataURL();
+		})
+		.toDataURL();
 
-	// prettier-ignore
-	newImages.topRight.img = ogImage.crop({
+	newImages.topRight.img = ogImage
+		.crop({
 			x: squareWidth * 2,
 			y: 0,
 			height: squareHeight,
 			width: squareWidth,
-	}).toDataURL();
+		})
+		.toDataURL();
 
-	// prettier-ignore
-	newImages.middleLeft.img = ogImage.crop({
+	newImages.middleLeft.img = ogImage
+		.crop({
 			x: 0,
 			y: squareHeight,
 			height: squareHeight,
 			width: squareWidth,
-	}).toDataURL();
+		})
+		.toDataURL();
 
-	// prettier-ignore
-	newImages.middle.img = ogImage.crop({
+	newImages.middle.img = ogImage
+		.crop({
 			x: squareWidth,
 			y: squareHeight,
 			height: squareHeight,
 			width: squareWidth,
-	}).toDataURL();
+		})
+		.toDataURL();
 
-	// prettier-ignore
-	newImages.middleRight.img = ogImage.crop({
+	newImages.middleRight.img = ogImage
+		.crop({
 			x: squareWidth * 2,
 			y: squareHeight,
 			height: squareHeight,
 			width: squareWidth,
-	}).toDataURL();
+		})
+		.toDataURL();
 
-	// prettier-ignore
-	newImages.bottomLeft.img = ogImage.crop({
+	newImages.bottomLeft.img = ogImage
+		.crop({
 			x: 0,
 			y: squareHeight * 2,
 			height: squareHeight,
 			width: squareWidth,
-	}).toDataURL();
+		})
+		.toDataURL();
 
-	// prettier-ignore
-	newImages.bottomMiddle.img = ogImage.crop({
+	newImages.bottomMiddle.img = ogImage
+		.crop({
 			x: squareWidth,
 			y: squareHeight * 2,
 			height: squareHeight,
 			width: squareWidth,
-	}).toDataURL();
+		})
+		.toDataURL();
 
-	// prettier-ignore
-	newImages.bottomRight.img = ogImage.crop({
+	newImages.bottomRight.img = ogImage
+		.crop({
 			x: squareWidth * 2,
 			y: squareHeight * 2,
 			height: squareHeight,
 			width: squareWidth,
-	}).toDataURL();
+		})
+		.toDataURL();
 
 	return newImages;
 }

@@ -29,8 +29,6 @@ function TestImageComponent() {
 			.catch((e) => console.log(e));
 	}, [imageGrid]);
 
-	// console.log(imageGrid);
-
 	return imageGrid.topLeft !== undefined ? (
 		<div
 			style={{
