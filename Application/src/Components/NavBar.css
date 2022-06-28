@@ -7,6 +7,7 @@
   display: grid;
   grid-template-columns: 1fr 3fr 4fr 2fr 1fr;
   grid-template-rows: 1fr;
+  border-bottom: 3px solid #333;
 }
 
 #LogoBox {
@@ -19,7 +20,9 @@
   align-items: center;
   gap: 1rem;
   padding-left: 2rem;
-  padding-right: 2rem; }
+  padding-right: 2rem; 
+  cursor: pointer;
+}
 
 #LogoBox img {
   height: 3rem;
@@ -29,6 +32,7 @@
 #LogoBox h1 {
   font-weight: bold;
   font-size: 1.125rem;
+  user-select: none;
 }
 
 #NavItemsBox {
@@ -47,5 +51,6 @@
 
 #NavItemsBox ul li{
   list-style-type: none;
+  cursor: pointer;
   color: #f6f6f6;
 }
