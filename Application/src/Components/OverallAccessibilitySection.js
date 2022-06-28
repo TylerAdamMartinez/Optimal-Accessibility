@@ -1,14 +1,13 @@
 import './OverallAccessibilitySection.css';
-import MyPoster from './MyPoster.js';
+import BarGraph from './BarGraph';
 
-function OverallAccessibilitySection() {
+function OverallAccessibilitySection(props) {
+
     return (
         <div id='OverallAccessibilityDiv'>
             <div id="InnerOverallAccessibilityDiv">
                 <h2>Overall Accessibility Rating</h2>
-                <span>
-                    <p>Chart.js chart goes here...</p>
-                </span>
+                <BarGraph chartData={props.chartData} />
             </div>
         </div>
     );
