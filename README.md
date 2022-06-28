@@ -21,10 +21,11 @@ The goal of this project is to create a web application that calculates the acce
 
 ---
 
-### Required to run
+### Required to run /Application (frontend)
 * Node.js
 * create-react-app
 * @mui/icons-material
+* react-chartjs-2
 
 ### How to run the project
 1. Go to the project's Application directory
