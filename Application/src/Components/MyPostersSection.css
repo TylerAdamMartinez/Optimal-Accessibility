@@ -1,5 +1,5 @@
 #MyPostersDiv {
-    padding-top: 3em;
+    padding-top: 4em;
     display: grid;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr 8fr 1fr;
@@ -24,6 +24,7 @@
     padding-bottom: 10px;
     color: #333333;
     border-bottom: 5px solid #333333;
+    user-select: none;
 }
 
 #InnerMyPostersDiv span {
