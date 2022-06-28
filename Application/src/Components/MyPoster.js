@@ -3,9 +3,13 @@ import DefaultImage from './missing_image.jpg';
 
 function MyPoster(props) {
 
+    function ClickEventHandler() {
+        console.log(`Poster number ${props.Id} was clicked`);
+    }
+
 
     return (
-        <div id="MyPoster">
+        <div id="MyPoster" onClick={ClickEventHandler}>
             <div id="PosterImage">
                 <img src={DefaultImage} alt={`Poster number ${props.Id}`}/>
             </div>
