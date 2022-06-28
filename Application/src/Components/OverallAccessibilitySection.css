@@ -13,7 +13,7 @@
     border-radius: 2.5em;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 2fr;
+    grid-template-rows: auto 2fr;
 }
 
 #InnerOverallAccessibilityDiv h2 {
@@ -26,9 +26,11 @@
     user-select: none;
 }
 
-#InnerOverallAccessibilityDiv span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+#InnerOverallAccessibilityDiv canvas {
+    overflow-y: hidden;
+    overflow-x: hidden;
+    padding: 1em;
+    width: 100% !important;
+    height: auto !important;
 }
 
