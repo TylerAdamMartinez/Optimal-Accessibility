@@ -1,15 +1,23 @@
 import './MyPoster.css';
 import DefaultImage from './missing_image.jpg';
-
 import Popup from 'reactjs-popup';
-//import 'reactjs-popup/dist/index.css';
-
 import BarGraph from './BarGraph.js';
+import { useState } from 'react';
 
 function MyPoster(props) {
 
-    function ClickEventHandler() {
-        console.log(`Poster number ${props.Id} was clicked`);
+    function MyPosterClickEventHandler() {
+        console.log(`Poster number ${props.Id} was clicked on`);
+    }
+
+    let [isOpen, setIsOpen] = useState(false);
+
+    function handleClose() {
+      setIsOpen(true);
+    }
+
+    function handleOpen() {
+      setIsOpen(false);
     }
 
     let GenericBarGraphData = {
@@ -40,21 +48,31 @@ function MyPoster(props) {
       };
 
     return (
-        <Popup trigger={
-            <div id="MyPoster" onClick={ClickEventHandler}>
-                <div id="PosterImage">
-                    <img src={DefaultImage} alt={`Poster number ${props.Id}`}/>
-                </div>
-                <div id="PosterNameSection">
-                    <h3>{props.PosterName}</h3>
-                </div>
-            </div> 
-        } position="right center">
+        <Popup 
+        trigger={
+          <div id="MyPoster" onClick={MyPosterClickEventHandler}>
+              <div id="PosterImage">
+                  <img src={DefaultImage} alt={`Poster number ${props.Id}`}/>
+              </div>
+              <div id="PosterNameSection">
+                  <h3>{props.PosterName}</h3>
+              </div>
+          </div>}
+        open={isOpen}
+        onOpen={handleOpen}
+        >
             <div id="PosterPopUpMenuDiv">
-                <h3>{props.PosterName}</h3>
-                <img src={DefaultImage} alt={`Poster number ${props.Id}`}/>
+                <div id="PosterPopUpMenuPosterNameDiv">
+                  <h3>{props.PosterName}</h3>
+                  <button onClick={handleClose}>CANCEL</button>
+                </div>
+                <div id="PosterPopUpMenuImgDiv">
+                  <img src={DefaultImage} alt={`Poster number ${props.Id}`}/>
+                </div>
                 <h3>Overall Accessibility Score</h3>
-                <BarGraph chartData={GenericBarGraphData}/>
+                <div id="PosterPopUpMenuBarGraphDiv">
+                  <BarGraph chartData={GenericBarGraphData}/>
+                </div>
             </div>  
         </Popup>
     );
