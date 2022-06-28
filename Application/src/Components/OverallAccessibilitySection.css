@@ -1,11 +1,10 @@
-#MyPostersDiv {
-    padding-top: 4em;
+#OverallAccessibilityDiv {
     display: grid;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr 8fr 1fr;
 }
 
-#InnerMyPostersDiv {
+#InnerOverallAccessibilityDiv {
     padding: 1em;
     margin: 1em;
     grid-row: 1 / 3;
@@ -14,10 +13,10 @@
     border-radius: 2.5em;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 2fr;
+    grid-template-rows: auto 2fr;
 }
 
-#InnerMyPostersDiv h2 {
+#InnerOverallAccessibilityDiv h2 {
     font-size: 64px;
     margin-top: 0px;
     margin-bottom: 0px;
@@ -27,8 +26,11 @@
     user-select: none;
 }
 
-#InnerMyPostersDiv span {
-    display: flex;
-    overflow-x: scroll;
+#InnerOverallAccessibilityDiv canvas {
+    overflow-y: hidden;
+    overflow-x: hidden;
+    padding: 1em;
+    width: 100% !important;
+    height: auto !important;
 }
 

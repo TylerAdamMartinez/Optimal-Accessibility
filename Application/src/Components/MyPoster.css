@@ -1,0 +1,71 @@
+#MyPoster {
+    background-color: #D0D0D0;
+    display: grid;
+    grid-template-rows: 5fr 1fr 1fr;
+    grid-template-columns: 1fr;
+    border-radius: 15px;
+    margin: 1em;
+    cursor: pointer;
+    transition: background-color .75s ease-in-out;
+}
+
+#MyPoster:hover {
+    background-color:  #B90504;
+}
+
+
+#PosterImage {
+    padding: 1em;
+    grid-row: 1 / 2;
+    grid-column: 1 / 2;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+#PosterImage img {
+    pointer-events: none;
+    width: 150px;
+    height: auto;
+}
+
+#PosterNameSection {
+    background-color: #f6f6f6;
+    display: flex;
+    align-self: start;
+    justify-content: center;
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+}
+
+
+#PosterNameSection h3 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.popup-content {
+    background: #D0D0D0;
+    width: 100% !important;
+    top: 3em !important;
+    left: 0 !important;
+    z-index: 900 !important;
+}
+
+#PosterPopUpMenuDiv {
+    background: #f6f6f6;
+    border: 5px solid #333;
+    border-radius: 15px;
+    margin: 3em;
+    padding: 3em;
+}
+
+#PosterPopUpMenuDiv h3 {
+    font-size: 64px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-bottom: 10px;
+    color: #333333;
+    border-bottom: 5px solid #333333;
+    user-select: none;
+}
