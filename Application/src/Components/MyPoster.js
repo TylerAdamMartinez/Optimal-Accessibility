@@ -64,7 +64,6 @@ function MyPoster(props) {
             <div id="PosterPopUpMenuDiv">
                 <div id="PosterPopUpMenuPosterNameDiv">
                   <h3>{props.PosterName}</h3>
-                  <button onClick={handleClose}>CANCEL</button>
                 </div>
                 <div id="PosterPopUpMenuImgDiv">
                   <img src={DefaultImage} alt={`Poster number ${props.Id}`}/>
