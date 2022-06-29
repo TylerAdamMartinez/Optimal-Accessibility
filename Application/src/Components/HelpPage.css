@@ -1,0 +1,26 @@
+#OuterHelpPageDIV {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 5fr 1fr;
+}
+
+
+
+#InnerHelpPageDIV {
+    grid-row: 1 / 2;
+    grid-column: 2 / 3;
+    padding: 3em;
+    overflow-y: scroll;
+    height: (100% - 15em);
+    background-color: #f6f6f6;
+    color: #333;
+    border: 5px solid #333;
+    border-top: none !important;
+}
+
+#InnerHelpPageDIV h3 {
+    margin: 0;
+    padding: .25em;
+    color: #f6f6f6;
+    font-size: 32px;
+}
