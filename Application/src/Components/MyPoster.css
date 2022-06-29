@@ -45,8 +45,10 @@
 }
 
 .popup-content {
+    position: fixed !important;
     background: #D0D0D0;
     width: 100% !important;
+    height: 100% !important;
     top: 3em !important;
     left: 0 !important;
     z-index: 900 !important;
@@ -58,14 +60,55 @@
     border-radius: 15px;
     margin: 3em;
     padding: 3em;
+    overflow-y: scroll;
+    height: calc(100% - 15em);
 }
 
 #PosterPopUpMenuDiv h3 {
-    font-size: 64px;
+    font-size: 48px;
     margin-top: 0px;
     margin-bottom: 0px;
     padding-bottom: 10px;
     color: #333333;
     border-bottom: 5px solid #333333;
     user-select: none;
+}
+
+#PosterPopUpMenuPosterNameDiv {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 1fr;
+}
+
+
+#PosterPopUpMenuPosterNameDiv button {
+    padding: .5em;
+    border: none;
+    background-color: #990100;
+    color: #f6f6f6;
+    font-size: 32px;
+    transition: background-color .75s ease-in-out;
+}
+
+#PosterPopUpMenuPosterNameDiv button:hover {
+    background-color: #B90504;
+}
+
+#PosterPopUpMenuImgDiv {
+    display: flex;
+    justify-content: center;
+    margin: 1em;
+}
+
+#PosterPopUpMenuImgDiv img {
+    pointer-events: none;
+    width: 300px;
+    height: auto;
+}
+
+
+#PosterPopUpMenuBarGraphDiv {
+    display: flex;
+    justify-content: center;
+    margin: 1em;
 }
