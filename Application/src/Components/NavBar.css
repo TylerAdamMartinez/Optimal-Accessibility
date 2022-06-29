@@ -36,6 +36,19 @@
   user-select: none;
 }
 
+
+#ExitSpot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #f6f6f6;
+}
+
+#ExitSpot p {
+  margin: 0;
+  padding: 0;
+}
+
 #NavItemsBox {
   align-self: center;
 }
@@ -54,4 +67,43 @@
   list-style-type: none;
   cursor: pointer;
   color: #f6f6f6;
+}
+
+#PopUpHelpMenuDivSection {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 5fr 2fr 1fr;
+}
+
+#PopUpHelpMenuDiv {
+  grid-row: 1 / 2;
+  grid-column: 2 / 3;
+  border-top: none !important;
+  border: 5px solid#333;
+  background-color: #f6f6f6;
+  padding: 1em;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+#PopUpHelpMenuDiv li {
+  list-style-type: none;
+  padding: .25em;
+  color: #f6f6f6;
+  font-size: 32px;
+  cursor: pointer;
+}
+
+#PopUpHelpMenuDivTextField {
+  background-color: #017F01;
+  margin-bottom: .5em;
+}
+
+#PopUpHelpMenuDivStructureField {
+  background-color: #640665;
+  margin-bottom: .5em;
+}
+
+#PopUpHelpMenuDivColorField {
+  background-color: #DA364A;
 }

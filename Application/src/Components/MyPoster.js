@@ -12,10 +12,6 @@ function MyPoster(props) {
 
     let [isOpen, setIsOpen] = useState(false);
 
-    function handleClose() {
-      setIsOpen(true);
-    }
-
     function handleOpen() {
       setIsOpen(false);
     }
