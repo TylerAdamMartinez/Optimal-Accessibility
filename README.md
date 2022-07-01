@@ -32,6 +32,10 @@ The Optimal Accessibility project aims to create a web application that calculat
 * create-react-app
 * @mui/icons-material
 * react-chartjs-2
+* chart.js
+* reactjs-popup
+* image-js
+* tesseract.js
 
 ### Required to run /API (backend)
 * ASP .NET 6 Core (*API*)
