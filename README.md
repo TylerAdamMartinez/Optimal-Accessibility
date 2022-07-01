@@ -15,6 +15,7 @@ The goal of this project is to create a web application that calculates the acce
 ### Responsibilities Listed
 #### Tyler Adam Martinez
 * Client User Interface (frontend)
+* Application Protocol Interface (backend)
 
 #### Hank Peeples
 * Image Processing/Computer Vision
@@ -27,6 +28,12 @@ The goal of this project is to create a web application that calculates the acce
 * @mui/icons-material
 * react-chartjs-2
 
+### Required to run /API (backend)
+* ASP .NET 6 API
+
+
 ### How to run the project
-1. Go to the project's Application directory
-2. Run the terminal command: `npm run`
+1. Go to the project's API directory
+2. rebuild and run program
+3. Go to the project's Application directory
+4. Run the terminal command: `npm run`
