@@ -16,7 +16,7 @@ namespace OptimalAccessibility.Domain.Models.Database
         public string LastName { get; set; } = string.Empty;
         public DateTime? Birthday { get; set; }
         public Gender Gender { get; set; } = default;
-        public Classfication classfication { get; set; } = default;
+        public Classfication Classfication { get; set; } = default;
         public byte[]? passwordHash { get; set; } = default;
         public byte[]? passwordSalt { get; set; } = default;
     }

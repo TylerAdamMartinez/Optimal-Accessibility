@@ -1,4 +1,5 @@
 ﻿using OptimalAccessibility.Application.Repositories;
+using OptimalAccessibility.Domain.Models.DataTransferObjects;
 
 namespace OptimalAccessibility.Application.Services
 {
@@ -6,6 +7,21 @@ namespace OptimalAccessibility.Application.Services
     {
         public UserService()
         {
+        }
+
+        public List<PosterDTO> GetPostersByUser(Guid userID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserDTO GetUser(Guid userID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetUsersCount()
+        {
+            throw new NotImplementedException();
         }
     }
 }
