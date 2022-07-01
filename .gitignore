@@ -184,3 +184,6 @@ _[Ss]cripts
 *.nupkg
 *.ncrunchsolution
 *.dot[Cc]over
+
+# This is for the sqlite test database
+*.db
