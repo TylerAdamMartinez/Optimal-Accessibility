@@ -1,17 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-using OptimalAccessibility.Domain.Models.Database;
+﻿using OptimalAccessibility.Domain.Models.Database;
 
 namespace OptimalAccessibility.Domain.Models.DataTransferObjects
 {
     public class PosterDTO
     {
-        [Key]
-        public Guid posterId { get; set; }
-        [Required]
-        public Guid userId { get; set; }
-        [Required]
         public string PosterName { get; set; } = string.Empty;
+        public string PosterImageTitle { get; set; } = string.Empty;
+        public byte[]? PosterImageData { get; set; } = default;
         public AccessibilityScore? AccessibilityScore { get; set; }
     }
 }

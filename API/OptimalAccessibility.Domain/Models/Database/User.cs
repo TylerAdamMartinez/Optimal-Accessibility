@@ -17,6 +17,7 @@ namespace OptimalAccessibility.Domain.Models.Database
         public DateTime? Birthday { get; set; }
         public Gender Gender { get; set; } = default;
         public Classfication Classfication { get; set; } = default;
+        public AccessibilityScore? accessibilityScore { get; set; }
         public byte[]? passwordHash { get; set; } = default;
         public byte[]? passwordSalt { get; set; } = default;
     }
