@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalAccessibility.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalAccessibility.API", "OptimalAccessibility.API\OptimalAccessibility.API.csproj", "{02370A02-7AB0-41AE-B6B2-5C87650D554A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalAccessibility.Domain", "OptimalAccessibility.Domain\OptimalAccessibility.Domain.csproj", "{061AA1EE-B4D6-439B-836C-AB593412C056}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalAccessibility.Application", "OptimalAccessibility.Application\OptimalAccessibility.Application.csproj", "{C3198B16-7495-44FD-B192-8C8730C38966}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +33,14 @@ Global
 		{02370A02-7AB0-41AE-B6B2-5C87650D554A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02370A02-7AB0-41AE-B6B2-5C87650D554A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02370A02-7AB0-41AE-B6B2-5C87650D554A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{061AA1EE-B4D6-439B-836C-AB593412C056}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{061AA1EE-B4D6-439B-836C-AB593412C056}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{061AA1EE-B4D6-439B-836C-AB593412C056}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{061AA1EE-B4D6-439B-836C-AB593412C056}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3198B16-7495-44FD-B192-8C8730C38966}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3198B16-7495-44FD-B192-8C8730C38966}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3198B16-7495-44FD-B192-8C8730C38966}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3198B16-7495-44FD-B192-8C8730C38966}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
