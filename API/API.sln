@@ -5,6 +5,10 @@ VisualStudioVersion = 25.0.1700.5
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{190B0D90-9777-47C1-AF1E-0E014028C99F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalAccessibility.Tests", "OptimalAccessibility.Tests\OptimalAccessibility.Tests.csproj", "{3B30FA65-0E27-4D35-B413-E2DC132AFB10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "OptimalAcessibility.API\API.csproj", "{3EB12E9B-E9E7-42A1-8F09-923413DDAE7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{190B0D90-9777-47C1-AF1E-0E014028C99F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{190B0D90-9777-47C1-AF1E-0E014028C99F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{190B0D90-9777-47C1-AF1E-0E014028C99F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B30FA65-0E27-4D35-B413-E2DC132AFB10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B30FA65-0E27-4D35-B413-E2DC132AFB10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B30FA65-0E27-4D35-B413-E2DC132AFB10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B30FA65-0E27-4D35-B413-E2DC132AFB10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EB12E9B-E9E7-42A1-8F09-923413DDAE7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EB12E9B-E9E7-42A1-8F09-923413DDAE7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EB12E9B-E9E7-42A1-8F09-923413DDAE7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EB12E9B-E9E7-42A1-8F09-923413DDAE7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
