@@ -9,17 +9,12 @@ namespace OptimalAccessibility.Application.Services
         {
         }
 
-        public List<PosterDTO> GetPostersByUser(Guid userID)
+        public AccessibilityScoreDTO? GetOverallAccessibilityScoreByUserId(Guid userId)
         {
             throw new NotImplementedException();
         }
 
-        public UserDTO GetUser(Guid userID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetUsersCount()
+        public List<PosterDTO> GetPostersByUserId(Guid userId)
         {
             throw new NotImplementedException();
         }

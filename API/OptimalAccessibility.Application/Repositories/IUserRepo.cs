@@ -4,9 +4,8 @@ namespace OptimalAccessibility.Application.Repositories
 {
     public interface IUserRepo
     {
-        public int GetUsersCount();
-        public UserDTO GetUser(Guid userID);
-        public List<PosterDTO> GetPostersByUser(Guid userID);
+        public List<PosterDTO> GetPostersByUserId(Guid userId);
+        public AccessibilityScoreDTO? GetOverallAccessibilityScoreByUserId(Guid userId);
     }
 }
 
