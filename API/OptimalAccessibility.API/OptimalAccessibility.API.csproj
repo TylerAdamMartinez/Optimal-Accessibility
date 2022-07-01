@@ -16,4 +16,9 @@
   <ItemGroup>
     <Folder Include="Utils\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OptimalAccessibility.Application\OptimalAccessibility.Application.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
