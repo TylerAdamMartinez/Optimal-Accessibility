@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using OptimalAccessibility.Application.Repositories;
+using OptimalAccessibility.Domain.Models.DataTransferObjects;
 
 namespace OptimalAccessibility.API.Controllers
 {
@@ -17,10 +18,16 @@ namespace OptimalAccessibility.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public IActionResult Get()
+        [HttpGet("GetPostersByUserId/{userId}")]
+        public ActionResult<List<PosterDTO>> GetPostersByUserId([FromRoute] Guid userId)
         {
-            return Ok();
+            return Ok(userId);
+        }
+
+        [HttpGet("GetOverallAccessibilityScoreByUserId/{userId}")]
+        public ActionResult<AccessibilityScoreDTO> GetRegisteredUserById([FromRoute] Guid userId)
+        {
+            return Ok(userId);
         }
     }
 }
