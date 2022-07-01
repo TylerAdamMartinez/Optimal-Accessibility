@@ -1,32 +1,38 @@
-﻿<Properties StartupConfiguration="{3B30FA65-0E27-4D35-B413-E2DC132AFB10}|Default">
+﻿<Properties StartupConfiguration="{02370A02-7AB0-41AE-B6B2-5C87650D554A}|Default">
   <MonoDevelop.Ide.ItemProperties.OptimalAccessibility.Tests PreferredExecutionTarget="MonoDevelop.Default" />
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.ItemProperties.OptimalAccessibility.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.ItemProperties.OptimalAccessibility.Domain PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.ItemProperties.API PreferredExecutionTarget="/Applications/Firefox.app" />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workbench ActiveDocument="OptimalAccessibility.Domain/Models/Database/User.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="OptimalAccessibility.API/Controllers/UserController.cs">
     <Files>
-      <File FileName="OptimalAccessibility.API/Controllers/UserController.cs" Line="20" Column="18" />
+      <File FileName="OptimalAccessibility.API/Controllers/UserController.cs" Line="33" Column="2" />
       <File FileName="OptimalAccessibility.Tests/Controllers/UserControllerTest.cs" Line="31" Column="1" />
-      <File FileName="OptimalAccessibility.Application/Services/UserService.cs" Line="22" Column="35" />
-      <File FileName="OptimalAccessibility.Application/Repositories/IUserRepo.cs" Line="13" Column="1" />
+      <File FileName="OptimalAccessibility.Application/Services/UserService.cs" Line="24" Column="1" />
+      <File FileName="OptimalAccessibility.Application/Repositories/IUserRepo.cs" Line="12" Column="1" />
       <File FileName="OptimalAccessibility.API/Program.cs" Line="36" Column="2" />
-      <File FileName="OptimalAccessibility.Domain/Models/Database/User.cs" Line="16" Column="61" />
+      <File FileName="OptimalAccessibility.Domain/Models/Database/User.cs" Line="26" Column="1" />
       <File FileName="OptimalAccessibility.Domain/Enum/Gender.cs" Line="11" Column="1" />
       <File FileName="OptimalAccessibility.Domain/Enum/Classfication.cs" Line="14" Column="1" />
-      <File FileName="OptimalAccessibility.Domain/Models/DataTransferObjects/UserDTO.cs" Line="19" Column="1" />
-      <File FileName="OptimalAccessibility.Domain/Models/Database/Poster.cs" Line="17" Column="1" />
-      <File FileName="OptimalAccessibility.Domain/Models/DataTransferObjects/PosterDTO.cs" Line="18" Column="1" />
+      <File FileName="OptimalAccessibility.Domain/Models/DataTransferObjects/UserDTO.cs" Line="16" Column="1" />
+      <File FileName="OptimalAccessibility.Domain/Models/Database/Poster.cs" Line="12" Column="1" />
+      <File FileName="OptimalAccessibility.Domain/Models/DataTransferObjects/PosterDTO.cs" Line="14" Column="1" />
       <File FileName="OptimalAccessibility.Domain/Models/Database/AccessibilityScore.cs" Line="18" Column="1" />
+      <File FileName="OptimalAccessibility.API/Controllers/AuthController.cs" Line="26" Column="66" />
+      <File FileName="OptimalAccessibility.Domain/Models/DataTransferObjects/AccessibilityScoreDTO.cs" Line="12" Column="1" />
+      <File FileName="OptimalAccessibility.Application/Repositories/IAuthRepo.cs" Line="10" Column="1" />
+      <File FileName="OptimalAccessibility.Application/Services/AuthService.cs" Line="19" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="API" expanded="True">
+            <Node name="OptimalAccessibility.API" expanded="True">
+              <Node name="Controllers" expanded="True">
+                <Node name="UserController.cs" selected="True" />
+              </Node>
+            </Node>
             <Node name="OptimalAccessibility.Application" expanded="True" />
             <Node name="OptimalAccessibility.Domain" expanded="True">
               <Node name="Models" expanded="True">
@@ -47,5 +53,8 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.OptimalAccessibility.Domain PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.OptimalAccessibility.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
 </Properties>
