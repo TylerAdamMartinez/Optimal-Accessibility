@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
+using OptimalAccessibility.Application.Repositories;
 using OptimalAccessibility.Domain.Models.DataTransferObjects;
 
 namespace OptimalAccessibility.API.Controllers
@@ -9,27 +10,15 @@ namespace OptimalAccessibility.API.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
+        private readonly IAuthRepo _authRepo;
         private readonly ILogger<UserController> _logger;
 
-        public AuthController(IConfiguration configuration, ILogger<UserController> logger)
+        public AuthController(IAuthRepo authRepo, ILogger<UserController> logger)
         {
-            _configuration = configuration;
+            _authRepo = authRepo;
             _logger = logger;
         }
 
-
-        [HttpGet("GetRegisteredUsers")]
-        public ActionResult<List<UserDTO>> GetRegisteredUsers()
-        {
-            return Ok();
-        }
-
-        [HttpGet("GetRegisteredUserById/{userId}")]
-        public ActionResult<UserDTO> GetRegisteredUserById([FromRoute] Guid userId)
-        {
-            return Ok(userId.ToString() + " == Passed!");
-        }
 
         public class RegisterNewUserBody
         {
@@ -84,7 +73,7 @@ namespace OptimalAccessibility.API.Controllers
                 return BadRequest("Password is a required field");
             }
 
-            return Ok();
+            return Ok(new UserDTO());
         }
 
         [HttpDelete("DeleteUserById/{userId}")]
