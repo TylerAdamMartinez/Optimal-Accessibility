@@ -7,7 +7,8 @@ namespace OptimalAccessibility.Domain.Models.Database
         [Key]
         public Guid accessibilityScoreId { get; set; }
         [Required]
-        public Guid userID { get; set; }
+        public Guid userId { get; set; }
+        public Guid? posterId { get; set; }
 
         public int TextRating { get; set; } = default;
         public int StructureRating { get; set; } = default;
