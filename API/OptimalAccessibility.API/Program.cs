@@ -1,16 +1,23 @@
+using Microsoft.EntityFrameworkCore;
+using OptimalAccessibility.API;
+using OptimalAccessibility.API.Repositories;
 using OptimalAccessibility.Application.Repositories;
-using OptimalAccessibility.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-ConfigureServices(builder.Services);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var connectionString = "Filename=OptimalAccessibilityDatabase.db";
+builder.Services.AddDbContext<OptimalAccessibilityContext>(options => {
+    options.UseSqlite(connectionString);
+});
+
+builder.Services.AddTransient<IAuthRepo, AuthRepo>();
+builder.Services.AddTransient<IUserRepo, UsersRepo>();
 
 var app = builder.Build();
 
@@ -22,15 +29,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
-
-
-void ConfigureServices(IServiceCollection services)
-{
-    services.AddTransient<IUserRepo, UserService>();
-}

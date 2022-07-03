@@ -11,11 +11,13 @@ namespace OptimalAccessibility.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthRepo _authRepo;
+        private readonly IUserRepo _userRepo;
         private readonly ILogger<UserController> _logger;
 
-        public AuthController(IAuthRepo authRepo, ILogger<UserController> logger)
+        public AuthController(IAuthRepo authRepo, IUserRepo userRepo, ILogger<UserController> logger)
         {
             _authRepo = authRepo;
+            _userRepo = userRepo;
             _logger = logger;
         }
 
@@ -51,6 +53,14 @@ namespace OptimalAccessibility.API.Controllers
                 return BadRequest("Last name is a required field");
             }
 
+            var newUser = new UserDTO()
+            {
+                EUID = newUserRequest.EUID,
+                FirstName = newUserRequest.FirstName,
+                LastName = newUserRequest.LastName,
+            };
+            _userRepo.AddNewUser(newUser, newUserRequest.Password);
+
             return Ok(newUserRequest);
         }
 
@@ -73,13 +83,31 @@ namespace OptimalAccessibility.API.Controllers
                 return BadRequest("Password is a required field");
             }
 
-            return Ok(new UserDTO());
-        }
+            var AttemptUserRequest = _authRepo.VerifyEUID(loginRequest.EUID);
+            if (AttemptUserRequest == null)
+            {
+                return BadRequest($"No user with EUID {loginRequest.EUID} was found in database");
+            }
 
-        [HttpDelete("DeleteUserById/{userId}")]
-        public IActionResult DeleteUserById([FromRoute] Guid userId)
-        {
-            return Ok();
+            if(AttemptUserRequest.passwordHash == null || AttemptUserRequest.passwordSalt == null)
+            {
+                return NotFound("Failed to comfirm password");
+            }
+
+            if (!_authRepo.VerifyPasswordHash(loginRequest.Password, AttemptUserRequest.passwordHash, AttemptUserRequest.passwordSalt))
+            {
+                return Unauthorized("Incorrect Password Entered");
+            }
+
+
+            var loginUserDTO = new UserDTO()
+            {
+                UserId = AttemptUserRequest.UserId,
+                FirstName = AttemptUserRequest.FirstName,
+                LastName = AttemptUserRequest.LastName,
+                EUID = AttemptUserRequest.EUID,
+            };
+            return Ok(loginUserDTO);
         }
 
     }

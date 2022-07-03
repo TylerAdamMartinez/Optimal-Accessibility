@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using OptimalAccessibility.Application.Repositories;
+using OptimalAccessibility.Domain.Models.Database;
 using OptimalAccessibility.Domain.Models.DataTransferObjects;
 
 namespace OptimalAccessibility.API.Controllers
@@ -28,6 +29,18 @@ namespace OptimalAccessibility.API.Controllers
         public ActionResult<AccessibilityScoreDTO> GetRegisteredUserById([FromRoute] Guid userId)
         {
             return Ok(userId);
+        }
+
+        [HttpPost("AddPoster")]
+        public IActionResult AddPoster([FromBody] Poster newPoster)
+        {
+            return Ok(newPoster);
+        }
+
+        [HttpPost("AddOverallAccessibilityScore")]
+        public IActionResult AddPosAddOverallAccessibilityScoreToPosterByIdter([FromBody] AccessibilityScore accessibilityScore)
+        {
+            return Ok(accessibilityScore);
         }
     }
 }
