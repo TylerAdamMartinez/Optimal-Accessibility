@@ -29,7 +29,11 @@ The goal of this project is to create a web application that calculates the acce
 * react-chartjs-2
 
 ### Required to run /API (backend)
-* ASP .NET 6 API
+* ASP .NET 6 Core (*API*)
+* Microsoft.EntityFrameworkCore
+* Microsoft.EntityFrameworkCore.Design
+* Microsoft.EntityFrameworkCore.Sqlite
+* Microsoft.Extensions.Dependencyinjection
 
 
 ### How to run the project

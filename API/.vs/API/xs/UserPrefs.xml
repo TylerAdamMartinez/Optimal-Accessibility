@@ -1,24 +1,15 @@
 ﻿<Properties StartupConfiguration="{02370A02-7AB0-41AE-B6B2-5C87650D554A}|Default">
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.ItemProperties.OptimalAccessibility.Tests PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.ItemProperties.API PreferredExecutionTarget="/Applications/Firefox.app" />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.OptimalAccessibility.Application PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.ItemProperties.OptimalAccessibility.Domain PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.ItemProperties.OptimalAccessibility.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MultiItemStartupConfigurations>
-    <MultiItemSolutionRunConfiguration Id="API Default" Name="API Default">
-      <Items>
-        <StartupItem ItemId="{02370A02-7AB0-41AE-B6B2-5C87650D554A}" ItemName="OptimalAccessibility.API" ConfigurationId="Default" />
-      </Items>
-    </MultiItemSolutionRunConfiguration>
-  </MultiItemStartupConfigurations>
   <MonoDevelop.Ide.ItemProperties.OptimalAccessibility.Infrastructure PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.API PreferredExecutionTarget="/Applications/Firefox.app" />
   <MonoDevelop.Ide.Workbench ActiveDocument="OptimalAccessibility.API/Controllers/UserController.cs">
     <Files>
-      <File FileName="OptimalAccessibility.API/Controllers/UserController.cs" Line="26" Column="1" />
+      <File FileName="OptimalAccessibility.API/Controllers/UserController.cs" Line="18" Column="30" />
       <File FileName="OptimalAccessibility.Tests/Controllers/UserControllerTest.cs" Line="31" Column="1" />
       <File FileName="OptimalAccessibility.Application/Repositories/IUserRepo.cs" Line="19" Column="1" />
       <File FileName="OptimalAccessibility.API/Program.cs" Line="24" Column="40" />
@@ -43,7 +34,9 @@
         <State name="__root__">
           <Node name="API" expanded="True">
             <Node name="OptimalAccessibility.API" expanded="True">
-              <Node name="Dependencies" expanded="True" />
+              <Node name="Dependencies" expanded="True">
+                <Node name="PackageDependencies" expanded="True" selected="True" />
+              </Node>
               <Node name="Controllers" expanded="True" />
               <Node name="Repositories" expanded="True" />
             </Node>
@@ -58,7 +51,6 @@
                 <Node name="DataTransferObjects" expanded="True" />
               </Node>
             </Node>
-            <Node name="OptimalAccessibility.Infrastructure" selected="True" />
           </Node>
         </State>
       </Pad>
@@ -72,5 +64,14 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.ItemProperties.OptimalAccessibility.Application PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MultiItemStartupConfigurations>
+    <MultiItemSolutionRunConfiguration Id="API Default" Name="API Default">
+      <Items>
+        <StartupItem ItemId="{02370A02-7AB0-41AE-B6B2-5C87650D554A}" ItemName="OptimalAccessibility.API" ConfigurationId="Default" />
+      </Items>
+    </MultiItemSolutionRunConfiguration>
+  </MultiItemStartupConfigurations>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
 </Properties>
