@@ -1,14 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 using OptimalAccessibility.Domain.Enum;
 
 namespace OptimalAccessibility.Domain.Models.Database
 {
+    [Table("Users")]
     public class User
     {
         [Key]
-        public Guid UserId { get; set; }
-        [Required]
+        public Guid userId { get; set; }
+        [StringLength(7), Required]
         public string EUID { get; set; } = string.Empty;
         public string? Email { get; set; }
         public string FirstName { get; set; } = string.Empty;
@@ -17,7 +18,7 @@ namespace OptimalAccessibility.Domain.Models.Database
         public DateTime? Birthday { get; set; }
         public Gender Gender { get; set; } = default;
         public Classfication Classfication { get; set; } = default;
-        public AccessibilityScore? accessibilityScore { get; set; }
+        public UserAccessibilityScore? accessibilityScore { get; set; }
         [Required]
         public byte[]? passwordHash { get; set; } = default;
         [Required]
