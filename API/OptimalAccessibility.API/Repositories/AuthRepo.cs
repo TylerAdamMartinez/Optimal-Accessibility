@@ -44,9 +44,20 @@ namespace OptimalAccessibility.API.Repositories
             }
         }
 
-        public User? VerifyEUID(string EUID)
+        public User? GetUserByEUID(string EUID)
         {
             return _context.Users.Where(user => user.EUID == EUID).FirstOrDefault();
+        }
+
+        public bool IsUniqueEUID(string EUID)
+        {
+            var Result = _context.Users.Where(user => user.EUID == EUID).FirstOrDefault();
+            if (Result == null)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

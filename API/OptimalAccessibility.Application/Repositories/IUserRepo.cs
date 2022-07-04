@@ -1,4 +1,4 @@
-﻿using OptimalAccessibility.Domain.Models.Database;
+﻿using OptimalAccessibility.Domain.Enum;
 using OptimalAccessibility.Domain.Models.DataTransferObjects;
 
 namespace OptimalAccessibility.Application.Repositories
@@ -7,7 +7,9 @@ namespace OptimalAccessibility.Application.Repositories
     {
         public List<PosterDTO> GetPostersByUserId(Guid userId);
         public AccessibilityScoreDTO GetOverallAccessibilityScoreByUserId(Guid userId);
-        public void AddNewUser(UserDTO newUser, string Password);
+        public AccessibilityScoreDTO GetPosterAccessibilityScoreByPosterId(Guid posterId);
+        public bool AddNewUser(UserDTO newUser, string Password);
+        public DatabaseResultTypes DeleteUserByUserId(Guid userId);
         public UserDTO GetUserByEUID(string EUID);
     }
 }

@@ -1,5 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
 using OptimalAccessibility.Application.Repositories;
+using OptimalAccessibility.Domain.Enum;
 using OptimalAccessibility.Domain.Models.Database;
 using OptimalAccessibility.Domain.Models.DataTransferObjects;
 
@@ -18,7 +19,7 @@ namespace OptimalAccessibility.API.Repositories
             _logger = logger;
         }
 
-        public void AddNewUser(UserDTO newUser, string Password)
+        public bool AddNewUser(UserDTO newUser, string Password)
         {
 
             _authRepo.CreatePasswordHash(Password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -31,12 +32,43 @@ namespace OptimalAccessibility.API.Repositories
                 passwordSalt = passwordSalt,
             };
             _context.Users.Add(newUserEntry);
-            _context.SaveChanges();
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex.ToString());
+                return false;
+            }
+            return true;
+        }
+
+        public DatabaseResultTypes DeleteUserByUserId(Guid userId)
+        {
+            var AttemptUser = _context.Users.Where(user => user.userId == userId).FirstOrDefault();
+            if (AttemptUser == null)
+            {
+                return DatabaseResultTypes.UserNotFound;
+            }
+
+            _context.Users.Remove(AttemptUser);
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex.ToString());
+                return DatabaseResultTypes.UpdateFailure;
+            }
+            return DatabaseResultTypes.Successful;
         }
 
         public AccessibilityScoreDTO GetOverallAccessibilityScoreByUserId(Guid userId)
         {
-            var userAccessibilityScore = _context.AccessibilityScores.Where(accessibilityScore => accessibilityScore.userId == userId).FirstOrDefault();
+            var userAccessibilityScore = _context.UserAccessibilityScores.Where(accessibilityScore => accessibilityScore.userId == userId).FirstOrDefault();
 
             if (userAccessibilityScore == null)
             {
@@ -50,27 +82,48 @@ namespace OptimalAccessibility.API.Repositories
             };
         }
 
+        public AccessibilityScoreDTO GetPosterAccessibilityScoreByPosterId(Guid posterId)
+        {
+            var accessibilityScore = _context.PosterAccessibilityScores.Where(b => b.posterId == posterId).FirstOrDefault();
+            if (accessibilityScore == null)
+            {
+                return new AccessibilityScoreDTO() { ColorRating = 0, StructureRating = 0, TextRating = 0 };
+            }
+
+            return new AccessibilityScoreDTO()
+            {
+                ColorRating = accessibilityScore.ColorRating,
+                TextRating = accessibilityScore.TextRating,
+                StructureRating = accessibilityScore.StructureRating,
+            };
+        }
+
         public List<PosterDTO> GetPostersByUserId(Guid userId)
         {
             var posters = from User in _context.Users
-                          where User.UserId == userId
+                          where User.userId == userId
                           join Poster in _context.Posters
-                          on User.UserId equals Poster.userId
-                          select new PosterDTO()
-                          {
-                              PosterName = Poster.PosterName,
-                              PosterImageData = Poster.PosterImageData,
-                              PosterImageTitle = Poster.PosterImageTitle,
-                              AccessibilityScore = null,
-                          };
+                          on User.userId equals Poster.userId
+                          select Poster;
 
-            return posters.ToList();
+            var posterDTOs = new List<PosterDTO>();
+            foreach (Poster poster in posters)
+            {
+                posterDTOs.Add(new PosterDTO()
+                {
+                    PosterName = poster.PosterName,
+                    PosterImageData = poster.PosterImageData,
+                    PosterImageTitle = poster.PosterImageTitle,
+                    AccessibilityScore = GetPosterAccessibilityScoreByPosterId(poster.posterId),
+                });
+            }
+            return posterDTOs;
         }
 
         public UserDTO GetUserByEUID(string EUID)
         {
             var user = _context.Users.Where(user => user.EUID == EUID).FirstOrDefault();
-            var userId = user?.UserId ?? throw new ArgumentNullException(nameof(user), $"There is no user with the EUID of {EUID}");
+            var userId = user?.userId ?? throw new ArgumentNullException(nameof(user), $"There is no user with the EUID of {EUID}");
             var userAccessibilityScore = GetOverallAccessibilityScoreByUserId(userId);
             var posters = GetPostersByUserId(userId);
 
