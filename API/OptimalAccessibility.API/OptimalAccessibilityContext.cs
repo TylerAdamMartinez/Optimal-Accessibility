@@ -13,7 +13,8 @@ namespace OptimalAccessibility.API
 
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<Poster> Posters { get; set; } = null!;
-        public virtual DbSet<AccessibilityScore> AccessibilityScores { get; set; } = null!;
+        public virtual DbSet<UserAccessibilityScore> UserAccessibilityScores { get; set; } = null!;
+        public virtual DbSet<PosterAccessibilityScore> PosterAccessibilityScores { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
