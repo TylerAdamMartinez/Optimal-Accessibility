@@ -19,6 +19,39 @@ namespace OptimalAccessibility.API.Repositories
             _logger = logger;
         }
 
+        public DatabaseResultTypes AddNewPoster(PosterDTO newPoster, Guid userId)
+        {
+            if (newPoster.AccessibilityScore == null)
+            {
+                return DatabaseResultTypes.NoAccessibilityScoreGiven;
+            }
+
+            _context.Posters.Add(new Poster()
+            {
+                userId = userId,
+                PosterName = newPoster.PosterName,
+                PosterImageTitle = newPoster.PosterImageTitle,
+                PosterImageData = newPoster.PosterImageData,
+            });
+
+            var poster = _context.Posters.Where(b => b.userId == userId).FirstOrDefault();
+            if (poster == null)
+            {
+                return DatabaseResultTypes.PosterNotFound;
+            }
+            _context.SaveChanges();
+            _context.PosterAccessibilityScores.Add(new PosterAccessibilityScore()
+            {
+                posterId = poster.posterId,
+                ColorRating = newPoster.AccessibilityScore.ColorRating,
+                TextRating = newPoster.AccessibilityScore.TextRating,
+                StructureRating = newPoster.AccessibilityScore.StructureRating,
+            });
+
+            _context.SaveChanges();
+            return DatabaseResultTypes.Successful;
+        }
+
         public bool AddNewUser(UserDTO newUser, string Password)
         {
 
@@ -157,6 +190,18 @@ namespace OptimalAccessibility.API.Repositories
                 };
             }
 
+        }
+
+        public bool IsUniquePosterName(string posterName)
+        {
+            var Result = _context.Posters.Where(b => b.PosterName == posterName).FirstOrDefault();
+
+            if (Result == null)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

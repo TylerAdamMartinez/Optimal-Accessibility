@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
 using OptimalAccessibility.Application.Repositories;
-using OptimalAccessibility.Domain.Models.Database;
 using OptimalAccessibility.Domain.Models.DataTransferObjects;
 
 namespace OptimalAccessibility.API.Controllers
@@ -19,28 +18,44 @@ namespace OptimalAccessibility.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet("GetPostersByUserId/{userId}")]
+        [HttpGet("GetPostersByUserId/{userId:Guid}")]
         public ActionResult<List<PosterDTO>> GetPostersByUserId([FromRoute] Guid userId)
         {
-            return Ok(userId);
+            return _userRepo.GetPostersByUserId(userId);
         }
 
-        [HttpGet("GetOverallAccessibilityScoreByUserId/{userId}")]
-        public ActionResult<AccessibilityScoreDTO> GetRegisteredUserById([FromRoute] Guid userId)
+        [HttpGet("GetOverallAccessibilityScoreByUserId/{userId:Guid}")]
+        public ActionResult<AccessibilityScoreDTO> GetOverallAccessibilityScoreByUserId([FromRoute] Guid userId)
         {
-            return Ok(userId);
+            return _userRepo.GetOverallAccessibilityScoreByUserId(userId);
         }
 
-        [HttpPost("AddPoster")]
-        public IActionResult AddPoster([FromBody] Poster newPoster)
+        [HttpPost("AddPosterByUserId/{userId:Guid}")]
+        public IActionResult AddPoster([FromRoute] Guid userId,[FromBody] PosterDTO newPoster)
         {
-            return Ok(newPoster);
+            if(!_userRepo.IsUniquePosterName(newPoster.PosterName))
+            {
+                return BadRequest($"Poster Name {newPoster.PosterName} has been taken already");
+            }
+
+            var Result = _userRepo.AddNewPoster(newPoster, userId);
+            if (Result == Domain.Enum.DatabaseResultTypes.NoAccessibilityScoreGiven)
+            {
+                return BadRequest("Accessibility Must be given to add a new poster to database");
+            }
+
+            if(Result == Domain.Enum.DatabaseResultTypes.PosterNotFound)
+            {
+                return BadRequest("Poster that been added failed to be found");
+            }
+
+            return Ok("New poster was successfully added to database");
         }
 
-        [HttpPost("AddOverallAccessibilityScore")]
-        public IActionResult AddPosAddOverallAccessibilityScoreToPosterByIdter([FromBody] AccessibilityScore accessibilityScore)
+        [HttpPut("UpdateOverallAccessibilityScoreByUserId/{userId:Guid}")]
+        public ActionResult<AccessibilityScoreDTO> UpdateOverallAccessibilityScoreByUserId([FromRoute] Guid userId)
         {
-            return Ok(accessibilityScore);
+            return Ok();
         }
     }
 }
