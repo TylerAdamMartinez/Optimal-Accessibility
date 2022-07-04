@@ -5,19 +5,34 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OptimalAccessibility.API.Migrations
 {
-    public partial class CreateInitial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "PosterAccessiblityScore",
+                columns: table => new
+                {
+                    accessibilityScoreId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    posterId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Text = table.Column<int>(type: "INTEGER", nullable: false),
+                    Structure = table.Column<int>(type: "INTEGER", nullable: false),
+                    Color = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PosterAccessiblityScore", x => x.accessibilityScoreId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Posters",
                 columns: table => new
                 {
                     posterId = table.Column<Guid>(type: "TEXT", nullable: false),
                     userId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    PosterName = table.Column<string>(type: "TEXT", nullable: false),
-                    PosterImageTitle = table.Column<string>(type: "TEXT", nullable: false),
-                    PosterImageData = table.Column<byte[]>(type: "BLOB", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", nullable: false),
+                    Data = table.Column<byte[]>(type: "BLOB", nullable: true),
                     accessibilityScoreId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -29,8 +44,8 @@ namespace OptimalAccessibility.API.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    EUID = table.Column<string>(type: "TEXT", nullable: false),
+                    userId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    EUID = table.Column<string>(type: "TEXT", maxLength: 7, nullable: false),
                     Email = table.Column<string>(type: "TEXT", nullable: true),
                     FirstName = table.Column<string>(type: "TEXT", nullable: false),
                     MiddleInitial = table.Column<char>(type: "TEXT", nullable: true),
@@ -43,34 +58,33 @@ namespace OptimalAccessibility.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.PrimaryKey("PK_Users", x => x.userId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AccessibilityScores",
+                name: "UserAccessiblityScore",
                 columns: table => new
                 {
                     accessibilityScoreId = table.Column<Guid>(type: "TEXT", nullable: false),
                     userId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    posterId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    TextRating = table.Column<int>(type: "INTEGER", nullable: false),
-                    StructureRating = table.Column<int>(type: "INTEGER", nullable: false),
-                    ColorRating = table.Column<int>(type: "INTEGER", nullable: false)
+                    Text = table.Column<int>(type: "INTEGER", nullable: false),
+                    Structure = table.Column<int>(type: "INTEGER", nullable: false),
+                    Color = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AccessibilityScores", x => x.accessibilityScoreId);
+                    table.PrimaryKey("PK_UserAccessiblityScore", x => x.accessibilityScoreId);
                     table.ForeignKey(
-                        name: "FK_AccessibilityScores_Users_userId",
+                        name: "FK_UserAccessiblityScore_Users_userId",
                         column: x => x.userId,
                         principalTable: "Users",
-                        principalColumn: "UserId",
+                        principalColumn: "userId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AccessibilityScores_userId",
-                table: "AccessibilityScores",
+                name: "IX_UserAccessiblityScore_userId",
+                table: "UserAccessiblityScore",
                 column: "userId",
                 unique: true);
         }
@@ -78,10 +92,13 @@ namespace OptimalAccessibility.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AccessibilityScores");
+                name: "PosterAccessiblityScore");
 
             migrationBuilder.DropTable(
                 name: "Posters");
+
+            migrationBuilder.DropTable(
+                name: "UserAccessiblityScore");
 
             migrationBuilder.DropTable(
                 name: "Users");
