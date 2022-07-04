@@ -1,4 +1,15 @@
-# This is for /Application
+##########(entire app)##########
+# This is for the entire repo  #
+################################
+
+# build
+.DS_store
+.DS_Store?
+.vscode
+
+#########(frontend)#########
+# This is for /Application #
+############################
 
 # Logs
 logs
@@ -8,7 +19,7 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-# Diagnostic reports (https://nodejs.org/api/report.html)
+# NodeJS Diagnostic reports
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Runtime data
@@ -27,16 +38,16 @@ coverage
 # nyc test coverage
 .nyc_output
 
-# Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
+# Grunt intermediate storage
 .grunt
 
-# Bower dependency directory (https://bower.io/)
+# Bower dependency directory
 bower_components
 
 # node-waf configuration
 .lock-wscript
 
-# Compiled binary addons (https://nodejs.org/api/addons.html)
+# Compiled binary addons
 build/Release
 
 # Dependency directories
@@ -74,7 +85,7 @@ typings/
 .env
 .env.test
 
-# parcel-bundler cache (https://parceljs.org/)
+# parcel-bundler cache
 .cache
 
 # Next.js build output
@@ -86,9 +97,6 @@ dist
 
 # Gatsby files
 .cache/
-# Comment in the public line in if your project uses Gatsby and *not* Next.js
-# https://nextjs.org/blog/next-9-1#public-directory-support
-# public
 
 # vuepress build output
 .vuepress/dist
@@ -105,13 +113,11 @@ dist
 # TernJS port file
 .tern-port
 
-.DS_store
-.vscode
+######(backend)######
+# This is for /API  #
+#####################
 
-# This is for /APT
-###################
-# compiled source #
-###################
+# compiled source
 *.com
 *.class
 *.dll
@@ -120,34 +126,31 @@ dist
 *.dll.config
 *.cache
 *.suo
+
 # Include dlls if they’re in the NuGet packages directory
 !/packages/*/lib/*.dll
 !/packages/*/lib/*/*.dll
+
 # Include dlls if they're in the CommonReferences directory
 !*CommonReferences/*.dll
-####################
-# VS Upgrade stuff #
-####################
+
+# VS Upgrade stuff
 UpgradeLog.XML
 _UpgradeReport_Files/
-###############
-# Directories #
-###############
+
+# Directories
 bin/
 obj/
 TestResults/
-###################
-# Web publish log #
-###################
+
+# Web publish log
 *.Publish.xml
-#############
-# Resharper #
-#############
+
+# Resharper
 /_ReSharper.*
 *.ReSharper.*
-############
-# Packages #
-############
+
+# Packages
 # it’s better to unpack these files and commit the raw source
 # git has its own built in compression methods
 *.7z
@@ -158,14 +161,13 @@ TestResults/
 *.rar
 *.tar
 *.zip
-######################
-# Logs and databases #
-######################
+
+# Logs and databases
 *.log
 *.sqlite
-# OS generated files #
-######################
-.DS_Store?
+*.db
+
+# OS generated files
 ehthumbs.db
 Icon?
 Thumbs.db
@@ -184,7 +186,3 @@ _[Ss]cripts
 *.nupkg
 *.ncrunchsolution
 *.dot[Cc]over
-API/.vs/API/
-
-# This is for the sqlite test database
-*.db
