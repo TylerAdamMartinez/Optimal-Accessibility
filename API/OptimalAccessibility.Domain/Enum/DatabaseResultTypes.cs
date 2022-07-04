@@ -6,6 +6,9 @@ namespace OptimalAccessibility.Domain.Enum
         Successful = 0,
         UpdateFailure,
         UserNotFound,
+        PosterNotFound,
+        NoAccessibilityScoreGiven,
+
     }
 }
 
