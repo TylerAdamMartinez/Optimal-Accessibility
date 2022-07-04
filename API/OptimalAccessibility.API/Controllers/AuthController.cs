@@ -2,6 +2,7 @@
 
 using OptimalAccessibility.Application.Repositories;
 using OptimalAccessibility.Domain.Models.DataTransferObjects;
+using OptimalAccessibility.Domain.Enum;
 
 namespace OptimalAccessibility.API.Controllers
 {
@@ -38,6 +39,11 @@ namespace OptimalAccessibility.API.Controllers
                 return BadRequest("EUID is a required field");
             }
 
+            if (!_authRepo.IsUniqueEUID(newUserRequest.EUID))
+            {
+                return BadRequest($"EUID {newUserRequest.EUID} is a taken");
+            }
+
             if (newUserRequest.Password == string.Empty || newUserRequest.Password == null)
             {
                 return BadRequest("Password is a required field");
@@ -61,7 +67,7 @@ namespace OptimalAccessibility.API.Controllers
             };
             _userRepo.AddNewUser(newUser, newUserRequest.Password);
 
-            return Ok(newUserRequest);
+            return Ok("New user successfully entered into database");
         }
 
         public class LoginUserBody
@@ -83,7 +89,7 @@ namespace OptimalAccessibility.API.Controllers
                 return BadRequest("Password is a required field");
             }
 
-            var AttemptUserRequest = _authRepo.VerifyEUID(loginRequest.EUID);
+            var AttemptUserRequest = _authRepo.GetUserByEUID(loginRequest.EUID);
             if (AttemptUserRequest == null)
             {
                 return BadRequest($"No user with EUID {loginRequest.EUID} was found in database");
@@ -99,17 +105,63 @@ namespace OptimalAccessibility.API.Controllers
                 return Unauthorized("Incorrect Password Entered");
             }
 
-
+            var posters = _userRepo.GetPostersByUserId(AttemptUserRequest.userId);
+            var overallAccessiblityScore = _userRepo.GetOverallAccessibilityScoreByUserId(AttemptUserRequest.userId);
             var loginUserDTO = new UserDTO()
             {
-                UserId = AttemptUserRequest.UserId,
+                UserId = AttemptUserRequest.userId,
                 FirstName = AttemptUserRequest.FirstName,
                 LastName = AttemptUserRequest.LastName,
                 EUID = AttemptUserRequest.EUID,
+                posters = posters,
+                AccessibilityScore = overallAccessiblityScore,
             };
             return Ok(loginUserDTO);
         }
 
+
+        [HttpDelete("DeleteUserById/{userId:Guid}")]
+        public IActionResult DeleteUserByUserId([FromRoute] Guid userId)
+        {
+            var Result = _userRepo.DeleteUserByUserId(userId);
+            if(Result == DatabaseResultTypes.UserNotFound)
+            {
+                return NotFound($"No user with Guid of {userId} was found in database");
+            }
+
+            if(Result == DatabaseResultTypes.UpdateFailure)
+            {
+                return NotFound($"Failed to delete user with Guid of {userId}");
+            }
+
+            return Ok($"User with Guid of {userId} was successfull deleted from the database");
+        }
+
+        public class UpdateUserBody
+        {
+            public string? Email { get; set; }
+            public char? MiddleInitial { get; set; }
+            public DateTime? Birthday { get; set; }
+            public Gender Gender { get; set; } = default;
+            public Classfication Classfication { get; set; } = default;
+        }
+
+        [HttpPut("UpdateUserById/{userId:Guid}")]
+        public IActionResult UpdateUserFieldByUserId([FromRoute] Guid userId, [FromBody] UpdateUserBody updateUserBody)
+        {
+            var Result = _userRepo.DeleteUserByUserId(userId);
+            if (Result == DatabaseResultTypes.UserNotFound)
+            {
+                return NotFound($"No user with Guid of {userId} was found in database");
+            }
+
+            if (Result == DatabaseResultTypes.UpdateFailure)
+            {
+                return NotFound($"Failed to delete user with Guid of {userId}");
+            }
+
+            return Ok($"User with Guid of {userId} was successfull deleted from the database");
+        }
     }
 
 }
