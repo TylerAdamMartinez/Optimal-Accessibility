@@ -15,15 +15,6 @@ namespace OptimalAccessibility.API.Repositories
             _logger = logger;
         }
 
-        public Guid GetUserGuid(string EUID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string CreateJSONWebToken(User user)
-        {
-            throw new NotImplementedException();
-        }
 
         public void CreatePasswordHash(string Password, out byte[] passwordHash, out byte[] passwordSalt)
         {
@@ -33,7 +24,6 @@ namespace OptimalAccessibility.API.Repositories
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(Password));
             }
         }
-
 
         public bool VerifyPasswordHash(string Password, byte[] passwordHash, byte[] passwordSalt)
         {
