@@ -1,4 +1,5 @@
 import { Image } from 'image-js';
+import { changeDpiDataUrl } from 'changedpi';
 
 export async function getImageGrid(image) {
   const ogImage = await Image.load(image);
@@ -72,6 +73,8 @@ export async function getImageGrid(image) {
       width: squareWidth,
     })
     .toDataURL();
+  // changing DPI of the images to help the text recognition
+  newImages.topLeft.img = changeDpiDataUrl(newImages.topLeft.img, 300);
 
   newImages.topMiddle.img = ogImage
     .crop({
@@ -81,6 +84,7 @@ export async function getImageGrid(image) {
       width: squareWidth,
     })
     .toDataURL();
+  newImages.topMiddle.img = changeDpiDataUrl(newImages.topMiddle.img, 300);
 
   newImages.topRight.img = ogImage
     .crop({
@@ -90,6 +94,7 @@ export async function getImageGrid(image) {
       width: squareWidth,
     })
     .toDataURL();
+  newImages.topRight.img = changeDpiDataUrl(newImages.topRight.img, 300);
 
   newImages.middleLeft.img = ogImage
     .crop({
@@ -99,6 +104,7 @@ export async function getImageGrid(image) {
       width: squareWidth,
     })
     .toDataURL();
+  newImages.middleLeft.img = changeDpiDataUrl(newImages.middleLeft.img, 300);
 
   newImages.middle.img = ogImage
     .crop({
@@ -108,6 +114,7 @@ export async function getImageGrid(image) {
       width: squareWidth,
     })
     .toDataURL();
+  newImages.middle.img = changeDpiDataUrl(newImages.middle.img, 300);
 
   newImages.middleRight.img = ogImage
     .crop({
@@ -117,6 +124,7 @@ export async function getImageGrid(image) {
       width: squareWidth,
     })
     .toDataURL();
+  newImages.middleRight.img = changeDpiDataUrl(newImages.middleRight.img, 300);
 
   newImages.bottomLeft.img = ogImage
     .crop({
@@ -126,6 +134,7 @@ export async function getImageGrid(image) {
       width: squareWidth,
     })
     .toDataURL();
+  newImages.bottomLeft.img = changeDpiDataUrl(newImages.bottomLeft.img, 300);
 
   newImages.bottomMiddle.img = ogImage
     .crop({
@@ -135,6 +144,7 @@ export async function getImageGrid(image) {
       width: squareWidth,
     })
     .toDataURL();
+  newImages.bottomMiddle.img = changeDpiDataUrl(newImages.bottomMiddle.img, 300);
 
   newImages.bottomRight.img = ogImage
     .crop({
@@ -144,6 +154,7 @@ export async function getImageGrid(image) {
       width: squareWidth,
     })
     .toDataURL();
+  newImages.bottomRight.img = changeDpiDataUrl(newImages.bottomRight.img, 300);
 
   return newImages;
 }
