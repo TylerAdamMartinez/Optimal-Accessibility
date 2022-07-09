@@ -1,5 +1,6 @@
 import { getText } from './Text';
 import { getImageGrid } from './Structure';
+import { getColors } from './Color';
 import { useState, useEffect } from 'react';
 
 /*
@@ -25,30 +26,24 @@ function TestImageComponent() {
   }, [image]);
 
   useEffect(() => {
-    getText(imageGrid)
-      .then((val) => {
-        setImageGrid(val);
-      })
-      .catch((e) => console.log(e));
-  }, [imageGrid, image]);
-
-  console.log(imageGrid);
+    console.log(imageGrid);
+  }, [imageGrid]);
 
   return imageGrid.topLeft !== undefined ? (
     <div
       style={{
-        width: '80%',
-        height: '65%',
+        width: '50%',
+        height: '45%',
         margin: 80,
         flexDirection: 'row',
         display: 'flex',
       }}
     >
-      <img alt='Test poster' src={image} style={{ width: '100%', height: '100%' }} />
+      <img alt='Test poster' src={image} style={{ width: '50%', height: '50%' }} />
       <div
         style={{
-          height: '100%',
-          width: '100%',
+          height: '50%',
+          width: '50%',
           justifyContent: 'center',
           alignItems: 'center',
         }}
@@ -64,7 +59,9 @@ function TestImageComponent() {
         <img alt='Test bottomRight' src={imageGrid.bottomRight.img} style={imageStyles} />
       </div>
     </div>
-  ) : null;
+  ) : (
+    <h3 style={{ margin: 80 }}>Image is processing...</h3>
+  );
 }
 
 export default TestImageComponent;

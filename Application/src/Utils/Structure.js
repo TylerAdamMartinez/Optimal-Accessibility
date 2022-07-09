@@ -1,5 +1,6 @@
 import { Image } from 'image-js';
 import { changeDpiDataUrl } from 'changedpi';
+import { getText } from './Text';
 
 export async function getImageGrid(image) {
   const ogImage = await Image.load(image);
@@ -155,6 +156,9 @@ export async function getImageGrid(image) {
     })
     .toDataURL();
   newImages.bottomRight.img = changeDpiDataUrl(newImages.bottomRight.img, 300);
+
+  // find text
+  await getText(newImages).then((val) => (newImages = val));
 
   return newImages;
 }

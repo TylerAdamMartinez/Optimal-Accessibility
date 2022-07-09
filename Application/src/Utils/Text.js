@@ -1,4 +1,5 @@
 import Tesseract from 'tesseract.js';
+import { getColors } from './Color';
 
 export async function getText(images) {
   // making sure Tesseract only runs when there is a valid image
@@ -50,6 +51,8 @@ export async function getText(images) {
     });
 
     console.log('Text Found');
+
+    await getColors(images).then((image) => (images = image));
   }
 
   return images;
