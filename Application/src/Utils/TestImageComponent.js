@@ -1,6 +1,4 @@
-import { getText } from './Text';
 import { getImageGrid } from './Structure';
-import { getColors } from './Color';
 import { useState, useEffect } from 'react';
 
 /*
