@@ -1,4 +1,4 @@
-# <p align="center"> CSCE 3444 Main Project (*Optimal-Accessibility*)
+# <p align="center"> Optimal-Accessibility (*CSCE 3444 Main Project*)
 
 <p align="center" style="display: flex;" >
 <img src="https://visitor-badge.glitch.me/badge?page_id=tyleradammartinez.Optimal-Accessibility" />
