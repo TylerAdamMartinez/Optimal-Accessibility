@@ -33,9 +33,9 @@ namespace OptimalAccessibility.API.Controllers
         [HttpPost("AddPosterByUserId/{userId:Guid}")]
         public IActionResult AddPoster([FromRoute] Guid userId,[FromBody] PosterDTO newPoster)
         {
-            if(!_userRepo.IsUniquePosterName(newPoster.PosterName))
+            if(!_userRepo.IsUniquePosterName(newPoster.Name))
             {
-                return BadRequest($"Poster Name {newPoster.PosterName} has been taken already");
+                return BadRequest($"Poster Name {newPoster.Name} has been taken already");
             }
 
             var Result = _userRepo.AddNewPoster(newPoster, userId);

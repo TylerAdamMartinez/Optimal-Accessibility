@@ -129,7 +129,7 @@ namespace OptimalAccessibility.API.Controllers
                 return NotFound($"No user with Guid of {userId} was found in database");
             }
 
-            if(Result == DatabaseResultTypes.UpdateFailure)
+            if(Result == DatabaseResultTypes.FailedToUpdateValue)
             {
                 return NotFound($"Failed to delete user with Guid of {userId}");
             }
@@ -155,7 +155,7 @@ namespace OptimalAccessibility.API.Controllers
                 return NotFound($"No user with Guid of {userId} was found in database");
             }
 
-            if (Result == DatabaseResultTypes.UpdateFailure)
+            if (Result == DatabaseResultTypes.FailedToUpdateValue)
             {
                 return NotFound($"Failed to delete user with Guid of {userId}");
             }

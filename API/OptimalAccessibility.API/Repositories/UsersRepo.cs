@@ -29,9 +29,9 @@ namespace OptimalAccessibility.API.Repositories
             _context.Posters.Add(new Poster()
             {
                 userId = userId,
-                PosterName = newPoster.PosterName,
-                PosterImageTitle = newPoster.PosterImageTitle,
-                PosterImageData = newPoster.PosterImageData,
+                PosterName = newPoster.Name,
+                PosterImageTitle = newPoster.Title,
+                PosterImageData = newPoster.Data,
             });
 
             var poster = _context.Posters.Where(b => b.userId == userId).FirstOrDefault();
@@ -94,7 +94,7 @@ namespace OptimalAccessibility.API.Repositories
             catch (DbUpdateException ex)
             {
                 _logger.LogError(ex.ToString());
-                return DatabaseResultTypes.UpdateFailure;
+                return DatabaseResultTypes.FailedToUpdateValue;
             }
             return DatabaseResultTypes.Successful;
         }
@@ -144,9 +144,9 @@ namespace OptimalAccessibility.API.Repositories
             {
                 posterDTOs.Add(new PosterDTO()
                 {
-                    PosterName = poster.PosterName,
-                    PosterImageData = poster.PosterImageData,
-                    PosterImageTitle = poster.PosterImageTitle,
+                    Name = poster.PosterName,
+                    Data = poster.PosterImageData,
+                    Title = poster.PosterImageTitle,
                     AccessibilityScore = GetPosterAccessibilityScoreByPosterId(poster.posterId),
                 });
             }
