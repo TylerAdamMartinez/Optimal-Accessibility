@@ -33,13 +33,14 @@ namespace OptimalAccessibility.API.Repositories
                 PosterImageTitle = newPoster.Title,
                 PosterImageData = newPoster.Data,
             });
+            _context.SaveChanges();
 
-            var poster = _context.Posters.Where(b => b.userId == userId).FirstOrDefault();
+            var poster = _context.Posters.Where(b => b.PosterName == newPoster.Name).FirstOrDefault();
             if (poster == null)
             {
                 return DatabaseResultTypes.PosterNotFound;
             }
-            _context.SaveChanges();
+            
             _context.PosterAccessibilityScores.Add(new PosterAccessibilityScore()
             {
                 posterId = poster.posterId,
