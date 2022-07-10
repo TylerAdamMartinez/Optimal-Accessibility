@@ -29,17 +29,18 @@ namespace OptimalAccessibility.API.Repositories
             _context.Posters.Add(new Poster()
             {
                 userId = userId,
-                PosterName = newPoster.PosterName,
-                PosterImageTitle = newPoster.PosterImageTitle,
-                PosterImageData = newPoster.PosterImageData,
+                PosterName = newPoster.Name,
+                PosterImageTitle = newPoster.Title,
+                PosterImageData = newPoster.Data,
             });
+            _context.SaveChanges();
 
-            var poster = _context.Posters.Where(b => b.userId == userId).FirstOrDefault();
+            var poster = _context.Posters.Where(b => b.PosterName == newPoster.Name).FirstOrDefault();
             if (poster == null)
             {
                 return DatabaseResultTypes.PosterNotFound;
             }
-            _context.SaveChanges();
+            
             _context.PosterAccessibilityScores.Add(new PosterAccessibilityScore()
             {
                 posterId = poster.posterId,
@@ -94,7 +95,7 @@ namespace OptimalAccessibility.API.Repositories
             catch (DbUpdateException ex)
             {
                 _logger.LogError(ex.ToString());
-                return DatabaseResultTypes.UpdateFailure;
+                return DatabaseResultTypes.FailedToUpdateValue;
             }
             return DatabaseResultTypes.Successful;
         }
@@ -144,9 +145,9 @@ namespace OptimalAccessibility.API.Repositories
             {
                 posterDTOs.Add(new PosterDTO()
                 {
-                    PosterName = poster.PosterName,
-                    PosterImageData = poster.PosterImageData,
-                    PosterImageTitle = poster.PosterImageTitle,
+                    Name = poster.PosterName,
+                    Data = poster.PosterImageData,
+                    Title = poster.PosterImageTitle,
                     AccessibilityScore = GetPosterAccessibilityScoreByPosterId(poster.posterId),
                 });
             }

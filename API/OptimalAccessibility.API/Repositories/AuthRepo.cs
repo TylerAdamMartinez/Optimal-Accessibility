@@ -41,8 +41,8 @@ namespace OptimalAccessibility.API.Repositories
 
         public bool IsUniqueEUID(string EUID)
         {
-            var Result = _context.Users.Where(user => user.EUID == EUID).FirstOrDefault();
-            if (Result == null)
+            var UserWithSameEUID = _context.Users.Where(user => user.EUID == EUID).FirstOrDefault();
+            if (UserWithSameEUID == null)
             {
                 return true;
             }
