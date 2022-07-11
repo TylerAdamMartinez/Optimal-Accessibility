@@ -13,6 +13,8 @@
     <None Remove="Models\" />
     <None Remove="Models\Database\" />
     <None Remove="Models\DataTransferObjects\" />
+    <None Remove="Microsoft.EntityFrameworkCore" />
+    <None Remove="Microsoft.EntityFrameworkCore.Sqlite" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Enum\" />
@@ -20,5 +22,9 @@
     <Folder Include="Models\" />
     <Folder Include="Models\Database\" />
     <Folder Include="Models\DataTransferObjects\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.6" />
   </ItemGroup>
 </Project>
