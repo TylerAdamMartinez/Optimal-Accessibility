@@ -115,6 +115,7 @@
 #PopUpAddMenuDiv {
   grid-row: 1 / 2;
   grid-column: 2 / 3;
+
   border-top: none !important;
   border: 5px solid#333;
   background-color: #f6f6f6;
@@ -123,6 +124,53 @@
   margin-bottom: 0;
 }
 
+#PopUpAddMenuForm {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  padding: 2.5em;
+  gap: 2.5em;
+}
+
+#PopUpAddMenuForm input {
+  font-size: 24pt;
+  color: #333;
+  background-color: #f6f6f6;
+  border: none;
+  border-bottom: 5pt solid #B90504;
+}
+
+#PopUpAddMenuForm input::placeholder {
+  color: #333;
+}
+
+#PopUpAddMenuForm input:focus-visible {
+  outline: none;
+}
+
+#PopUpAddMenuForm input::file-selector-button {
+  background-color: #B90504 !important;
+  cursor: pointer;
+  color: #f6f6f6 !important;
+  border: none !important;
+  font-size: 24pt;
+  padding: .25em;
+}
+
+#PopUpAddMenuDiv h2 {
+  font-size: 64px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-bottom: 10px;
+  color: #333333;
+  border-bottom: 5px solid #333333;
+  user-select: none;
+}
+
 .PopUpAccountMenuDivbtn {
-  background-color: #B90504;
+  background-color: #B90504 !important;
+  cursor: pointer;
+  color: #f6f6f6 !important;
+  border: none !important;
+  font-size: 24pt;
 }
