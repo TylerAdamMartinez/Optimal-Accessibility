@@ -6,6 +6,7 @@ namespace OptimalAccessibility.Application.Repositories
     public interface IUserRepo
     {
         public List<PosterDTO> GetPostersByUserId(Guid userId);
+        public List<PosterDTO> GetAllPosters();
         public AccessibilityScoreDTO GetOverallAccessibilityScoreByUserId(Guid userId);
         public AccessibilityScoreDTO GetPosterAccessibilityScoreByPosterId(Guid posterId);
         public bool AddNewUser(UserDTO newUser, string Password);

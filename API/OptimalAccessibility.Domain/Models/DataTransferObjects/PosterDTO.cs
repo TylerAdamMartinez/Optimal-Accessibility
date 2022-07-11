@@ -2,9 +2,9 @@
 {
     public class PosterDTO
     {
-        public string PosterName { get; set; } = string.Empty;
-        public string PosterImageTitle { get; set; } = string.Empty;
-        public byte[]? PosterImageData { get; set; } = default;
+        public string Name { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public byte[]? Data { get; set; } = default;
         public AccessibilityScoreDTO? AccessibilityScore { get; set; }
     }
 }

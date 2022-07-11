@@ -3,6 +3,8 @@
 using OptimalAccessibility.Application.Repositories;
 using OptimalAccessibility.Domain.Models.DataTransferObjects;
 using OptimalAccessibility.Domain.Enum;
+using Microsoft.AspNetCore.Authorization;
+using OptimalAccessibility.Domain.Models.Auth;
 
 namespace OptimalAccessibility.API.Controllers
 {
@@ -22,15 +24,7 @@ namespace OptimalAccessibility.API.Controllers
             _logger = logger;
         }
 
-
-        public class RegisterNewUserBody
-        {
-            public string EUID { get; set; } = string.Empty;
-            public string FirstName { get; set; } = string.Empty;
-            public string LastName { get; set; } = string.Empty;
-            public string Password { get; set; } = string.Empty;
-        }
-
+        [AllowAnonymous]
         [HttpPost("RegisterNewUser")]
         public IActionResult RegisterNewUser([FromBody] RegisterNewUserBody newUserRequest)
         {
@@ -70,14 +64,9 @@ namespace OptimalAccessibility.API.Controllers
             return Ok("New user successfully entered into database");
         }
 
-        public class LoginUserBody
-        {
-            public string EUID { get; set; } = string.Empty;
-            public string Password { get; set; } = string.Empty;
-        }
-
+        [AllowAnonymous]
         [HttpPost("Login")]
-        public ActionResult<UserDTO> LoginAlreadyRegisteredUser([FromBody] LoginUserBody loginRequest)
+        public ActionResult<LoginUserResponse> LoginAlreadyRegisteredUser([FromBody] LoginUserBody loginRequest)
         {
             if (loginRequest.EUID == string.Empty || loginRequest.EUID == null)
             {
@@ -116,10 +105,17 @@ namespace OptimalAccessibility.API.Controllers
                 posters = posters,
                 AccessibilityScore = overallAccessiblityScore,
             };
-            return Ok(loginUserDTO);
+
+            var LoginResponseResult = new LoginUserResponse()
+            {
+                Jwt = _authRepo.CreateJSONWebToken(loginRequest),
+                userDTO = loginUserDTO
+            };
+
+            return Ok(LoginResponseResult);
         }
 
-
+        [Authorize]
         [HttpDelete("DeleteUserById/{userId:Guid}")]
         public IActionResult DeleteUserByUserId([FromRoute] Guid userId)
         {
@@ -129,7 +125,7 @@ namespace OptimalAccessibility.API.Controllers
                 return NotFound($"No user with Guid of {userId} was found in database");
             }
 
-            if(Result == DatabaseResultTypes.UpdateFailure)
+            if(Result == DatabaseResultTypes.FailedToUpdateValue)
             {
                 return NotFound($"Failed to delete user with Guid of {userId}");
             }
@@ -137,15 +133,7 @@ namespace OptimalAccessibility.API.Controllers
             return Ok($"User with Guid of {userId} was successfull deleted from the database");
         }
 
-        public class UpdateUserBody
-        {
-            public string? Email { get; set; }
-            public char? MiddleInitial { get; set; }
-            public DateTime? Birthday { get; set; }
-            public Gender Gender { get; set; } = default;
-            public Classfication Classfication { get; set; } = default;
-        }
-
+        [Authorize]
         [HttpPut("UpdateUserById/{userId:Guid}")]
         public IActionResult UpdateUserFieldByUserId([FromRoute] Guid userId, [FromBody] UpdateUserBody updateUserBody)
         {
@@ -155,7 +143,7 @@ namespace OptimalAccessibility.API.Controllers
                 return NotFound($"No user with Guid of {userId} was found in database");
             }
 
-            if (Result == DatabaseResultTypes.UpdateFailure)
+            if (Result == DatabaseResultTypes.FailedToUpdateValue)
             {
                 return NotFound($"Failed to delete user with Guid of {userId}");
             }

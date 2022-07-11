@@ -29,17 +29,18 @@ namespace OptimalAccessibility.API.Repositories
             _context.Posters.Add(new Poster()
             {
                 userId = userId,
-                PosterName = newPoster.PosterName,
-                PosterImageTitle = newPoster.PosterImageTitle,
-                PosterImageData = newPoster.PosterImageData,
+                PosterName = newPoster.Name,
+                PosterImageTitle = newPoster.Title,
+                PosterImageData = newPoster.Data,
             });
+            _context.SaveChanges();
 
-            var poster = _context.Posters.Where(b => b.userId == userId).FirstOrDefault();
+            var poster = _context.Posters.Where(b => b.PosterName == newPoster.Name).FirstOrDefault();
             if (poster == null)
             {
                 return DatabaseResultTypes.PosterNotFound;
             }
-            _context.SaveChanges();
+            
             _context.PosterAccessibilityScores.Add(new PosterAccessibilityScore()
             {
                 posterId = poster.posterId,
@@ -74,6 +75,22 @@ namespace OptimalAccessibility.API.Repositories
                 _logger.LogError(ex.ToString());
                 return false;
             }
+
+            var FindNewlyAddedUser = _context.Users.Where(b => b.EUID == newUser.EUID).FirstOrDefault();
+            if (FindNewlyAddedUser == null)
+            {
+                return false;
+            }
+
+            _context.UserAccessibilityScores.Add(new UserAccessibilityScore()
+            {
+                userId = FindNewlyAddedUser.userId,
+                TextRating = 0,
+                StructureRating = 0,
+                ColorRating = 0,
+            });
+            _context.SaveChanges();
+
             return true;
         }
 
@@ -94,7 +111,7 @@ namespace OptimalAccessibility.API.Repositories
             catch (DbUpdateException ex)
             {
                 _logger.LogError(ex.ToString());
-                return DatabaseResultTypes.UpdateFailure;
+                return DatabaseResultTypes.FailedToUpdateValue;
             }
             return DatabaseResultTypes.Successful;
         }
@@ -105,8 +122,55 @@ namespace OptimalAccessibility.API.Repositories
 
             if (userAccessibilityScore == null)
             {
+                _context.UserAccessibilityScores.Add(new UserAccessibilityScore()
+                {
+                    ColorRating = 0,
+                    StructureRating = 0,
+                    TextRating = 0
+                });
+                _context.SaveChanges();
                 return new AccessibilityScoreDTO() { ColorRating = 0, StructureRating = 0, TextRating = 0 };
             }
+
+            var posters = from User in _context.Users
+                          where User.userId == userId
+                          join Poster in _context.Posters
+                          on User.userId equals Poster.userId
+                          select Poster;
+
+            if (posters == null)
+            {
+                return new AccessibilityScoreDTO() { ColorRating = 0, StructureRating = 0, TextRating = 0 };
+            }
+            int NumOfPoster = posters.Count();
+            if(NumOfPoster == 0)
+            {
+                return new AccessibilityScoreDTO() { ColorRating = 0, StructureRating = 0, TextRating = 0 };
+            }
+
+            int TotalTextRating = default;
+            int TotalStructureRating = default;
+            int TotalColorRating = default;
+
+            foreach (Poster poster in posters)
+            {
+                var AccessibilityScore = GetPosterAccessibilityScoreByPosterId(poster.posterId);
+                if (AccessibilityScore == null)
+                {
+                    continue;
+                }
+                TotalTextRating += AccessibilityScore.TextRating;
+                TotalStructureRating += AccessibilityScore.StructureRating;
+                TotalColorRating = +AccessibilityScore.ColorRating;
+            }
+
+
+            userAccessibilityScore.TextRating = TotalTextRating / NumOfPoster;
+            userAccessibilityScore.StructureRating = TotalStructureRating / NumOfPoster;
+            userAccessibilityScore.ColorRating = TotalColorRating / NumOfPoster;
+            _context.UserAccessibilityScores.Update(userAccessibilityScore);
+            _context.SaveChanges();
+
             return new AccessibilityScoreDTO()
             {
                 TextRating = userAccessibilityScore.TextRating,
@@ -144,14 +208,32 @@ namespace OptimalAccessibility.API.Repositories
             {
                 posterDTOs.Add(new PosterDTO()
                 {
-                    PosterName = poster.PosterName,
-                    PosterImageData = poster.PosterImageData,
-                    PosterImageTitle = poster.PosterImageTitle,
+                    Name = poster.PosterName,
+                    Data = poster.PosterImageData,
+                    Title = poster.PosterImageTitle,
                     AccessibilityScore = GetPosterAccessibilityScoreByPosterId(poster.posterId),
                 });
             }
             return posterDTOs;
         }
+
+        public List<PosterDTO> GetAllPosters()
+        {
+            var posters = _context.Posters.ToList();
+            var posterDTOs = new List<PosterDTO>();
+            foreach (Poster poster in posters)
+            {
+                posterDTOs.Add(new PosterDTO()
+                {
+                    Name = poster.PosterName,
+                    Data = poster.PosterImageData,
+                    Title = poster.PosterImageTitle,
+                    AccessibilityScore = GetPosterAccessibilityScoreByPosterId(poster.posterId),
+                });
+            }
+            return posterDTOs;
+        }
+
 
         public UserDTO GetUserByEUID(string EUID)
         {

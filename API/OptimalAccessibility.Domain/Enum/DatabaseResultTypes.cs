@@ -1,10 +1,9 @@
-﻿using System;
-namespace OptimalAccessibility.Domain.Enum
+﻿namespace OptimalAccessibility.Domain.Enum
 {
     public enum DatabaseResultTypes
     {
         Successful = 0,
-        UpdateFailure,
+        FailedToUpdateValue,
         UserNotFound,
         PosterNotFound,
         NoAccessibilityScoreGiven,
