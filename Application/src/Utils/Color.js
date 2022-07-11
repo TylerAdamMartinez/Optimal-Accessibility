@@ -1,6 +1,7 @@
 import { prominent } from 'color.js';
 
 export async function getColors(image) {
+  let colorGrade = 0;
   console.log('Getting colors');
   await prominent(image.topLeft.img, { amount: 2, format: 'hex' }).then((color) => {
     image.topLeft.color = color;
@@ -40,5 +41,10 @@ export async function getColors(image) {
 
   console.log('Found colors');
 
-  return image;
+  let obj = {
+    image,
+    colorGrade,
+  };
+
+  return obj;
 }

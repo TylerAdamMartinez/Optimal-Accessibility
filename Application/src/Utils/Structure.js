@@ -1,6 +1,7 @@
 import { Image } from 'image-js';
 import { changeDpiDataUrl } from 'changedpi';
 import { getText } from './Text';
+import { getCardHeaderUtilityClass } from '@mui/material';
 
 export async function getImageGrid(image) {
   const ogImage = await Image.load(image);
@@ -157,8 +158,21 @@ export async function getImageGrid(image) {
     .toDataURL();
   newImages.bottomRight.img = changeDpiDataUrl(newImages.bottomRight.img, 300);
 
-  // find text
-  await getText(newImages).then((val) => (newImages = val));
+  const structureGrade = 0;
 
-  return newImages;
+  const grades = {
+    images: null,
+    textGrade: null,
+    colorGrade: null,
+    structureGrade: structureGrade,
+  };
+
+  // find text
+  await getText(newImages).then(({ images, tg, cg }) => {
+    grades.images = images;
+    grades.textGrade = tg;
+    grades.colorGrade = cg;
+  });
+
+  return grades;
 }

@@ -27,7 +27,7 @@ function TestImageComponent() {
     console.log(imageGrid);
   }, [imageGrid]);
 
-  return imageGrid.topLeft !== undefined ? (
+  return imageGrid.images !== undefined ? (
     <div
       style={{
         width: '50%',
@@ -46,15 +46,15 @@ function TestImageComponent() {
           alignItems: 'center',
         }}
       >
-        <img alt='Test topLeft' src={imageGrid.topLeft.img} style={imageStyles} />
-        <img alt='Test topMiddle' src={imageGrid.topMiddle.img} style={imageStyles} />
-        <img alt='Test topRight' src={imageGrid.topRight.img} style={imageStyles} />
-        <img alt='Test middleLeft' src={imageGrid.middleLeft.img} style={imageStyles} />
-        <img alt='Test middle' src={imageGrid.middle.img} style={imageStyles} />
-        <img alt='Test middleRight' src={imageGrid.middleRight.img} style={imageStyles} />
-        <img alt='Test bottomLeft' src={imageGrid.bottomLeft.img} style={imageStyles} />
-        <img alt='Test bottomMiddle' src={imageGrid.bottomMiddle.img} style={imageStyles} />
-        <img alt='Test bottomRight' src={imageGrid.bottomRight.img} style={imageStyles} />
+        <img alt='Test topLeft' src={imageGrid.images.topLeft.img} style={imageStyles} />
+        <img alt='Test topMiddle' src={imageGrid.images.topMiddle.img} style={imageStyles} />
+        <img alt='Test topRight' src={imageGrid.images.topRight.img} style={imageStyles} />
+        <img alt='Test middleLeft' src={imageGrid.images.middleLeft.img} style={imageStyles} />
+        <img alt='Test middle' src={imageGrid.images.middle.img} style={imageStyles} />
+        <img alt='Test middleRight' src={imageGrid.images.middleRight.img} style={imageStyles} />
+        <img alt='Test bottomLeft' src={imageGrid.images.bottomLeft.img} style={imageStyles} />
+        <img alt='Test bottomMiddle' src={imageGrid.images.bottomMiddle.img} style={imageStyles} />
+        <img alt='Test bottomRight' src={imageGrid.images.bottomRight.img} style={imageStyles} />
       </div>
     </div>
   ) : (
