@@ -217,6 +217,24 @@ namespace OptimalAccessibility.API.Repositories
             return posterDTOs;
         }
 
+        public List<PosterDTO> GetAllPosters()
+        {
+            var posters = _context.Posters.ToList();
+            var posterDTOs = new List<PosterDTO>();
+            foreach (Poster poster in posters)
+            {
+                posterDTOs.Add(new PosterDTO()
+                {
+                    Name = poster.PosterName,
+                    Data = poster.PosterImageData,
+                    Title = poster.PosterImageTitle,
+                    AccessibilityScore = GetPosterAccessibilityScoreByPosterId(poster.posterId),
+                });
+            }
+            return posterDTOs;
+        }
+
+
         public UserDTO GetUserByEUID(string EUID)
         {
             var user = _context.Users.Where(user => user.EUID == EUID).FirstOrDefault();

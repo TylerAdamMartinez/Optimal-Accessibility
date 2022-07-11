@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using OptimalAccessibility.Application.Repositories;
@@ -18,18 +19,21 @@ namespace OptimalAccessibility.API.Controllers
             _logger = logger;
         }
 
+        [Authorize]
         [HttpGet("GetPostersByUserId/{userId:Guid}")]
         public ActionResult<List<PosterDTO>> GetPostersByUserId([FromRoute] Guid userId)
         {
             return _userRepo.GetPostersByUserId(userId);
         }
 
+        [Authorize]
         [HttpGet("GetOverallAccessibilityScoreByUserId/{userId:Guid}")]
         public ActionResult<AccessibilityScoreDTO> GetOverallAccessibilityScoreByUserId([FromRoute] Guid userId)
         {
             return _userRepo.GetOverallAccessibilityScoreByUserId(userId);
         }
 
+        [Authorize]
         [HttpPost("AddPosterByUserId/{userId:Guid}")]
         public IActionResult AddPoster([FromRoute] Guid userId,[FromBody] PosterDTO newPoster)
         {
@@ -52,10 +56,33 @@ namespace OptimalAccessibility.API.Controllers
             return Ok("New poster was successfully added to database");
         }
 
-        [HttpPut("UpdateOverallAccessibilityScoreByUserId/{userId:Guid}")]
-        public ActionResult<AccessibilityScoreDTO> UpdateOverallAccessibilityScoreByUserId([FromRoute] Guid userId)
+        [Authorize]
+        [HttpPut("UpdatePosterByUserId/{userId:Guid}/ByPosterName/{posterName}")]
+        public IActionResult UpdatePoster([FromRoute] Guid userId, [FromRoute] string posterName)
         {
-            return Ok();
+            return BadRequest("Not impl yet");
+        }
+
+        [Authorize]
+        [HttpDelete("DeletePosterByUserId/{userId:Guid}/ByPosterName/{posterName}")]
+        public IActionResult DeletePoster([FromRoute] Guid userId, [FromRoute] string posterName)
+        {
+            return BadRequest("Not impl yet");
+        }
+
+        [Authorize(Roles = "Teacher")]
+        [HttpGet("GetAllPosters")]
+        public ActionResult<List<PosterDTO>> GetAllPosters()
+        {
+            return _userRepo.GetAllPosters();
+        }
+
+
+        [Authorize(Roles = "Teacher")]
+        [HttpGet("GetClassroomOverallAccessiblityScore")]
+        public ActionResult<AccessibilityScoreDTO> GetClassroomOverallAccessiblityScore()
+        {
+            return BadRequest("Not impl yet");
         }
     }
 }

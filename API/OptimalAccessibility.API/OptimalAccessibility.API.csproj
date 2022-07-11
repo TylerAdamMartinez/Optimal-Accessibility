@@ -15,6 +15,10 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.21.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.21.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.6" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +28,10 @@
     <None Remove="Microsoft.EntityFrameworkCore.Design" />
     <None Remove="Microsoft.Extensions.DependencyInjection" />
     <None Remove="Repositories\" />
+    <None Remove="Microsoft.IdentityModel.JsonWebTokens" />
+    <None Remove="System.IdentityModel.Tokens.Jwt" />
+    <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <None Remove="Swashbuckle.AspNetCore.Filters" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Utils\" />
