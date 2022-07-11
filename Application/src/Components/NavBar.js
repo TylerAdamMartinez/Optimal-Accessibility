@@ -52,8 +52,21 @@ function NavBar() {
               </div>
             </Popup>
           </li>
-          <li><AddIcon fontSize="large"/></li>
-          <li><AccountCircleIcon fontSize="large"/></li>
+          <li>
+            <Popup trigger={<AddIcon fontSize="large"/>}>
+              <div id="PopUpAddMenuDivSection">
+              </div>
+            </Popup>
+          </li>
+          <li>
+            <Popup trigger={<AccountCircleIcon fontSize="large"/>}>
+              <div id="PopUpAccountpMenuDivSection">
+                  <ul id="PopUpAccountMenuDiv">
+                    <li className='PopUpAccountMenuDivbtn'>Logout</li>
+                  </ul>
+                </div>
+            </Popup>
+          </li>
         </ul>
       </div>
       <span></span>
