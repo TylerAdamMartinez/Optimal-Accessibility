@@ -58,10 +58,14 @@ namespace OptimalAccessibility.API.Repositories
 
         public string CreateJSONWebToken(LoginUserBody loginUserBody)
         {
+
+            var userGUID = _context.Users.Where(b => b.EUID == loginUserBody.EUID).FirstOrDefault()?.userId.ToString() ?? "";
+
             List<Claim> claims = new List<Claim>
             {
+                new Claim(ClaimTypes.NameIdentifier, userGUID),
                 new Claim(ClaimTypes.Name, loginUserBody.EUID),
-                new Claim(ClaimTypes.Role, "Student")
+                new Claim(ClaimTypes.Role, "Student"),
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
