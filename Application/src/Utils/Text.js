@@ -1,83 +1,86 @@
 import Tesseract from 'tesseract.js';
+import { getColors } from './Color';
 
-export async function getText(images) {
-	for (let i = 0; i < 9; i++) {
-		switch (i) {
-			case 0:
-				await Tesseract.recognize(images.topLeft.img, 'eng', {
-					// logger: (m) => console.log(m),
-				}).then(({ data: { text } }) => {
-					console.log('Top Left:\n' + text);
-					images.topLeft.text = text;
-				});
-				break;
-			case 1:
-				await Tesseract.recognize(images.topMiddle.img, 'eng', {
-					// logger: (m) => console.log(m),
-				}).then(({ data: { text } }) => {
-					console.log('Top Middle:\n' + text);
-					images.topMiddle.text = text;
-				});
-				break;
-			case 2:
-				await Tesseract.recognize(images.topRight.img, 'eng', {
-					// logger: (m) => console.log(m),
-				}).then(({ data: { text } }) => {
-					console.log('Top Right:\n' + text);
-					images.topRight.text = text;
-				});
-				break;
-			case 3:
-				await Tesseract.recognize(images.middleLeft.img, 'eng', {
-					// logger: (m) => console.log(m),
-				}).then(({ data: { text } }) => {
-					console.log('Middle Left:\n' + text);
-					images.middleLeft.text = text;
-				});
-				break;
-			case 4:
-				await Tesseract.recognize(images.middle.img, 'eng', {
-					// logger: (m) => console.log(m),
-				}).then(({ data: { text } }) => {
-					console.log('Middle:\n' + text);
-					images.middle.text = text;
-				});
-				break;
-			case 5:
-				await Tesseract.recognize(images.middleRight.img, 'eng', {
-					// logger: (m) => console.log(m),
-				}).then(({ data: { text } }) => {
-					console.log('Middle Right:\n' + text);
-					images.middleRight.text = text;
-				});
-				break;
-			case 6:
-				await Tesseract.recognize(images.bottomLeft.img, 'eng', {
-					// logger: (m) => console.log(m),
-				}).then(({ data: { text } }) => {
-					console.log('Bottom Left:\n' + text);
-					images.bottomLeft.text = text;
-				});
-				break;
-			case 7:
-				Tesseract.recognize(images.bottomMiddle.img, 'eng', {
-					// logger: (m) => console.log(m),
-				}).then(({ data: { text } }) => {
-					console.log('Bottom Middle:\n' + text);
-					images.bottomMiddle.text = text;
-				});
-				break;
-			case 8:
-				await Tesseract.recognize(images.bottomRight.img, 'eng', {
-					// logger: (m) => console.log(m),
-				}).then(({ data: { text } }) => {
-					console.log('Bottom Right:\n' + text);
-					images.bottomRight.text = text;
-				});
-				break;
-			default:
-				break;
-		}
-	}
-	return images;
+export async function getText(image) {
+  let grade = 0;
+  // making sure Tesseract only runs when there is a valid image
+  await Tesseract.recognize(image.topLeft.img, 'eng').then(({ data }) => {
+    image.topLeft.textConfidence = data.confidence;
+    grade += data.confidence;
+    image.topLeft.text = data.text;
+  });
+
+  await Tesseract.recognize(image.topMiddle.img, 'eng').then(({ data }) => {
+    image.topMiddle.textConfidence = data.confidence;
+    grade += data.confidence;
+    image.topMiddle.text = data.text;
+  });
+
+  await Tesseract.recognize(image.topRight.img, 'eng').then(({ data }) => {
+    image.topRight.textConfidence = data.confidence;
+    grade += data.confidence;
+    image.topRight.text = data.text;
+  });
+
+  await Tesseract.recognize(image.middleLeft.img, 'eng').then(({ data }) => {
+    image.middleLeft.textConfidence = data.confidence;
+    grade += data.confidence;
+    image.middleLeft.text = data.text;
+  });
+
+  await Tesseract.recognize(image.middle.img, 'eng').then(({ data }) => {
+    image.middle.textConfidence = data.confidence;
+    grade += data.confidence;
+    image.middle.text = data.text;
+  });
+
+  await Tesseract.recognize(image.middleRight.img, 'eng').then(({ data }) => {
+    image.middleRight.textConfidence = data.confidence;
+    grade += data.confidence;
+    image.middleRight.text = data.text;
+  });
+
+  await Tesseract.recognize(image.bottomLeft.img, 'eng').then(({ data }) => {
+    image.bottomLeft.textConfidence = data.confidence;
+    grade += data.confidence;
+    image.bottomLeft.text = data.text;
+  });
+
+  await Tesseract.recognize(image.bottomMiddle.img, 'eng').then(({ data }) => {
+    image.bottomMiddle.textConfidence = data.confidence;
+    grade += data.confidence;
+    image.bottomMiddle.text = data.text;
+  });
+
+  await Tesseract.recognize(image.bottomRight.img, 'eng').then(({ data }) => {
+    image.bottomRight.textConfidence = data.confidence;
+    grade += data.confidence;
+    image.bottomRight.text = data.text;
+  });
+
+  grade = grade / 9;
+  if (grade < 60 && grade > 0) {
+    grade += 40;
+  } else if (grade < 70 && grade > 60) {
+    grade += 30;
+  } else if (grade < 80 && grade > 70) {
+    grade += 20;
+  } else if (grade < 90 && grade > 80) {
+    grade += 20;
+  }
+
+  let cg;
+  let images;
+  await getColors(image).then(({ image, colorGrade }) => {
+    images = image;
+    cg = colorGrade;
+  });
+
+  let obj = {
+    images,
+    tg: grade,
+    cg,
+  };
+
+  return obj;
 }
