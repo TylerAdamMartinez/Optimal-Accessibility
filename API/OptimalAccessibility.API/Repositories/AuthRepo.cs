@@ -60,7 +60,8 @@ namespace OptimalAccessibility.API.Repositories
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, loginUserBody.EUID)
+                new Claim(ClaimTypes.Name, loginUserBody.EUID),
+                new Claim(ClaimTypes.Role, "Student")
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));

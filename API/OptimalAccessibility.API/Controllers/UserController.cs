@@ -62,5 +62,13 @@ namespace OptimalAccessibility.API.Controllers
         {
             return Ok();
         }
+
+
+        [Authorize(Roles = "Teacher")]
+        [HttpGet("GetAllPosters")]
+        public ActionResult<List<PosterDTO>> GetAllPosters()
+        {
+            return _userRepo.GetAllPosters();
+        }
     }
 }
