@@ -3,6 +3,8 @@
 using OptimalAccessibility.Application.Repositories;
 using OptimalAccessibility.Domain.Models.DataTransferObjects;
 using OptimalAccessibility.Domain.Enum;
+using Microsoft.AspNetCore.Authorization;
+using OptimalAccessibility.Domain.Models.Auth;
 
 namespace OptimalAccessibility.API.Controllers
 {
@@ -22,15 +24,7 @@ namespace OptimalAccessibility.API.Controllers
             _logger = logger;
         }
 
-
-        public class RegisterNewUserBody
-        {
-            public string EUID { get; set; } = string.Empty;
-            public string FirstName { get; set; } = string.Empty;
-            public string LastName { get; set; } = string.Empty;
-            public string Password { get; set; } = string.Empty;
-        }
-
+        [AllowAnonymous]
         [HttpPost("RegisterNewUser")]
         public IActionResult RegisterNewUser([FromBody] RegisterNewUserBody newUserRequest)
         {
@@ -70,12 +64,7 @@ namespace OptimalAccessibility.API.Controllers
             return Ok("New user successfully entered into database");
         }
 
-        public class LoginUserBody
-        {
-            public string EUID { get; set; } = string.Empty;
-            public string Password { get; set; } = string.Empty;
-        }
-
+        [AllowAnonymous]
         [HttpPost("Login")]
         public ActionResult<UserDTO> LoginAlreadyRegisteredUser([FromBody] LoginUserBody loginRequest)
         {
@@ -119,7 +108,7 @@ namespace OptimalAccessibility.API.Controllers
             return Ok(loginUserDTO);
         }
 
-
+        [Authorize]
         [HttpDelete("DeleteUserById/{userId:Guid}")]
         public IActionResult DeleteUserByUserId([FromRoute] Guid userId)
         {
@@ -146,6 +135,7 @@ namespace OptimalAccessibility.API.Controllers
             public Classfication Classfication { get; set; } = default;
         }
 
+        [Authorize]
         [HttpPut("UpdateUserById/{userId:Guid}")]
         public IActionResult UpdateUserFieldByUserId([FromRoute] Guid userId, [FromBody] UpdateUserBody updateUserBody)
         {
