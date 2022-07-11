@@ -133,15 +133,6 @@ namespace OptimalAccessibility.API.Controllers
             return Ok($"User with Guid of {userId} was successfull deleted from the database");
         }
 
-        public class UpdateUserBody
-        {
-            public string? Email { get; set; }
-            public char? MiddleInitial { get; set; }
-            public DateTime? Birthday { get; set; }
-            public Gender Gender { get; set; } = default;
-            public Classfication Classfication { get; set; } = default;
-        }
-
         [Authorize]
         [HttpPut("UpdateUserById/{userId:Guid}")]
         public IActionResult UpdateUserFieldByUserId([FromRoute] Guid userId, [FromBody] UpdateUserBody updateUserBody)
