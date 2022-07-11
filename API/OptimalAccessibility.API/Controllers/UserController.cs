@@ -57,18 +57,32 @@ namespace OptimalAccessibility.API.Controllers
         }
 
         [Authorize]
-        [HttpPut("UpdateOverallAccessibilityScoreByUserId/{userId:Guid}")]
-        public ActionResult<AccessibilityScoreDTO> UpdateOverallAccessibilityScoreByUserId([FromRoute] Guid userId)
+        [HttpPut("UpdatePosterByUserId/{userId:Guid}/ByPosterName/{posterName}")]
+        public IActionResult UpdatePoster([FromRoute] Guid userId, [FromRoute] string posterName)
         {
-            return Ok();
+            return BadRequest("Not impl yet");
         }
 
+        [Authorize]
+        [HttpDelete("DeletePosterByUserId/{userId:Guid}/ByPosterName/{posterName}")]
+        public IActionResult DeletePoster([FromRoute] Guid userId, [FromRoute] string posterName)
+        {
+            return BadRequest("Not impl yet");
+        }
 
         [Authorize(Roles = "Teacher")]
         [HttpGet("GetAllPosters")]
         public ActionResult<List<PosterDTO>> GetAllPosters()
         {
             return _userRepo.GetAllPosters();
+        }
+
+
+        [Authorize(Roles = "Teacher")]
+        [HttpGet("GetClassroomOverallAccessiblityScore")]
+        public ActionResult<AccessibilityScoreDTO> GetClassroomOverallAccessiblityScore()
+        {
+            return BadRequest("Not impl yet");
         }
     }
 }
