@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using OptimalAccessibility.Application.Repositories;
@@ -18,18 +19,21 @@ namespace OptimalAccessibility.API.Controllers
             _logger = logger;
         }
 
+        [Authorize]
         [HttpGet("GetPostersByUserId/{userId:Guid}")]
         public ActionResult<List<PosterDTO>> GetPostersByUserId([FromRoute] Guid userId)
         {
             return _userRepo.GetPostersByUserId(userId);
         }
 
+        [Authorize]
         [HttpGet("GetOverallAccessibilityScoreByUserId/{userId:Guid}")]
         public ActionResult<AccessibilityScoreDTO> GetOverallAccessibilityScoreByUserId([FromRoute] Guid userId)
         {
             return _userRepo.GetOverallAccessibilityScoreByUserId(userId);
         }
 
+        [Authorize]
         [HttpPost("AddPosterByUserId/{userId:Guid}")]
         public IActionResult AddPoster([FromRoute] Guid userId,[FromBody] PosterDTO newPoster)
         {
@@ -52,6 +56,7 @@ namespace OptimalAccessibility.API.Controllers
             return Ok("New poster was successfully added to database");
         }
 
+        [Authorize]
         [HttpPut("UpdateOverallAccessibilityScoreByUserId/{userId:Guid}")]
         public ActionResult<AccessibilityScoreDTO> UpdateOverallAccessibilityScoreByUserId([FromRoute] Guid userId)
         {

@@ -66,7 +66,7 @@ namespace OptimalAccessibility.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("Login")]
-        public ActionResult<UserDTO> LoginAlreadyRegisteredUser([FromBody] LoginUserBody loginRequest)
+        public ActionResult<string> LoginAlreadyRegisteredUser([FromBody] LoginUserBody loginRequest)
         {
             if (loginRequest.EUID == string.Empty || loginRequest.EUID == null)
             {
@@ -94,6 +94,7 @@ namespace OptimalAccessibility.API.Controllers
                 return Unauthorized("Incorrect Password Entered");
             }
 
+            /*
             var posters = _userRepo.GetPostersByUserId(AttemptUserRequest.userId);
             var overallAccessiblityScore = _userRepo.GetOverallAccessibilityScoreByUserId(AttemptUserRequest.userId);
             var loginUserDTO = new UserDTO()
@@ -106,6 +107,9 @@ namespace OptimalAccessibility.API.Controllers
                 AccessibilityScore = overallAccessiblityScore,
             };
             return Ok(loginUserDTO);
+            */
+
+            return Ok(_authRepo.CreateJSONWebToken(loginRequest));
         }
 
         [Authorize]
