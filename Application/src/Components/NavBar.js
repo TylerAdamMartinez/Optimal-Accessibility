@@ -55,6 +55,9 @@ function NavBar() {
           <li>
             <Popup trigger={<AddIcon fontSize="large"/>}>
               <div id="PopUpAddMenuDivSection">
+                <div id='PopUpAddMenuDiv'>
+                  Add new image page here..
+                </div>
               </div>
             </Popup>
           </li>
