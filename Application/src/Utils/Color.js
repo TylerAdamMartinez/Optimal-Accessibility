@@ -79,6 +79,8 @@ export async function getColors(image) {
     colorGrade += grade;
   });
 
+  colorGrade.toFixed(2);
+
   if (colorGrade >= 50) {
     colorGrade = 95;
   } else if (colorGrade >= 30 && colorGrade < 50) {
