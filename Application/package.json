@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
+    "@mdhnpm/color-contrast-ratio-calculator": "^1.0.4",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.8.7",
     "@mui/styled-engine": "^5.8.7",
@@ -15,7 +16,6 @@
     "@testing-library/user-event": "^14.2.1",
     "changedpi": "^1.0.4",
     "chart.js": "^3.8.0",
-    "color-contrast-checker": "^2.1.0",
     "color.js": "^1.2.0",
     "image-js": "^0.34.1",
     "react": "^18.2.0",
