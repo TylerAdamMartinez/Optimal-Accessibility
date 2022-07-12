@@ -6,6 +6,7 @@ import Popup from 'reactjs-popup';
 import OptimalAccessibilityLogo from './Optimal-Accessibility-Logo.png';
 import HelpPage from './HelpPage';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function NavBar() {
   let Lorem = 
@@ -41,10 +42,12 @@ function NavBar() {
   return (
     <div className="NavBar">
       <span></span>
-      <div id="LogoBox">
-        <img id="LogoImg" alt="Optimal Accessibility Logo" src={OptimalAccessibilityLogo} />
-        <h1>Optimal-Accessibility</h1>
-      </div>
+      <Link to="/">
+        <div id="LogoBox">
+          <img id="LogoImg" alt="Optimal Accessibility Logo" src={OptimalAccessibilityLogo} />
+          <h1>Optimal Accessibility</h1>
+        </div>
+      </Link>
       <span id="ExitSpot" onMouseOver={MouseOverExitSpotHandler} onMouseLeave={MouseLeaveExitSpotHandler}>
         <p></p>
       </span>
@@ -85,7 +88,7 @@ function NavBar() {
             <Popup trigger={<AccountCircleIcon fontSize="large"/>}>
               <div id="PopUpAccountpMenuDivSection">
                   <ul id="PopUpAccountMenuDiv">
-                    <li className='PopUpAccountMenuDivbtn'>Logout</li>
+                  <Link to="/"><li className='PopUpAccountMenuDivbtn'>Logout</li></Link>
                   </ul>
                 </div>
             </Popup>
