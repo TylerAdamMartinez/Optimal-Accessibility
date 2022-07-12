@@ -65,3 +65,21 @@
 #SignInForm input:focus-visible {
     outline: none;
 }
+
+#LoginBtnsSection {
+    font-size: 18pt;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#LoginBtnsSection input {
+    padding-left: 1.1em;
+    padding-right: 1.1em;
+}
+
+#LoginBtnsSection a button {
+    font-size: 18pt;
+    height: 100%;
+    padding-left: .5em;
+    padding-right: .5em;
+}
