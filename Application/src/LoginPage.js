@@ -1,5 +1,6 @@
 import './LoginPage.css';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Logo from './Components/Optimal-Accessibility-Logo.png';
 
 function Login() {
@@ -29,7 +30,10 @@ function Login() {
                 <form onSubmit={handleSubmit} id="SignInForm">
                     <input placeholder="EUID" type="text" value={EUID} onChange={handleEUIDChange} />
                     <input placeholder="PASSWORD" type="password"  value={PASSWORD} onChange={handlePASSWORDChange}/>
-                    <input type="submit" value="Submit" className='PopUpAccountMenuDivbtn'/>
+                    <div id='LoginBtnsSection'>
+                        <Link to="/register"><button className='PopUpAccountMenuDivbtn'>Sign Up</button></Link>
+                        <input type="submit" value="Login" className='PopUpAccountMenuDivbtn'/>
+                    </div>
                   </form>
             </div>
 		</div>
