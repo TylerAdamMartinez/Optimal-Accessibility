@@ -1,7 +1,6 @@
 import { Image } from 'image-js';
 import { changeDpiDataUrl } from 'changedpi';
 import { getText } from './Text';
-import { getCardHeaderUtilityClass } from '@mui/material';
 
 export async function getImageGrid(image) {
   const ogImage = await Image.load(image);
