@@ -158,7 +158,7 @@ export async function getImageGrid(image) {
     .toDataURL();
   newImages.bottomRight.img = changeDpiDataUrl(newImages.bottomRight.img, 300);
 
-  const structureGrade = 0;
+  let structureGrade = 0;
 
   const grades = {
     images: null,
@@ -173,6 +173,10 @@ export async function getImageGrid(image) {
     grades.textGrade = tg;
     grades.colorGrade = cg;
   });
+
+  structureGrade = grades.colorGrade + grades.textGrade;
+
+  grades.structureGrade = structureGrade / 2;
 
   return grades;
 }

@@ -75,7 +75,6 @@ export async function getColors(image) {
 
   let colorGrade = 0;
   cgArr.forEach((grade) => {
-    console.log(grade);
     colorGrade += grade;
   });
 
