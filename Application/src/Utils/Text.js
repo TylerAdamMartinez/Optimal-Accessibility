@@ -34,7 +34,6 @@ export async function getText(image) {
 }
 
 const findText = async (image, grade) => {
-  // making sure Tesseract only runs when there is a valid image
   await Tesseract.recognize(image.topLeft.img, 'eng').then(({ data }) => {
     image.topLeft.textConfidence = data.confidence;
     grade += data.confidence;
