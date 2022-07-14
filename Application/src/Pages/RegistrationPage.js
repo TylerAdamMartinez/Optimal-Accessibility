@@ -13,6 +13,7 @@ function Register() {
   
     function handleSubmit(event) {
         event.preventDefault();
+        let errorFlag = false;
 
         const RegisterBody = {EUID, FirstName, LastName, Password};
         console.log(JSON.stringify(RegisterBody));
@@ -24,12 +25,19 @@ function Register() {
             },
             body : JSON.stringify(RegisterBody)
         })
-        .then((responce) => responce.json())
+        .then((responce) => { 
+            if (!responce.ok) { 
+                errorFlag = true;
+            }
+            return responce.json();
+        })
         .then((responseJSON) => {
-            console.log(responseJSON);
+            if(errorFlag) {
+                throw new Error(`${responseJSON}`);
+            }
             navigate("/");
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.error(err));
     }
   
     function handleEUIDChange(event) {
