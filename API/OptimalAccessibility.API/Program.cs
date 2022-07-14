@@ -43,6 +43,12 @@ builder.Services.AddDbContext<OptimalAccessibilityContext>(options => {
 builder.Services.AddTransient<IAuthRepo, AuthRepo>();
 builder.Services.AddTransient<IUserRepo, UsersRepo>();
 
+builder.Services.AddCors(b => b.AddPolicy("CORS_Policy", builder => {
+    builder.WithOrigins("*")
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+}));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -50,6 +56,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors("CORS_Policy");
 }
 
 app.UseHttpsRedirection();
