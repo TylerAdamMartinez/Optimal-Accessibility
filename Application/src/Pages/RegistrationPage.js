@@ -1,7 +1,7 @@
 import './RegistrationPage.css';
 import { useState } from "react";
 import Logo from './../Components/Optimal-Accessibility-Logo.png';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 function Register() {
     const [EUID, SetEUID] = useState('');
@@ -9,6 +9,7 @@ function Register() {
     const [LastName, SetLastName] = useState('');
     const [Password, SetPassword] = useState('');
 	const [ConfirmPassword, SetConfirmPassword] = useState('');
+    const navigate = useNavigate();
   
     function handleSubmit(event) {
         event.preventDefault();
@@ -24,7 +25,10 @@ function Register() {
             body : JSON.stringify(RegisterBody)
         })
         .then((responce) => responce.json())
-        .then((responseJSON) => console.log(responseJSON))
+        .then((responseJSON) => {
+            console.log(responseJSON);
+            navigate("/");
+        })
         .catch((err) => console.log(err));
     }
   
