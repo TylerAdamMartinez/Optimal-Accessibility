@@ -1,8 +1,8 @@
-import './App.css';
-import NavBar from './Components/NavBar.js';
-import TestImageComponent from './Utils/TestImageComponent';
-import MyPostersSection from './Components/MyPostersSection';
-import OverallAccessibilitySection from './Components/OverallAccessibilitySection';
+import './../App.css';
+import NavBar from './../Components/NavBar.js';
+import TestImageComponent from './../Utils/TestImageComponent';
+import MyPostersSection from './../Components/MyPostersSection';
+import OverallAccessibilitySection from './../Components/OverallAccessibilitySection';
 
 function DashBoard() {
 	let OverallAccessibilityBarGraphData = {

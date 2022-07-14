@@ -1,7 +1,7 @@
 import './LoginPage.css';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Logo from './Components/Optimal-Accessibility-Logo.png';
+import Logo from './../Components/Optimal-Accessibility-Logo.png';
 
 function Login() {
     const [euid, SetEUID] = useState('');
