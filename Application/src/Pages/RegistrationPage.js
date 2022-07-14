@@ -1,6 +1,7 @@
 import './RegistrationPage.css';
 import { useState } from "react";
-import Logo from './Components/Optimal-Accessibility-Logo.png';
+import Logo from './../Components/Optimal-Accessibility-Logo.png';
+import {Link} from 'react-router-dom';
 
 function Register() {
     const [EUID, SetEUID] = useState('');
@@ -61,7 +62,10 @@ function Register() {
 					<input placeholder="Last Name" type="text" value={LastName} onChange={handleLastNameChange} />
                     <input placeholder="Password" type="password"  value={Password} onChange={handlePasswordChange}/>
 					<input placeholder="Confirm Password" type="password"  value={ConfirmPassword} onChange={handleConfirmPasswordChange}/>
-                    <input type="submit" value="Submit" className='PopUpAccountMenuDivbtn'/>
+                    <div id='LoginBtnsSection'>
+                        <input type="submit" value="Register" className='PopUpAccountMenuDivbtn'/>
+                        <Link to="/"><button className='PopUpAccountMenuDivbtn'>Back to Login</button></Link>
+                    </div>
                   </form>
             </div>
 		</div>
