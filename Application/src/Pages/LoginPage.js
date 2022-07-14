@@ -1,14 +1,17 @@
 import './LoginPage.css';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from './../Components/Optimal-Accessibility-Logo.png';
 
 function Login() {
+    localStorage.clear();
     const [euid, SetEUID] = useState('');
     const [password, SetPASSWORD] = useState('');
+    const navigate = useNavigate();
   
     function handleSubmit(event) {
         event.preventDefault();
+        let responceBody = {};
 
         const LoginBody = {euid, password};
         console.log(JSON.stringify(LoginBody));
@@ -21,7 +24,14 @@ function Login() {
             body : JSON.stringify(LoginBody)
         })
         .then((responce) => responce.json())
-        .then((responseJSON) => console.log(responseJSON))
+        .then((responseJSON) => {
+            console.log(responseJSON);
+            responceBody = responseJSON;
+            localStorage.setItem('jwt', responceBody.jwt);
+            navigate(`/dashboard/${responceBody.userDTO.userId}`);
+
+
+        })
         .catch((err) => console.log(err));
     }
   
