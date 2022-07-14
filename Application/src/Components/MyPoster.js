@@ -28,7 +28,7 @@ function MyPoster(props) {
             ],
             borderColor: 'rgba(51, 51, 51, 1)',
             borderWidth: 1,
-            data: [95, 62, 88],
+            data: [props.AccessibilityRating.textRating, props.AccessibilityRating.structureRating, props.AccessibilityRating.colorRating],
             options: {
               responsive: true,
               maintainAspectRatio: false,
