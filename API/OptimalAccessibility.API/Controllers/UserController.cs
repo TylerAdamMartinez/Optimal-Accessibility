@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 using OptimalAccessibility.Application.Repositories;
@@ -8,6 +9,7 @@ namespace OptimalAccessibility.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [EnableCors("CORS_Policy")]
     public class UserController : ControllerBase
     {
         private readonly IUserRepo _userRepo;

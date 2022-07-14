@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
 
 using OptimalAccessibility.Application.Repositories;
 using OptimalAccessibility.Domain.Models.DataTransferObjects;
 using OptimalAccessibility.Domain.Enum;
-using Microsoft.AspNetCore.Authorization;
 using OptimalAccessibility.Domain.Models.Auth;
 
 namespace OptimalAccessibility.API.Controllers
@@ -11,6 +12,7 @@ namespace OptimalAccessibility.API.Controllers
 
     [ApiController]
     [Route("api/[controller]")]
+    [EnableCors("CORS_Policy")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthRepo _authRepo;
