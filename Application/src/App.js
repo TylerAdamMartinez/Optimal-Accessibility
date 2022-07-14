@@ -17,7 +17,7 @@ function App() {
 				<Route path="/" element={<LoginPage />} />
 				<Route path="/login" element={<LoginPage />} />
 				<Route path="/register" element={<RegistrationPage />} />
-				<Route path="/dashboard" element={<DashBoard />} />
+				<Route path="/dashboard/:userId" element={<DashBoard />} />
 				<Route path='*' element={<NotFound404ErrorPage />} />
 			</Routes>
 		</Router>
