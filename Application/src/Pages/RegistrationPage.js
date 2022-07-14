@@ -1,6 +1,7 @@
 import './RegistrationPage.css';
 import { useState } from "react";
-import Logo from './Components/Optimal-Accessibility-Logo.png';
+import Logo from './../Components/Optimal-Accessibility-Logo.png';
+import {Link, useNavigate} from 'react-router-dom';
 
 function Register() {
     const [EUID, SetEUID] = useState('');
@@ -8,10 +9,35 @@ function Register() {
     const [LastName, SetLastName] = useState('');
     const [Password, SetPassword] = useState('');
 	const [ConfirmPassword, SetConfirmPassword] = useState('');
+    const navigate = useNavigate();
   
     function handleSubmit(event) {
-      alert(`PosterName="${EUID}"\nPosterFileData="${Password}"`);
-      event.preventDefault();
+        event.preventDefault();
+        let errorFlag = false;
+
+        const RegisterBody = {EUID, FirstName, LastName, Password};
+        console.log(JSON.stringify(RegisterBody));
+        fetch('https://localhost:7267/api/Auth/RegisterNewUser', {
+            method : 'POST',
+            headers : {
+                "Content-Type" : "application/json",
+                "accept" : "application/json"
+            },
+            body : JSON.stringify(RegisterBody)
+        })
+        .then((responce) => { 
+            if (!responce.ok) { 
+                errorFlag = true;
+            }
+            return responce.json();
+        })
+        .then((responseJSON) => {
+            if(errorFlag) {
+                throw new Error(`${responseJSON}`);
+            }
+            navigate("/");
+        })
+        .catch((err) => console.error(err));
     }
   
     function handleEUIDChange(event) {
@@ -48,7 +74,10 @@ function Register() {
 					<input placeholder="Last Name" type="text" value={LastName} onChange={handleLastNameChange} />
                     <input placeholder="Password" type="password"  value={Password} onChange={handlePasswordChange}/>
 					<input placeholder="Confirm Password" type="password"  value={ConfirmPassword} onChange={handleConfirmPasswordChange}/>
-                    <input type="submit" value="Submit" className='PopUpAccountMenuDivbtn'/>
+                    <div id='LoginBtnsSection'>
+                        <input type="submit" value="Register" className='PopUpAccountMenuDivbtn'/>
+                        <Link to="/"><button className='PopUpAccountMenuDivbtn'>Back to Login</button></Link>
+                    </div>
                   </form>
             </div>
 		</div>

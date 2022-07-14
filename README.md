@@ -30,12 +30,14 @@ The Optimal Accessibility project aims to create a web application that calculat
 ### Required to run /Application (frontend)
 * Node.js
 * create-react-app
+* react-router-dom
 * @mui/icons-material
 * react-chartjs-2
 * chart.js
 * reactjs-popup
 * image-js
 * tesseract.js
+* @mdhnpm/color-contrast-ratio-calculator
 
 ### Required to run /API (backend)
 * ASP .NET 6 Core (*API*)
