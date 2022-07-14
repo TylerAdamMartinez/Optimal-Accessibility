@@ -11,7 +11,7 @@ function Login() {
   
     function handleSubmit(event) {
         event.preventDefault();
-        let responceBody = {};
+        let errorFlag = false;
 
         const LoginBody = {euid, password};
         console.log(JSON.stringify(LoginBody));
@@ -23,16 +23,23 @@ function Login() {
             },
             body : JSON.stringify(LoginBody)
         })
-        .then((responce) => responce.json())
-        .then((responseJSON) => {
-            console.log(responseJSON);
-            responceBody = responseJSON;
-            localStorage.setItem('jwt', responceBody.jwt);
-            navigate(`/dashboard/${responceBody.userDTO.userId}`);
-
-
+        .then((responce) => { 
+            if (!responce.ok) { 
+                errorFlag = true;
+            }
+            return responce.json();
         })
-        .catch((err) => console.log(err));
+        .then((responseJSON) => {
+            if(errorFlag) {
+                throw new Error(`${responseJSON}`);
+            }
+            localStorage.setItem('jwt', responseJSON.jwt);
+            navigate(`/dashboard/${responseJSON.userDTO.userId}`);
+        })
+        .catch((err) => {
+            alert(err);
+            console.error(err);
+        });
     }
   
     function handleEUIDChange(event) {
