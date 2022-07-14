@@ -6,6 +6,7 @@
 .DS_store
 .DS_Store?
 .vscode
+/API/.vs/
 
 #########(frontend)#########
 # This is for /Application #
