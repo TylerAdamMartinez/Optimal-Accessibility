@@ -9,66 +9,54 @@ export async function getImageGrid(image) {
     tempImages: {
       top: {
         img: null,
+        text: null,
+        textConfidence: null,
       },
       middle: {
         img: null,
+        text: null,
+        textConfidence: null,
       },
       bottom: {
         img: null,
+        text: null,
+        textConfidence: null,
       },
     },
     topLeft: {
       img: null,
-      text: null,
-      textConfidence: null,
       color: null,
     },
     topMiddle: {
       img: null,
-      text: null,
-      textConfidence: null,
       color: null,
     },
     topRight: {
       img: null,
-      text: null,
-      textConfidence: null,
       color: null,
     },
     middleLeft: {
       img: null,
-      text: null,
-      textConfidence: null,
       color: null,
     },
     middle: {
       img: null,
-      text: null,
-      textConfidence: null,
       color: null,
     },
     middleRight: {
       img: null,
-      text: null,
-      textConfidence: null,
       color: null,
     },
     bottomLeft: {
       img: null,
-      text: null,
-      textConfidence: null,
       color: null,
     },
     bottomMiddle: {
       img: null,
-      text: null,
-      textConfidence: null,
       color: null,
     },
     bottomRight: {
       img: null,
-      text: null,
-      textConfidence: null,
       color: null,
     },
   };
@@ -199,6 +187,12 @@ const bigGrid = (images, ogImage, squareHeight, squareWidth) => {
 };
 
 const smallGrid = async (newImages, ogImage, height, width) => {
+  const maskOptions = {
+    useAlpha: true,
+    invert: true,
+    useAlgorithm: true,
+  };
+
   newImages.tempImages.top.img = ogImage
     .crop({
       x: 0,
@@ -208,7 +202,7 @@ const smallGrid = async (newImages, ogImage, height, width) => {
     })
     .toDataURL();
   let img = await Image.load(newImages.tempImages.top.img);
-  newImages.tempImages.top.img = img.invert().grey().toDataURL();
+  newImages.tempImages.top.img = img.grey().mask(maskOptions).toDataURL();
   newImages.tempImages.top.img = changeDpiDataUrl(newImages.tempImages.top.img, 300);
 
   newImages.tempImages.middle.img = ogImage
@@ -220,7 +214,7 @@ const smallGrid = async (newImages, ogImage, height, width) => {
     })
     .toDataURL();
   img = await Image.load(newImages.tempImages.middle.img);
-  newImages.tempImages.middle.img = img.invert().grey().toDataURL();
+  newImages.tempImages.middle.img = img.grey().mask(maskOptions).toDataURL();
   newImages.tempImages.middle.img = changeDpiDataUrl(newImages.tempImages.middle.img, 300);
 
   newImages.tempImages.bottom.img = ogImage
@@ -232,7 +226,7 @@ const smallGrid = async (newImages, ogImage, height, width) => {
     })
     .toDataURL();
   img = await Image.load(newImages.tempImages.bottom.img);
-  newImages.tempImages.bottom.img = img.invert().grey().toDataURL();
+  newImages.tempImages.bottom.img = img.grey().mask(maskOptions).toDataURL();
   newImages.tempImages.bottom.img = changeDpiDataUrl(newImages.tempImages.bottom.img, 300);
 
   return newImages;
