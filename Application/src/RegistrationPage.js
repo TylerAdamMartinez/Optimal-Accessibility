@@ -10,8 +10,21 @@ function Register() {
 	const [ConfirmPassword, SetConfirmPassword] = useState('');
   
     function handleSubmit(event) {
-      alert(`PosterName="${EUID}"\nPosterFileData="${Password}"`);
-      event.preventDefault();
+        event.preventDefault();
+
+        const RegisterBody = {EUID, FirstName, LastName, Password};
+        console.log(JSON.stringify(RegisterBody));
+        fetch('https://localhost:7267/api/Auth/RegisterNewUser', {
+            method : 'POST',
+            headers : {
+                "Content-Type" : "application/json",
+                "accept" : "application/json"
+            },
+            body : JSON.stringify(RegisterBody)
+        })
+        .then((responce) => responce.json())
+        .then((responseJSON) => console.log(responseJSON))
+        .catch((err) => console.log(err));
     }
   
     function handleEUIDChange(event) {
