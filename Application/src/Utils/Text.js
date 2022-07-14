@@ -8,11 +8,11 @@ export async function getText(image) {
 
   grade = grade / 3;
   if (grade < 60 && grade > 0) {
-    grade += 40;
-  } else if (grade < 70 && grade > 60) {
     grade += 30;
+  } else if (grade < 70 && grade > 60) {
+    grade += 25;
   } else if (grade < 80 && grade > 70) {
-    grade += 20;
+    grade += 15;
   } else if (grade < 90 && grade > 80) {
     grade += 20;
   }
@@ -57,6 +57,16 @@ const findText = async (image, grade) => {
     image.tempImages.bottom.textConfidence = data.confidence;
     grade += data.confidence;
   });
+
+  // find outlier, generally, the section of the image has no text is getting a low score
+  let diffTop = image.tempImages.top.textConfidence - image.tempImages.middle.textConfidence;
+  let diffBottom = image.tempImages.bottom.textConfidence - image.tempImages.middle.textConfidence;
+  if (diffTop > 20 || diffBottom > 20) {
+    // if there is an outlier, try and counter its effect on the score
+    grade += 25;
+  } else if (diffTop > 20 && diffBottom > 20) {
+    grade += 35;
+  }
 
   return [image, grade];
 };
