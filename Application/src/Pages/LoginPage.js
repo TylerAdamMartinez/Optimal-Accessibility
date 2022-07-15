@@ -34,6 +34,7 @@ function Login() {
                 throw new Error(`${responseJSON}`);
             }
             localStorage.setItem('jwt', responseJSON.jwt);
+            localStorage.setItem('userId', responseJSON.userDTO.userId);
             navigate(`/dashboard/${responseJSON.userDTO.userId}`);
         })
         .catch((err) => {
