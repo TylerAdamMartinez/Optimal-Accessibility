@@ -6,7 +6,7 @@ import Popup from 'reactjs-popup';
 import OptimalAccessibilityLogo from './Optimal-Accessibility-Logo.png';
 import HelpPage from './HelpPage';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function NavBar() {
   let Lorem = 
@@ -23,12 +23,42 @@ function NavBar() {
     close_popup_menu_element.textContent = "";
   }
 
-  const [PosterName, SetPosterName] = useState('');
-  const [PosterFileData, SetPosterFileData] = useState(null);
+  const [Name, SetPosterName] = useState('');
+  const [Data, SetPosterFileData] = useState(null);
 
+  const navigate = useNavigate();
   function handleSubmit(event) {
-    alert(`PosterName="${PosterName}"\nPosterFileData="${PosterFileData}"`);
     event.preventDefault();
+    let errorFlag = false;
+
+    const addPosterBody = {Name, Data};
+    let userId = localStorage.getItem('userId');
+    let Jwt = localStorage.getItem('jwt');
+    fetch(`https://localhost:7267/api/User/AddPosterByUserId/${userId}`, {
+        method : 'POST',
+        headers : {
+            "Content-Type" : "application/json",
+            "accept" : "application/json",
+            "Authorization" : `bearer ${Jwt}`
+        },
+        body : JSON.stringify(addPosterBody)
+    })
+    .then((responce) => { 
+        if (!responce.ok) { 
+            errorFlag = true;
+        }
+        return responce.json();
+    })
+    .then((responseJSON) => {
+        if(errorFlag) {
+            throw new Error(`${responseJSON}`);
+        }
+        navigate(`/dashboard/${responseJSON.userDTO.userId}`);
+    })
+    .catch((err) => {
+        alert(err);
+        console.error(err);
+    });
   }
 
   function handleNameChange(event) {
@@ -36,7 +66,8 @@ function NavBar() {
   }
 
   function handleFileChange(event) {
-    SetPosterFileData(event.target.value)
+    let Base64Image = event.target.value.toDataURL();
+    SetPosterFileData(Base64Image)
   }
 
   return (
@@ -76,8 +107,8 @@ function NavBar() {
                 <div id='PopUpAddMenuDiv'>
                   <h2>New Poster</h2>
                   <form onSubmit={handleSubmit} id='PopUpAddMenuForm'>
-                    <input placeholder="Name" type="text" value={PosterName} onChange={handleNameChange} />
-                    <input placeholder="File" type="File" accept=".png, .jpg"  value={PosterFileData} onChange={handleFileChange}/>
+                    <input placeholder="Name" type="text" value={Name} onChange={handleNameChange} />
+                    <input placeholder="File" type="File" accept=".png, .jpg"  value={Data} onChange={handleFileChange}/>
                     <input type="submit" value="Submit" className='PopUpAccountMenuDivbtn'/>
                   </form>
                 </div>
