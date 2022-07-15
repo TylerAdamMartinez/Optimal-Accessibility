@@ -2,19 +2,12 @@ import './MyPoster.css';
 import DefaultImage from './missing_image.jpg';
 import Popup from 'reactjs-popup';
 import BarGraph from './BarGraph.js';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 function MyPoster(props) {
-
-    function MyPosterClickEventHandler() {
-        console.log(`Poster number ${props.Id} was clicked on`);
-    }
-
-    function ConvertBase64toImage(string) {
-      let img = new Image();
-      img.crossOrigin = 'Anonymous';
-      img.src = string;
-      return img;
+    const imgRef = useRef();
+    function onImageError() {
+      imgRef.current.src = DefaultImage; 
     }
 
     let [isOpen, setIsOpen] = useState(false);
@@ -23,7 +16,7 @@ function MyPoster(props) {
       setIsOpen(false);
     }
 
-    let GenericBarGraphData = {
+    let BarGraphData = {
         labels: ['Text', 'Structure', 'Color'],
         datasets: [
           {
@@ -53,9 +46,9 @@ function MyPoster(props) {
     return (
         <Popup 
         trigger={
-          <div id="MyPoster" onClick={MyPosterClickEventHandler}>
+          <div id="MyPoster">
               <div id="PosterImage">
-                  <img src={ConvertBase64toImage(props.data)} alt={`Poster number ${props.Id}`}/>
+                  <img src={`data:image/png;base64,${props.Data}`} ref={imgRef} onError={onImageError} alt={`Poster number ${props.Id}`}/>
               </div>
               <div id="PosterNameSection">
                   <h3>{props.PosterName}</h3>
@@ -69,11 +62,11 @@ function MyPoster(props) {
                   <h3>{props.PosterName}</h3>
                 </div>
                 <div id="PosterPopUpMenuImgDiv">
-                  <img src={DefaultImage} alt={`Poster number ${props.Id}`}/>
+                  <img ref={imgRef} onError={onImageError} src={`data:image/png;base64,${props.Data}`} alt={`Poster number ${props.Id}`}/>
                 </div>
                 <h3>Overall Accessibility Score</h3>
                 <div id="PosterPopUpMenuBarGraphDiv">
-                  <BarGraph chartData={GenericBarGraphData}/>
+                  <BarGraph chartData={BarGraphData}/>
                 </div>
             </div>  
         </Popup>
