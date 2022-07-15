@@ -3,6 +3,7 @@ import LoginPage from './Pages/LoginPage';
 import RegistrationPage from './Pages/RegistrationPage';
 import DashBoard from './Pages/DashBoard.js';
 import NotFound404ErrorPage from './Pages/NotFound404ErrorPage';
+import PrivateRoutes from './Components/PrivateRoutes';
 import {
 	BrowserRouter as Router,
 	Route,
@@ -17,7 +18,9 @@ function App() {
 				<Route path="/" element={<LoginPage />} />
 				<Route path="/login" element={<LoginPage />} />
 				<Route path="/register" element={<RegistrationPage />} />
-				<Route path="/dashboard/:userId" element={<DashBoard />} />
+				<Route element={<PrivateRoutes />} >
+					<Route path="/dashboard/:userId" element={<DashBoard />} />
+				</Route>
 				<Route path='*' element={<NotFound404ErrorPage />} />
 			</Routes>
 		</Router>
