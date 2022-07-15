@@ -10,6 +10,13 @@ function MyPoster(props) {
         console.log(`Poster number ${props.Id} was clicked on`);
     }
 
+    function ConvertBase64toImage(string) {
+      let img = new Image();
+      img.crossOrigin = 'Anonymous';
+      img.src = string;
+      return img;
+    }
+
     let [isOpen, setIsOpen] = useState(false);
 
     function handleOpen() {
@@ -48,7 +55,7 @@ function MyPoster(props) {
         trigger={
           <div id="MyPoster" onClick={MyPosterClickEventHandler}>
               <div id="PosterImage">
-                  <img src={DefaultImage} alt={`Poster number ${props.Id}`}/>
+                  <img src={ConvertBase64toImage(props.data)} alt={`Poster number ${props.Id}`}/>
               </div>
               <div id="PosterNameSection">
                   <h3>{props.PosterName}</h3>
