@@ -8,7 +8,7 @@ function MyPostersSection(props) {
                 <h2>My Posters</h2>
                 <span>
                     {props.myPosters.map((poster) => {
-                        return(<MyPoster PosterName={poster.name} key={Math.random()} AccessibilityRating={poster.accessibilityScore}/>);
+                        return(<MyPoster PosterName={poster.name} key={Math.random()} Data={poster.data} AccessibilityRating={poster.accessibilityScore}/>);
                     })}
                 </span>
             </div>
