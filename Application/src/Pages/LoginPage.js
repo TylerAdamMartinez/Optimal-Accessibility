@@ -2,9 +2,9 @@ import './LoginPage.css';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './../Components/Optimal-Accessibility-Logo.png';
+import Cookies from 'universal-cookie';
 
 function Login() {
-    localStorage.clear();
     const [euid, SetEUID] = useState('');
     const [password, SetPASSWORD] = useState('');
     const navigate = useNavigate();
@@ -14,7 +14,6 @@ function Login() {
         let errorFlag = false;
 
         const LoginBody = {euid, password};
-        console.log(JSON.stringify(LoginBody));
         fetch('https://localhost:7267/api/Auth/Login', {
             method : 'POST',
             headers : {
@@ -33,7 +32,8 @@ function Login() {
             if(errorFlag) {
                 throw new Error(`${responseJSON}`);
             }
-            localStorage.setItem('jwt', responseJSON.jwt);
+            let cookies = new Cookies();
+            cookies.set("jwt", responseJSON.jwt, {sameSite: 'strict', path: "/", expires: new Date(Date.now() + 12096e5)});
             localStorage.setItem('userId', responseJSON.userDTO.userId);
             navigate(`/dashboard/${responseJSON.userDTO.userId}`);
         })
@@ -50,6 +50,7 @@ function Login() {
     function handlePASSWORDChange(event) {
         SetPASSWORD(event.target.value)
     }
+
 	return (
 		<div id='LoginPageDiv'>
             <div id='LoginLogoBanner'>

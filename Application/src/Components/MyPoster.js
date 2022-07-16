@@ -3,6 +3,7 @@ import DefaultImage from './missing_image.jpg';
 import Popup from 'reactjs-popup';
 import BarGraph from './BarGraph.js';
 import { useState, useRef } from 'react';
+import AccessibilityBarGraphData from './AccessibilityBarGraphData';
 
 function MyPoster(props) {
     const imgRef = useRef();
@@ -16,32 +17,7 @@ function MyPoster(props) {
       setIsOpen(false);
     }
 
-    let BarGraphData = {
-        labels: ['Text', 'Structure', 'Color'],
-        datasets: [
-          {
-            label: 'Rating Score',
-            backgroundColor: [
-              'rgba(1, 127, 1, 1)',
-              'rgba(100, 6, 101, 1)',
-              'rgba(218, 54, 74, 1)',
-            ],
-            borderColor: 'rgba(51, 51, 51, 1)',
-            borderWidth: 1,
-            data: [props.AccessibilityRating.textRating, props.AccessibilityRating.structureRating, props.AccessibilityRating.colorRating],
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              scales: {
-                yAxes: {
-                  min: 0,
-                  max: 100,
-                },
-              }
-            },
-          }
-        ]
-      };
+    let BarGraphData = new AccessibilityBarGraphData(props.AccessibilityRating);
 
     return (
         <Popup 
@@ -66,7 +42,7 @@ function MyPoster(props) {
                 </div>
                 <h3>Overall Accessibility Score</h3>
                 <div id="PosterPopUpMenuBarGraphDiv">
-                  <BarGraph chartData={BarGraphData}/>
+                  <BarGraph chartData={BarGraphData.build}/>
                 </div>
             </div>  
         </Popup>
