@@ -1,6 +1,6 @@
 {
   "name": "optimal-accessibility.web.application",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "proxy": "https://localhost:7267",
   "private": true,
   "dependencies": {
@@ -27,6 +27,7 @@
     "reactjs-popup": "^2.0.5",
     "styled-components": "^5.3.5",
     "tesseract.js": "^2.1.5",
+    "universal-cookie": "^4.0.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
