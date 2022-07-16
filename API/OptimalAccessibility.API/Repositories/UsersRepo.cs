@@ -161,7 +161,7 @@ namespace OptimalAccessibility.API.Repositories
                 }
                 TotalTextRating += AccessibilityScore.TextRating;
                 TotalStructureRating += AccessibilityScore.StructureRating;
-                TotalColorRating = +AccessibilityScore.ColorRating;
+                TotalColorRating += AccessibilityScore.ColorRating;
             }
 
 
