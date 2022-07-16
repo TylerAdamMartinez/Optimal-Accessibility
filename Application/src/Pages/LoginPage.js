@@ -1,5 +1,5 @@
 import './LoginPage.css';
-import useState from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './../Components/Optimal-Accessibility-Logo.png';
 import Cookies from 'universal-cookie';

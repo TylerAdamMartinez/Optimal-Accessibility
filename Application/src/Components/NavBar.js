@@ -5,8 +5,8 @@ import HelpIcon from '@mui/icons-material/Help';
 import Popup from 'reactjs-popup';
 import OptimalAccessibilityLogo from './Optimal-Accessibility-Logo.png';
 import HelpPage from './HelpPage';
-import useState from 'react';
-import Link from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 
 function NavBar() {
