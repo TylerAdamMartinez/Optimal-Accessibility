@@ -7,6 +7,7 @@ import OptimalAccessibilityLogo from './Optimal-Accessibility-Logo.png';
 import HelpPage from './HelpPage';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 function NavBar() {
   let Lorem = 
@@ -33,7 +34,6 @@ function NavBar() {
     let title = Math.random().toString();
     ///This should be replaced///
     function HankFuncHere(data) {
-      console.log(`This is data in hank's func: ${data}`);
       return { textRating: 34, structureRating: 34, colorRating: 34};
     }
     ///This should be replaced///
@@ -42,7 +42,9 @@ function NavBar() {
     .then((data) => {
       const addPosterBody = {name, title, data, accessibilityScore};
       let userId = localStorage.getItem('userId');
-      let Jwt = localStorage.getItem('jwt');
+      let cookies = new Cookies();
+      let Jwt = cookies.get('jwt');
+
       fetch(`https://localhost:7267/api/User/AddPosterByUserId/${userId}`, {
           method : 'POST',
           headers : {
@@ -102,10 +104,16 @@ function NavBar() {
       }
 
       fileReader.onError = (err) => {
-        console.log("Hello from Inside ConvertImageToBase64 onError");
+        console.error(err);
         reject(err);
       };
     });
+  }
+
+  function handleLogout() {
+    localStorage.clear();
+    let cookies = new Cookies();
+    cookies.remove('jwt');
   }
 
   return (
@@ -157,7 +165,7 @@ function NavBar() {
             <Popup trigger={<AccountCircleIcon fontSize="large"/>}>
               <div id="PopUpAccountpMenuDivSection">
                   <ul id="PopUpAccountMenuDiv">
-                  <Link to="/"><li className='PopUpAccountMenuDivbtn'>Logout</li></Link>
+                  <Link to="/" onClick={handleLogout}><li className='PopUpAccountMenuDivbtn'>Logout</li></Link>
                   </ul>
                 </div>
             </Popup>
