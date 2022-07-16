@@ -85,6 +85,7 @@ typings/
 # dotenv environment variables file
 .env
 .env.test
+*.pem
 
 # parcel-bundler cache
 .cache
