@@ -23,12 +23,56 @@ function NavBar() {
     close_popup_menu_element.textContent = "";
   }
 
-  const [PosterName, SetPosterName] = useState('');
-  const [PosterFileData, SetPosterFileData] = useState(null);
+  const [name, SetPosterName] = useState("");
+  const [FileData, SetPosterFileData] = useState("");
 
-  function handleSubmit(event) {
-    alert(`PosterName="${PosterName}"\nPosterFileData="${PosterFileData}"`);
+  async function handleSubmit(event) {
     event.preventDefault();
+    let errorFlag = false;
+
+    let title = Math.random().toString();
+    ///This should be replaced///
+    function HankFuncHere(data) {
+      console.log(`This is data in hank's func: ${data}`);
+      return { textRating: 34, structureRating: 34, colorRating: 34};
+    }
+    ///This should be replaced///
+    let accessibilityScore = HankFuncHere(FileData);
+    ConvertImageToBase64(FileData)
+    .then((data) => {
+      const addPosterBody = {name, title, data, accessibilityScore};
+      let userId = localStorage.getItem('userId');
+      let Jwt = localStorage.getItem('jwt');
+      fetch(`https://localhost:7267/api/User/AddPosterByUserId/${userId}`, {
+          method : 'POST',
+          headers : {
+              "Content-Type" : "application/json",
+              "accept" : "application/json",
+              "Authorization" : `bearer ${Jwt}`
+          },
+          body : JSON.stringify(addPosterBody)
+      })
+      .then((responce) => { 
+          if (!responce.ok) { 
+              errorFlag = true;
+          }
+          return responce.json();
+      })
+      .then((responseJSON) => {
+          if(errorFlag) {
+              throw new Error(`${responseJSON}`);
+          }
+          window.location.reload(false);
+      })
+      .catch((err) => {
+          alert(err);
+          console.error(err);
+      });
+    })
+    .catch((Error) => {
+      alert(Error)
+      console.error(Error);
+    });
   }
 
   function handleNameChange(event) {
@@ -36,7 +80,32 @@ function NavBar() {
   }
 
   function handleFileChange(event) {
-    SetPosterFileData(event.target.value)
+    let file = event.target.files[0];
+    SetPosterFileData(file);
+  }
+
+  function ConvertImageToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onLoad = () => {
+        resolve(fileReader.result);
+      };
+
+      fileReader.onloadend = () => {
+        if(fileReader.result != null) {
+          resolve(fileReader.result.split(',')[1]);
+        }
+        else {
+          reject(new Error(`fileReader.result is null`));
+        }
+      }
+
+      fileReader.onError = (err) => {
+        console.log("Hello from Inside ConvertImageToBase64 onError");
+        reject(err);
+      };
+    });
   }
 
   return (
@@ -76,8 +145,8 @@ function NavBar() {
                 <div id='PopUpAddMenuDiv'>
                   <h2>New Poster</h2>
                   <form onSubmit={handleSubmit} id='PopUpAddMenuForm'>
-                    <input placeholder="Name" type="text" value={PosterName} onChange={handleNameChange} />
-                    <input placeholder="File" type="File" accept=".png, .jpg"  value={PosterFileData} onChange={handleFileChange}/>
+                    <input placeholder="Name" type="text" value={name} onChange={handleNameChange} />
+                    <input type="File" accept=".png, .jpg" onChange={handleFileChange}/>
                     <input type="submit" value="Submit" className='PopUpAccountMenuDivbtn'/>
                   </form>
                 </div>
