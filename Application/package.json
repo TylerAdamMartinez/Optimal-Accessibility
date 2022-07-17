@@ -1,6 +1,6 @@
 {
   "name": "optimal-accessibility.web.application",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "proxy": "https://localhost:7267",
   "private": true,
   "dependencies": {
