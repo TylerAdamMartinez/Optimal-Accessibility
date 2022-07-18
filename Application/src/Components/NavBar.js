@@ -37,20 +37,21 @@ function NavBar() {
     async function getAccessibilityScore(poster) {
       setLoading(true);
       poster = await ConvertImageToBase64(poster);
-      await getImageGrid('data:image/png;base64,' + poster).then((score) => {
+      let posterGrades = await getImageGrid('data:image/png;base64,' + poster).then((score) => {
         setLoading(false);
-        return {
+        let posterGrade = {
           textRating: score.textGrade,
           structureRating: score.structureGrade,
           colorRating: score.colorGrade,
         };
+
+        return posterGrade;
       });
+
+      return posterGrades;
     }
 
     let accessibilityScore = await getAccessibilityScore(FileData);
-
-    // ! Remove log later
-    console.log(accessibilityScore);
 
     ConvertImageToBase64(FileData)
       .then((data) => {
