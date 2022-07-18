@@ -40,9 +40,9 @@ function NavBar() {
       let posterGrades = await getImageGrid('data:image/png;base64,' + poster).then((score) => {
         setLoading(false);
         let posterGrade = {
-          textRating: score.textGrade,
-          structureRating: score.structureGrade,
-          colorRating: score.colorGrade,
+          textRating: Math.round(score.textGrade),
+          structureRating: Math.round(score.structureGrade),
+          colorRating: Math.round(score.colorGrade),
         };
 
         return posterGrade;
