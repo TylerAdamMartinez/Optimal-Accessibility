@@ -63,7 +63,7 @@
     color: #333;
     background-color: #f6f6f6;
     border-bottom: 3pt solid #B90504;
-    border-radius: 5px;
+    border-radius: 4px;
 }
 
 #SignInForm input::placeholder {
@@ -75,7 +75,7 @@
 }
 
 #LoginBtnsSection {
-    font-size: 18pt;
+    font-size: 16pt;
     display: flex;
     justify-content: space-between;
 }
@@ -86,10 +86,11 @@
     border-radius: 5px;
 }
 
-#LoginBtnsSection a button {
-    font-size: 18pt;
+#LoginBtnsSection button {
+    font-size: 16pt;
     height: 100%;
-    padding-left: .5em;
-    padding-right: .5em;
+    padding: .2em;
+    padding-left: .6em;
+    padding-right: .6em;
     border-radius: 5px;
 }
