@@ -34,26 +34,20 @@ export async function getText(image) {
 }
 
 const findText = async (image, grade) => {
-  // regex that matches 2+ alphabetic characters in string
-  const regex = /([a-zA-Z]{2,})/g;
-
   await Tesseract.recognize(image.tempImages.top.img, 'eng').then(({ data }) => {
-    console.log(data.text.match(regex) + '\n' + data.confidence);
-    image.tempImages.top.text = data.text.match(regex);
+    image.tempImages.top.text = data.text;
     image.tempImages.top.textConfidence = data.confidence;
     grade += data.confidence;
   });
 
   await Tesseract.recognize(image.tempImages.middle.img, 'eng').then(({ data }) => {
-    console.log(data.text.match(regex) + '\n' + data.confidence);
-    image.tempImages.middle.text = data.text.match(regex);
+    image.tempImages.middle.text = data.text;
     image.tempImages.middle.textConfidence = data.confidence;
     grade += data.confidence;
   });
 
   await Tesseract.recognize(image.tempImages.bottom.img, 'eng').then(({ data }) => {
-    console.log(data.text.match(regex) + '\n' + data.confidence);
-    image.tempImages.bottom.text = data.text.match(regex);
+    image.tempImages.bottom.text = data.text;
     image.tempImages.bottom.textConfidence = data.confidence;
     grade += data.confidence;
   });
