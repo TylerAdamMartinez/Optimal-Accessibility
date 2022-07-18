@@ -24,13 +24,13 @@ export async function getText(image) {
     cg = colorGrade;
   });
 
-  let obj = {
+  let imagesWithGrades = {
     images,
     tg: grade,
     cg,
   };
 
-  return obj;
+  return imagesWithGrades;
 }
 
 const findText = async (image, grade) => {
@@ -58,6 +58,12 @@ const findText = async (image, grade) => {
     grade += data.confidence;
   });
 
+  grade = findOutlier(image, grade);
+
+  return [image, grade];
+};
+
+const findOutlier = (image, grade) => {
   // find outlier, generally, the section of the image has no text is getting a low score
   let diffTop = image.tempImages.top.textConfidence - image.tempImages.middle.textConfidence;
   let diffBottom = image.tempImages.bottom.textConfidence - image.tempImages.middle.textConfidence;
@@ -68,5 +74,5 @@ const findText = async (image, grade) => {
     grade += 35;
   }
 
-  return [image, grade];
-};
+  return grade;
+}
