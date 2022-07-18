@@ -30,8 +30,8 @@ function TestImageComponent() {
   return imageGrid.images !== undefined ? (
     <div
       style={{
-        width: '50%',
-        height: '45%',
+        width: '70%',
+        height: '65%',
         margin: 80,
         flexDirection: 'row',
         display: 'flex',
@@ -55,6 +55,32 @@ function TestImageComponent() {
         <img alt='Test bottomLeft' src={imageGrid.images.bottomLeft.img} style={imageStyles} />
         <img alt='Test bottomMiddle' src={imageGrid.images.bottomMiddle.img} style={imageStyles} />
         <img alt='Test bottomRight' src={imageGrid.images.bottomRight.img} style={imageStyles} />
+      </div>
+      <div
+        style={{
+          height: '50%',
+          width: '50%',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+          display: 'flex',
+        }}
+      >
+        <img
+          alt='Test top'
+          src={imageGrid.images.tempImages.top.img}
+          style={{ width: '100%', height: '90%', margin: '1px' }}
+        />
+        <img
+          alt='Test middle'
+          src={imageGrid.images.tempImages.middle.img}
+          style={{ width: '100%', height: '90%', margin: '1px' }}
+        />
+        <img
+          alt='Test bottom'
+          src={imageGrid.images.tempImages.bottom.img}
+          style={{ width: '100%', height: '90%', margin: '1px' }}
+        />
       </div>
     </div>
   ) : (
