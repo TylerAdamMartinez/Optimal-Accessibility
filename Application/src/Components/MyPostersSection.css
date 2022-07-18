@@ -14,17 +14,17 @@
     border-radius: 2.5em;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 2fr;
+    box-shadow: 4px 4px 10px rgb(90, 90, 90);
 }
 
 #InnerMyPostersDiv h2 {
-    font-size: 64px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding-bottom: 10px;
+    font-size: 34px;
+    padding-left: 20px;
+    padding-bottom: 25px;
     color: #333333;
-    border-bottom: 5px solid #333333;
+    border-bottom: 3px solid #333333;
     user-select: none;
+    margin: 10px;
 }
 
 #InnerMyPostersDiv span {
