@@ -26,7 +26,7 @@ function NavBar() {
 
   const [name, SetPosterName] = useState('');
   const [FileData, SetPosterFileData] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loadingState, setLoadingState] = useState("submit");
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -35,10 +35,10 @@ function NavBar() {
     let title = Math.random().toString();
 
     async function getAccessibilityScore(poster) {
-      setLoading(true);
+      setLoadingState("Uploading image...");
       poster = await ConvertImageToBase64(poster);
+      setLoadingState("Calculating accessibility score...")
       let posterGrades = await getImageGrid('data:image/png;base64,' + poster).then((score) => {
-        setLoading(false);
         let posterGrade = {
           textRating: Math.round(score.textGrade),
           structureRating: Math.round(score.structureGrade),
@@ -47,12 +47,12 @@ function NavBar() {
 
         return posterGrade;
       });
-
+      
       return posterGrades;
     }
 
     let accessibilityScore = await getAccessibilityScore(FileData);
-
+    setLoadingState("Sending Poster...");
     ConvertImageToBase64(FileData)
       .then((data) => {
         const addPosterBody = { name, title, data, accessibilityScore };
@@ -73,6 +73,8 @@ function NavBar() {
             if (!responce.ok) {
               errorFlag = true;
             }
+            
+            setLoadingState("Sent");
             return responce.json();
           })
           .then((responseJSON) => {
@@ -166,7 +168,7 @@ function NavBar() {
             </Popup>
           </li>
           <li>
-            <Popup trigger={<AddIcon fontSize='large' />}>
+            <Popup trigger={<AddIcon onClick={() => {setLoadingState("Submit")}} fontSize='large' />}>
               <div id='PopUpAddMenuDivSection'>
                 <div id='PopUpAddMenuDiv'>
                   <h2>New Poster</h2>
@@ -180,7 +182,7 @@ function NavBar() {
                     <input type='File' accept='.png, .jpg' onChange={handleFileChange} />
                     <input
                       type='submit'
-                      value={loading ? 'Loading...' : 'Submit'}
+                      value={loadingState}
                       className='PopUpAccountMenuDivbtn'
                     />
                   </form>
