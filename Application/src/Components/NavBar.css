@@ -134,9 +134,8 @@
 #PopUpAddMenuDiv {
   grid-row: 1 / 2;
   grid-column: 2 / 3;
-
   border-top: none !important;
-  border: 5px solid#333;
+  border: 3px solid#333;
   background-color: #f6f6f6;
   padding: 1em;
   margin-top: 0;
@@ -150,16 +149,17 @@
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-  padding: 2.5em;
+  padding: 3em;
   gap: 2.5em;
 }
 
 #PopUpAddMenuForm input {
-  font-size: 24pt;
+  font-size: 20pt;
   color: #333;
   background-color: #f6f6f6;
   border: none;
-  border-bottom: 5pt solid #B90504;
+  border-bottom: 3pt solid #B90504;
+  border-radius: 3px;
 }
 
 #PopUpAddMenuForm input::placeholder {
@@ -175,17 +175,22 @@
   cursor: pointer;
   color: #f6f6f6 !important;
   border: none !important;
-  font-size: 24pt;
-  padding: .25em;
+  font-size: 16pt;
+  padding: .3em;
+  padding-left: .5em;
+  padding-right: .5em;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  margin-right: 10px;
 }
 
 #PopUpAddMenuDiv h2 {
-  font-size: 64px;
+  font-size: 34px;
   margin-top: 0px;
   margin-bottom: 0px;
   padding-bottom: 10px;
   color: #333333;
-  border-bottom: 5px solid #333333;
+  border-bottom: 3px solid #333333;
   user-select: none;
 }
 
@@ -194,5 +199,5 @@
   cursor: pointer;
   color: #f6f6f6 !important;
   border: none !important;
-  font-size: 24pt;
+  border-radius: 10px !important;
 }
