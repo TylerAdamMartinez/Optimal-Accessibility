@@ -171,8 +171,6 @@ function NavBar() {
                 <div id='PopUpAddMenuDiv'>
                   <h2>New Poster</h2>
                   <form onSubmit={handleSubmit} id='PopUpAddMenuForm'>
-                    {/* Either remove before finished or make it look nice, would be nice to show that we are loading */}
-                    {loading ? <h3>Loading...</h3> : null}
                     <input
                       placeholder='Name'
                       type='text'
@@ -180,7 +178,11 @@ function NavBar() {
                       onChange={handleNameChange}
                     />
                     <input type='File' accept='.png, .jpg' onChange={handleFileChange} />
-                    <input type='submit' value='Submit' className='PopUpAccountMenuDivbtn' />
+                    <input
+                      type='submit'
+                      value={loading ? 'Loading...' : 'Submit'}
+                      className='PopUpAccountMenuDivbtn'
+                    />
                   </form>
                 </div>
               </div>

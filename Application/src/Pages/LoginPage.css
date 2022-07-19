@@ -84,6 +84,11 @@
     padding-left: 1.1em;
     padding-right: 1.1em;
     border-radius: 5px;
+    transition: box-shadow .2s ease-in-out;
+}
+
+#LoginBtnsSection input:hover {
+    box-shadow: 2px 2px 4px rgb(90, 90, 90);
 }
 
 #LoginBtnsSection button {
@@ -93,4 +98,9 @@
     padding-left: .6em;
     padding-right: .6em;
     border-radius: 5px;
+    transition: box-shadow .2s ease-in-out;
+}
+
+#LoginBtnsSection button:hover { 
+    box-shadow: 2px 2px 4px rgb(90, 90, 90);
 }

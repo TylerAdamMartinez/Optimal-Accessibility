@@ -200,4 +200,9 @@
   color: #f6f6f6 !important;
   border: none !important;
   border-radius: 10px !important;
+  transition: box-shadow .2s ease-in-out;
+}
+
+.PopUpAccountMenuDivbtn:hover {
+  box-shadow: 2px 2px 4px rgb(90, 90, 90);
 }
