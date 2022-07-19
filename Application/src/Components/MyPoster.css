@@ -122,3 +122,26 @@
 .AccessibilityBarGraphScoreContainer h3 {
     font-size: 34px;
 }
+
+.PosterPopUpMenuIconContainer {
+    display: flex;
+    margin-top: 1.5em;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.deleteIcon {
+    cursor: pointer;
+}
+
+.deleteIcon:hover {
+    color: #990100;
+}
+
+.editIcon {
+    cursor: pointer;
+}
+
+.editIcon:hover {
+    color: #990100;
+}

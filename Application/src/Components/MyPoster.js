@@ -4,6 +4,8 @@ import Popup from 'reactjs-popup';
 import BarGraph from './BarGraph.js';
 import { useState, useRef } from 'react';
 import AccessibilityBarGraphData from './AccessibilityBarGraphData';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
 
 function MyPoster(props) {
   const imgRef = useRef();
@@ -50,6 +52,18 @@ function MyPoster(props) {
               onError={onImageError}
               src={`data:image/png;base64,${props.Data}`}
               alt={`Poster number ${props.Id}`}
+            />
+          </div>
+          <div className='PosterPopUpMenuIconContainer'>
+            <DeleteForeverIcon
+              className='deleteIcon'
+              fontSize='large'
+              onClick={() => console.log('Delete pressed')}
+            />
+            <EditIcon
+              className='editIcon'
+              fontSize='large'
+              onClick={() => console.log('Edit pressed')}
             />
           </div>
         </div>
