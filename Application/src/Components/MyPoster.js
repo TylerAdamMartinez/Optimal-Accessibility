@@ -6,6 +6,7 @@ import { useState, useRef } from 'react';
 import AccessibilityBarGraphData from './AccessibilityBarGraphData';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
+import Cookies from 'universal-cookie';
 
 function MyPoster(props) {
   const imgRef = useRef();
@@ -14,9 +15,81 @@ function MyPoster(props) {
   }
 
   let [isOpen, setIsOpen] = useState(false);
+  let [isEditing, setIsEditing] = useState(false);
+  let [editPosterName, setEditPosterName] = useState(props.PosterName);
 
   function handleOpen() {
     setIsOpen(false);
+  }
+
+  function DeletePoster() {
+    let errorFlag = false;
+    let userId = localStorage.getItem('userId');
+    let cookies = new Cookies();
+    let Jwt = cookies.get('jwt');
+
+    fetch(`https://localhost:7267/api/User/DeletePosterByUserId/${userId}/ByPosterName/${props.PosterName}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+        Authorization: `bearer ${Jwt}`,
+      },
+    })
+    .then((responce) => {
+      if (!responce.ok) {
+        errorFlag = true;
+        return responce.json();
+      }
+    })
+    .then((responseJSON) => {
+      if (errorFlag) {
+        throw new Error(`${responseJSON}`);
+      }
+      window.location.reload(false);
+    })
+    .catch((err) => {
+      alert(err);
+      console.error(err);
+    });
+  }
+
+  function UpdatePoster(event) {
+    setIsEditing(false);
+    event.preventDefault();
+    let errorFlag = false;
+    let userId = localStorage.getItem('userId');
+    let cookies = new Cookies();
+    let Jwt = cookies.get('jwt');
+
+    fetch(`https://localhost:7267/api/User/UpdatePosterByUserId/${userId}/ByPosterName/${props.PosterName}?newPosterName=${editPosterName}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+        Authorization: `bearer ${Jwt}`,
+      },
+    })
+    .then((responce) => {
+      if (!responce.ok) {
+        errorFlag = true;
+        return responce.json();
+      }
+    })
+    .then((responseJSON) => {
+      if (errorFlag) {
+        throw new Error(`${responseJSON}`);
+      }
+      window.location.reload(false);
+    })
+    .catch((err) => {
+      alert(err);
+      console.error(err);
+    });
+  }
+
+  function editPosterNameHandler(event) {
+    setEditPosterName(event.target.value);
   }
 
   let BarGraphData = new AccessibilityBarGraphData(props.AccessibilityRating);
@@ -44,7 +117,19 @@ function MyPoster(props) {
       <div id='PosterPopUpMenuDiv'>
         <div className='PosterImgAndNameContainer'>
           <div id='PosterPopUpMenuPosterNameDiv'>
-            <h3>{props.PosterName}</h3>
+            { isEditing ?  
+              <form onSubmit={UpdatePoster}>
+                <input
+                  placeholder={props.PosterName}
+                  type='text'
+                  value={editPosterName}
+                  onChange={editPosterNameHandler} />
+                <input
+                  type='submit'
+                  value={"submit"}
+                  className='PopUpAccountMenuDivbtn' />
+              </form> : <h3>{props.PosterName}</h3>
+            }
           </div>
           <div id='PosterPopUpMenuImgDiv'>
             <img
@@ -58,12 +143,12 @@ function MyPoster(props) {
             <DeleteForeverIcon
               className='deleteIcon'
               fontSize='large'
-              onClick={() => console.log('Delete pressed')}
+              onClick={DeletePoster}
             />
             <EditIcon
               className='editIcon'
               fontSize='large'
-              onClick={() => console.log('Edit pressed')}
+              onClick={() => {setIsEditing(!isEditing);}}
             />
           </div>
         </div>
