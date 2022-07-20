@@ -17,6 +17,7 @@ function MyPoster(props) {
   let [isOpen, setIsOpen] = useState(false);
   let [isEditing, setIsEditing] = useState(false);
   let [editPosterName, setEditPosterName] = useState(props.PosterName);
+  let [editPosterData, setEditPosterData] = useState(props.Data);
 
   function handleOpen() {
     setIsOpen(false);
@@ -92,6 +93,10 @@ function MyPoster(props) {
     setEditPosterName(event.target.value);
   }
 
+  function editPosterDatahandler(event){
+    setEditPosterData(event.target.value);
+  }
+
   let BarGraphData = new AccessibilityBarGraphData(props.AccessibilityRating);
 
   return (
@@ -133,12 +138,31 @@ function MyPoster(props) {
             }
           </div>
           <div id='PosterPopUpMenuImgDiv'>
+            { isEditing ?
+            <>
+              <div id='editingPosterDataFrom'>
+                <input type='File' accept='.png, .jpg' onChange={editPosterDatahandler} />
+                <input
+                  id='editPosterDataBtn'
+                  type='submit'
+                  value={"Submit"}
+                />
+              </div>
+              <img
+                id='editingPosterDataImage'
+                ref={imgRef}
+                onError={onImageError}
+                src={`data:image/png;base64,${props.Data}`}
+                alt={`Poster number ${props.Id}`}
+              /> 
+            </>
+            :        
             <img
               ref={imgRef}
               onError={onImageError}
               src={`data:image/png;base64,${props.Data}`}
               alt={`Poster number ${props.Id}`}
-            />
+            /> }
           </div>
           <div className='PosterPopUpMenuIconContainer'>
             <DeleteForeverIcon
