@@ -118,16 +118,17 @@ function MyPoster(props) {
         <div className='PosterImgAndNameContainer'>
           <div id='PosterPopUpMenuPosterNameDiv'>
             { isEditing ?  
-              <form onSubmit={UpdatePoster}>
+              <form id='editForm' onSubmit={UpdatePoster}>
                 <input
+                  id='editPosterNameInput'
                   placeholder={props.PosterName}
                   type='text'
                   value={editPosterName}
                   onChange={editPosterNameHandler} />
                 <input
+                  id='editPosterNameBtn'
                   type='submit'
-                  value={"submit"}
-                  className='PopUpAccountMenuDivbtn' />
+                  value={"submit"} />
               </form> : <h3>{props.PosterName}</h3>
             }
           </div>
