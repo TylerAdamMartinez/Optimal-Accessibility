@@ -19,40 +19,6 @@ namespace OptimalAccessibility.API.Repositories
             _logger = logger;
         }
 
-        public DatabaseResultTypes AddNewPoster(PosterDTO newPoster, Guid userId)
-        {
-            if (newPoster.AccessibilityScore == null)
-            {
-                return DatabaseResultTypes.NoAccessibilityScoreGiven;
-            }
-
-            _context.Posters.Add(new Poster()
-            {
-                userId = userId,
-                PosterName = newPoster.Name,
-                PosterImageTitle = newPoster.Title,
-                PosterImageData = newPoster.Data,
-            });
-            _context.SaveChanges();
-
-            var poster = _context.Posters.Where(b => b.PosterName == newPoster.Name).FirstOrDefault();
-            if (poster == null)
-            {
-                return DatabaseResultTypes.PosterNotFound;
-            }
-            
-            _context.PosterAccessibilityScores.Add(new PosterAccessibilityScore()
-            {
-                posterId = poster.posterId,
-                ColorRating = newPoster.AccessibilityScore.ColorRating,
-                TextRating = newPoster.AccessibilityScore.TextRating,
-                StructureRating = newPoster.AccessibilityScore.StructureRating,
-            });
-
-            _context.SaveChanges();
-            return DatabaseResultTypes.Successful;
-        }
-
         public bool AddNewUser(UserDTO newUser, string Password)
         {
 
@@ -195,46 +161,6 @@ namespace OptimalAccessibility.API.Repositories
             };
         }
 
-        public List<PosterDTO> GetPostersByUserId(Guid userId)
-        {
-            var posters = from User in _context.Users
-                          where User.userId == userId
-                          join Poster in _context.Posters
-                          on User.userId equals Poster.userId
-                          select Poster;
-
-            var posterDTOs = new List<PosterDTO>();
-            foreach (Poster poster in posters)
-            {
-                posterDTOs.Add(new PosterDTO()
-                {
-                    Name = poster.PosterName,
-                    Data = poster.PosterImageData,
-                    Title = poster.PosterImageTitle,
-                    AccessibilityScore = GetPosterAccessibilityScoreByPosterId(poster.posterId),
-                });
-            }
-            return posterDTOs;
-        }
-
-        public List<PosterDTO> GetAllPosters()
-        {
-            var posters = _context.Posters.ToList();
-            var posterDTOs = new List<PosterDTO>();
-            foreach (Poster poster in posters)
-            {
-                posterDTOs.Add(new PosterDTO()
-                {
-                    Name = poster.PosterName,
-                    Data = poster.PosterImageData,
-                    Title = poster.PosterImageTitle,
-                    AccessibilityScore = GetPosterAccessibilityScoreByPosterId(poster.posterId),
-                });
-            }
-            return posterDTOs;
-        }
-
-
         public UserDTO GetUserByEUID(string EUID)
         {
             var user = _context.Users.Where(user => user.EUID == EUID).FirstOrDefault();
@@ -274,9 +200,19 @@ namespace OptimalAccessibility.API.Repositories
 
         }
 
-        public bool IsUniquePosterName(string posterName)
+        public bool IsUniquePosterName(string posterName, Guid userId)
         {
-            var Result = _context.Posters.Where(b => b.PosterName == posterName).FirstOrDefault();
+            Poster? Result;
+
+            try
+            {
+                Result = _context.Posters.Where(p => p.PosterName == posterName && p.userId == userId).SingleOrDefault();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return false;
+            }
 
             if (Result == null)
             {
@@ -284,6 +220,158 @@ namespace OptimalAccessibility.API.Repositories
             }
 
             return false;
+        }
+
+        public DatabaseResultTypes CreatePoster(PosterDTO newPoster, Guid userId)
+        {
+            if (newPoster.AccessibilityScore == null)
+            {
+                return DatabaseResultTypes.NoAccessibilityScoreGiven;
+            }
+
+            _context.Posters.Add(new Poster()
+            {
+                userId = userId,
+                PosterName = newPoster.Name,
+                PosterImageTitle = newPoster.Title,
+                PosterImageData = newPoster.Data,
+            });
+            _context.SaveChanges();
+
+            Poster? poster;
+            try
+            {
+                poster = _context.Posters.Where(p => p.PosterName == newPoster.Name && p.userId == userId).SingleOrDefault();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return DatabaseResultTypes.PosterNotFound;
+            }
+
+            if (poster == null)
+            {
+                return DatabaseResultTypes.PosterNotFound;
+            }
+
+            _context.PosterAccessibilityScores.Add(new PosterAccessibilityScore()
+            {
+                posterId = poster.posterId,
+                ColorRating = newPoster.AccessibilityScore.ColorRating,
+                TextRating = newPoster.AccessibilityScore.TextRating,
+                StructureRating = newPoster.AccessibilityScore.StructureRating,
+            });
+
+            _context.SaveChanges();
+            return DatabaseResultTypes.Successful;
+        }
+
+        public List<PosterDTO> GetPostersByUserId(Guid userId)
+        {
+            var posters = from User in _context.Users
+                          where User.userId == userId
+                          join Poster in _context.Posters
+                          on User.userId equals Poster.userId
+                          select Poster;
+
+            var posterDTOs = new List<PosterDTO>();
+            foreach (Poster poster in posters)
+            {
+                posterDTOs.Add(new PosterDTO()
+                {
+                    Name = poster.PosterName,
+                    Data = poster.PosterImageData,
+                    Title = poster.PosterImageTitle,
+                    AccessibilityScore = GetPosterAccessibilityScoreByPosterId(poster.posterId),
+                });
+            }
+            return posterDTOs;
+        }
+
+        public List<PosterDTO> GetAllPosters()
+        {
+            var posters = _context.Posters.ToList();
+            var posterDTOs = new List<PosterDTO>();
+            foreach (Poster poster in posters)
+            {
+                posterDTOs.Add(new PosterDTO()
+                {
+                    Name = poster.PosterName,
+                    Data = poster.PosterImageData,
+                    Title = poster.PosterImageTitle,
+                    AccessibilityScore = GetPosterAccessibilityScoreByPosterId(poster.posterId),
+                });
+            }
+            return posterDTOs;
+        }
+
+        public DatabaseResultTypes UpdatePoster(string posterName, Guid userId, string newPosterName)
+        {
+            if(!IsUniquePosterName(newPosterName, userId))
+            {
+                return DatabaseResultTypes.FailedToUpdateValue;
+            }
+
+            Poster? poster;
+            try
+            {
+                poster = _context.Posters.Where(p => p.PosterName == posterName && p.userId == userId).SingleOrDefault();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return DatabaseResultTypes.PosterNotFound;
+            }
+
+            if (poster == null)
+            {
+                return DatabaseResultTypes.PosterNotFound;
+            }
+
+            poster.PosterName = newPosterName;
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex.ToString());
+                return DatabaseResultTypes.FailedToUpdateValue;
+            }
+            return DatabaseResultTypes.Successful;
+        }
+
+        public DatabaseResultTypes DeletePoster(string posterName, Guid userId)
+        {
+            Poster? poster;
+            try
+            {
+                poster = _context.Posters.Where(p => p.PosterName == posterName && p.userId == userId).SingleOrDefault();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return DatabaseResultTypes.PosterNotFound;
+            }
+
+            if (poster == null)
+            {
+                return DatabaseResultTypes.PosterNotFound;
+            }
+
+
+            _context.Posters.Remove(poster);
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex.ToString());
+                return DatabaseResultTypes.FailedToUpdateValue;
+            }
+            return DatabaseResultTypes.Successful;
+
         }
     }
 }

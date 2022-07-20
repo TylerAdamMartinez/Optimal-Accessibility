@@ -39,12 +39,12 @@ namespace OptimalAccessibility.API.Controllers
         [HttpPost("AddPosterByUserId/{userId:Guid}")]
         public IActionResult AddPoster([FromRoute] Guid userId,[FromBody] PosterDTO newPoster)
         {
-            if(!_userRepo.IsUniquePosterName(newPoster.Name))
+            if(!_userRepo.IsUniquePosterName(newPoster.Name, userId))
             {
                 return BadRequest($"Poster Name {newPoster.Name} has been taken already");
             }
 
-            var Result = _userRepo.AddNewPoster(newPoster, userId);
+            var Result = _userRepo.CreatePoster(newPoster, userId);
             if (Result == Domain.Enum.DatabaseResultTypes.NoAccessibilityScoreGiven)
             {
                 return BadRequest("Accessibility Must be given to add a new poster to database");
@@ -60,16 +60,33 @@ namespace OptimalAccessibility.API.Controllers
 
         [Authorize]
         [HttpPut("UpdatePosterByUserId/{userId:Guid}/ByPosterName/{posterName}")]
-        public IActionResult UpdatePoster([FromRoute] Guid userId, [FromRoute] string posterName)
+        public IActionResult UpdatePoster([FromRoute] Guid userId, [FromRoute] string posterName, [FromQuery] string newPosterName)
         {
-            return BadRequest("Not impl yet");
+            var Result = _userRepo.UpdatePoster(posterName, userId, newPosterName);
+            if (Result == Domain.Enum.DatabaseResultTypes.FailedToUpdateValue)
+            {
+                return BadRequest($"Poster Name {newPosterName} has been taken already");
+            }
+
+            else if (Result == Domain.Enum.DatabaseResultTypes.PosterNotFound)
+            {
+                return BadRequest("Poster failed to be found");
+            }
+
+            return Ok();
         }
 
         [Authorize]
         [HttpDelete("DeletePosterByUserId/{userId:Guid}/ByPosterName/{posterName}")]
         public IActionResult DeletePoster([FromRoute] Guid userId, [FromRoute] string posterName)
         {
-            return BadRequest("Not impl yet");
+            var Result = _userRepo.DeletePoster(posterName, userId);
+            if (Result == Domain.Enum.DatabaseResultTypes.PosterNotFound)
+            {
+                return BadRequest("Poster failed to be found");
+            }
+
+            return Ok();
         }
 
         [Authorize(Roles = "Teacher")]
