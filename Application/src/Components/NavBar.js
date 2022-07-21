@@ -9,8 +9,9 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { getImageGrid } from '../Utils/Structure';
+import ConvertImageToBase64 from '../Utils/ConvertImageToBase64';
 
-function NavBar() {
+function NavBar(props) {
   let textHelpInfo = `The text rating is mainly based on the readability of the text. If the text cannot be easily read by the computer, then it probably can't be easily read by a person. The size of the text, as well as the color contrast with its surroundings, are the largest factors.
 
 If the text rating for your poster is low, the following list could help you find some issues:
@@ -49,14 +50,16 @@ If the color rating for your poster is low, the following list could help you fi
 
   const [name, SetPosterName] = useState('');
   const [FileData, SetPosterFileData] = useState('');
-  const [loadingState, setLoadingState] = useState('submit');
+  const [loadingState, setLoadingState] = useState("submit");
+  const [IsProcessing, setIsProcessing] = useState(false);
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setIsProcessing(true);
     let errorFlag = false;
 
     let title = Math.random().toString();
-
+  
     async function getAccessibilityScore(poster) {
       setLoadingState('Uploading image...');
       poster = await ConvertImageToBase64(poster);
@@ -83,6 +86,7 @@ If the color rating for your poster is low, the following list could help you fi
         let cookies = new Cookies();
         let Jwt = cookies.get('jwt');
 
+        setLoadingState("Sent");
         fetch(`https://localhost:7267/api/User/AddPosterByUserId/${userId}`, {
           method: 'POST',
           headers: {
@@ -104,7 +108,9 @@ If the color rating for your poster is low, the following list could help you fi
             if (errorFlag) {
               throw new Error(`${responseJSON}`);
             }
-            window.location.reload(false);
+            setIsProcessing(false);
+            props.addPosterCallback(name);
+            setLoadingState("Submit")
           })
           .catch((err) => {
             alert(err);
@@ -126,29 +132,6 @@ If the color rating for your poster is low, the following list could help you fi
     SetPosterFileData(file);
   }
 
-  function ConvertImageToBase64(file) {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onLoad = () => {
-        resolve(fileReader.result);
-      };
-
-      fileReader.onloadend = () => {
-        if (fileReader.result != null) {
-          resolve(fileReader.result.split(',')[1]);
-        } else {
-          reject(new Error(`fileReader.result is null`));
-        }
-      };
-
-      fileReader.onError = (err) => {
-        console.error(err);
-        reject(err);
-      };
-    });
-  }
-
   function handleLogout() {
     localStorage.clear();
     let cookies = new Cookies();
@@ -158,7 +141,7 @@ If the color rating for your poster is low, the following list could help you fi
   return (
     <div className='NavBar'>
       <span></span>
-      <Link to='/'>
+      <Link to='/dashboard'>
         <div id='LogoBox'>
           <img id='LogoImg' alt='Optimal Accessibility Logo' src={OptimalAccessibilityLogo} />
           <h1>Optimal Accessibility</h1>
@@ -210,13 +193,24 @@ If the color rating for your poster is low, the following list could help you fi
                   <h2>New Poster</h2>
                   <form onSubmit={handleSubmit} id='PopUpAddMenuForm'>
                     <input
+                      readOnly={IsProcessing}
                       placeholder='Name'
                       type='text'
                       value={name}
                       onChange={handleNameChange}
                     />
-                    <input type='File' accept='.png, .jpg' onChange={handleFileChange} />
-                    <input type='submit' value={loadingState} className='PopUpAccountMenuDivbtn' />
+                    <input
+                      disabled={IsProcessing}
+                      readOnly={IsProcessing} 
+                      type='File' accept='.png, .jpg' 
+                      onChange={handleFileChange} 
+                    />
+                    <input
+                      readOnly={IsProcessing}
+                      type='submit'
+                      value={loadingState}
+                      className='PopUpAccountMenuDivbtn'
+                    />
                   </form>
                 </div>
               </div>

@@ -19,7 +19,7 @@ function App() {
 				<Route path="/login" element={<LoginPage />} />
 				<Route path="/register" element={<RegistrationPage />} />
 				<Route element={<PrivateRoutes />} >
-					<Route path="/dashboard/:userId" element={<DashBoard />} />
+					<Route path="/dashboard" element={<DashBoard />} />
 				</Route>
 				<Route path='*' element={<NotFound404ErrorPage />} />
 			</Routes>

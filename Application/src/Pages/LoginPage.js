@@ -35,7 +35,7 @@ function Login() {
             let cookies = new Cookies();
             cookies.set("jwt", responseJSON.jwt, {sameSite: 'strict', path: "/", expires: new Date(Date.now() + 12096e5)});
             localStorage.setItem('userId', responseJSON.userDTO.userId);
-            navigate(`/dashboard/${responseJSON.userDTO.userId}`);
+            navigate(`/dashboard`);
         })
         .catch((err) => {
             alert(err);
