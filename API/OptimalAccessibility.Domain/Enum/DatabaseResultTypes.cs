@@ -3,11 +3,24 @@
     public enum DatabaseResultTypes
     {
         Successful = 0,
-        FailedToUpdateValue,
+
+        FailedToUpdateUser,
+        FailedToUpdatePoster,
+        FailedToUpdatePosterAccessibilityScore,
+        FailedToUpdateUserAcessibilityScoreNotFound,
+
+        FailedToDeleteUser,
+        FailedToDeletePoster,
+        FailedToDeletePosterAccessibilityScore,
+        FailedToDeleteUserAcessibilityScoreNotFound,
+
         UserNotFound,
         PosterNotFound,
-        NoAccessibilityScoreGiven,
+        PosterAccessibilityScoreNotFound,
+        UserAcessibilityScoreNotFound,
 
+        NoAccessibilityScoreGiven,
+        UniqueKeyConstraintFailed
     }
 }
 

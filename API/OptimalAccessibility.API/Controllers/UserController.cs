@@ -63,7 +63,7 @@ namespace OptimalAccessibility.API.Controllers
         public IActionResult UpdatePosterName([FromRoute] Guid userId, [FromRoute] string posterName, [FromQuery] string newPosterName)
         {
             var Result = _userRepo.UpdatePosterName(posterName, userId, newPosterName);
-            if (Result == Domain.Enum.DatabaseResultTypes.FailedToUpdateValue)
+            if (Result == Domain.Enum.DatabaseResultTypes.FailedToUpdatePoster)
             {
                 return BadRequest($"Poster Name {newPosterName} has been taken already");
             }
@@ -81,18 +81,28 @@ namespace OptimalAccessibility.API.Controllers
         public IActionResult UpdatePosterData([FromRoute] Guid userId, [FromRoute] string posterName, [FromBody] PosterDTO newPosterDTO)
         {
             var Result = _userRepo.UpdatePosterData(posterName, userId, newPosterDTO);
-            if (Result == Domain.Enum.DatabaseResultTypes.FailedToUpdateValue)
-            {
-                return BadRequest($"New poster image data for poster {posterName} has failed to be uploaded to database");
-            }
-            else if (Result == Domain.Enum.DatabaseResultTypes.PosterNotFound)
-            {
-                return BadRequest("Poster failed to be found");
-            }
-            else if(Result == Domain.Enum.DatabaseResultTypes.NoAccessibilityScoreGiven)
+
+            if (Result == Domain.Enum.DatabaseResultTypes.NoAccessibilityScoreGiven)
             {
                 return BadRequest("No accessibility score given");
             }
+            else if (Result == Domain.Enum.DatabaseResultTypes.PosterNotFound)
+            {
+                return BadRequest($"Failed to find poster: `{posterName}` in database");
+            }
+            else if (Result == Domain.Enum.DatabaseResultTypes.PosterAccessibilityScoreNotFound)
+            {
+                return BadRequest($"Failed to find accessibility score for poster: `{posterName}` in database");
+            }
+            else if (Result == Domain.Enum.DatabaseResultTypes.FailedToUpdatePosterAccessibilityScore)
+            {
+                return BadRequest($"New poster accessibility score for poster: `{posterName}` has failed to be uploaded to database");
+            }
+            else if (Result == Domain.Enum.DatabaseResultTypes.FailedToUpdatePoster)
+            {
+                return BadRequest($"New poster image data for poster: `{posterName}` has failed to be uploaded to database");
+            }
+
 
             return Ok();
         }

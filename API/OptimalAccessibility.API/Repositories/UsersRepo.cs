@@ -77,7 +77,7 @@ namespace OptimalAccessibility.API.Repositories
             catch (DbUpdateException ex)
             {
                 _logger.LogError(ex.ToString());
-                return DatabaseResultTypes.FailedToUpdateValue;
+                return DatabaseResultTypes.FailedToDeleteUser;
             }
             return DatabaseResultTypes.Successful;
         }
@@ -290,26 +290,22 @@ namespace OptimalAccessibility.API.Repositories
 
         public List<PosterDTO> GetAllPosters()
         {
-            var posters = _context.Posters.ToList();
-            var posterDTOs = new List<PosterDTO>();
-            foreach (Poster poster in posters)
-            {
-                posterDTOs.Add(new PosterDTO()
-                {
-                    Name = poster.PosterName,
-                    Data = poster.PosterImageData,
-                    Title = poster.PosterImageTitle,
-                    AccessibilityScore = GetPosterAccessibilityScoreByPosterId(poster.posterId),
-                });
-            }
-            return posterDTOs;
+            var posters = _context.Posters
+                          .Select((poster) => new PosterDTO()
+                          {
+                              Name = poster.PosterName,
+                              Data = poster.PosterImageData,
+                              Title = poster.PosterImageTitle,
+                              AccessibilityScore = GetPosterAccessibilityScoreByPosterId(poster.posterId),
+                          });
+            return posters.ToList();
         }
 
         public DatabaseResultTypes UpdatePosterName(string posterName, Guid userId, string newPosterName)
         {
             if(!IsUniquePosterName(newPosterName, userId))
             {
-                return DatabaseResultTypes.FailedToUpdateValue;
+                return DatabaseResultTypes.UniqueKeyConstraintFailed;
             }
 
             Poster? poster;
@@ -336,7 +332,7 @@ namespace OptimalAccessibility.API.Repositories
             catch (DbUpdateException ex)
             {
                 _logger.LogError(ex.ToString());
-                return DatabaseResultTypes.FailedToUpdateValue;
+                return DatabaseResultTypes.FailedToUpdatePoster;
             }
             return DatabaseResultTypes.Successful;
         }
@@ -351,7 +347,7 @@ namespace OptimalAccessibility.API.Repositories
             Poster? poster;
             try
             {
-                poster = _context.Posters.Where(p => p.PosterName == posterName && p.userId == userId).FirstOrDefault();
+                poster = _context.Posters.Where(p => p.PosterName == posterName && p.userId == userId).SingleOrDefault();
             }
             catch (Exception ex)
             {
@@ -372,12 +368,35 @@ namespace OptimalAccessibility.API.Repositories
             catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
-                return DatabaseResultTypes.NoAccessibilityScoreGiven;
+                return DatabaseResultTypes.PosterAccessibilityScoreNotFound;
             }
 
             if (posterAccessibilityScore == null)
             {
-                return DatabaseResultTypes.NoAccessibilityScoreGiven;
+                _context.PosterAccessibilityScores.Add(new PosterAccessibilityScore()
+                {
+                    posterId = poster.posterId,
+                    TextRating = newPosterDTO.AccessibilityScore.TextRating,
+                    StructureRating = newPosterDTO.AccessibilityScore.StructureRating,
+                    ColorRating = newPosterDTO.AccessibilityScore.ColorRating
+                });
+
+                try
+                {
+                    _context.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    _logger.LogError(ex.ToString());
+                    return DatabaseResultTypes.FailedToUpdatePosterAccessibilityScore;
+                }
+
+                posterAccessibilityScore = _context.PosterAccessibilityScores.Where(pas => pas.posterId == poster.posterId).SingleOrDefault();
+                if (posterAccessibilityScore == null)
+                {
+                    return DatabaseResultTypes.FailedToUpdatePosterAccessibilityScore;
+                }
+
             }
 
             posterAccessibilityScore.TextRating = newPosterDTO.AccessibilityScore.TextRating;
@@ -390,7 +409,7 @@ namespace OptimalAccessibility.API.Repositories
             catch (DbUpdateException ex)
             {
                 _logger.LogError(ex.ToString());
-                return DatabaseResultTypes.FailedToUpdateValue;
+                return DatabaseResultTypes.FailedToUpdatePosterAccessibilityScore;
             }
 
             poster.PosterImageData = newPosterDTO.Data;
@@ -402,7 +421,7 @@ namespace OptimalAccessibility.API.Repositories
             catch (DbUpdateException ex)
             {
                 _logger.LogError(ex.ToString());
-                return DatabaseResultTypes.FailedToUpdateValue;
+                return DatabaseResultTypes.FailedToUpdatePoster;
             }
             return DatabaseResultTypes.Successful;
         }
@@ -434,7 +453,7 @@ namespace OptimalAccessibility.API.Repositories
             catch (DbUpdateException ex)
             {
                 _logger.LogError(ex.ToString());
-                return DatabaseResultTypes.FailedToUpdateValue;
+                return DatabaseResultTypes.FailedToDeletePoster;
             }
             return DatabaseResultTypes.Successful;
 
