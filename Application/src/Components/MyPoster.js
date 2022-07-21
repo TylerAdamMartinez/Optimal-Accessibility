@@ -20,12 +20,14 @@ function MyPoster(props) {
   let [isEditing, setIsEditing] = useState(false);
   let [editPosterName, setEditPosterName] = useState(props.PosterName);
   let [editPosterData, setEditPosterData] = useState(props.Data);
+  const [IsProcessing, setIsProcessing] = useState(false);
 
   function handleOpen() {
     setIsOpen(false);
   }
 
   function DeletePoster() {
+    setIsProcessing(true);
     let errorFlag = false;
     let userId = localStorage.getItem('userId');
     let cookies = new Cookies();
@@ -49,6 +51,8 @@ function MyPoster(props) {
       if (errorFlag) {
         throw new Error(`${responseJSON}`);
       }
+
+      setIsProcessing(false);
       props.editPosterCallback(Math.random());
     })
     .catch((err) => {
@@ -59,6 +63,7 @@ function MyPoster(props) {
 
   function UpdatePosterName(event) {
     setIsEditing(false);
+    setIsProcessing(true);
     event.preventDefault();
     let errorFlag = false;
     let userId = localStorage.getItem('userId');
@@ -83,6 +88,8 @@ function MyPoster(props) {
       if (errorFlag) {
         throw new Error(`${responseJSON}`);
       }
+
+      setIsProcessing(false);
       props.editPosterCallback(editPosterName);
     })
     .catch((err) => {
@@ -93,6 +100,7 @@ function MyPoster(props) {
 
   async function UpdatePosterData(event) {
     setIsEditing(false);
+    setIsProcessing(true);
     event.preventDefault();
     let errorFlag = false;
     let userId = localStorage.getItem('userId');
@@ -140,6 +148,8 @@ function MyPoster(props) {
         if (errorFlag) {
           throw new Error(`${responseJSON}`);
         }
+
+        setIsProcessing(false);
         props.editPosterCallback(editPosterData);
       })
       .catch((err) => {
@@ -160,6 +170,15 @@ function MyPoster(props) {
   function editPosterDatahandler(event){
     let file = event.target.files[0];
     setEditPosterData(file);
+  }
+
+  function DeleteForeverHandler() {
+    let userAnswer = window.confirm(`Are you sure you would like to delete poster: '${props.PosterName}' forever?`);
+
+    if(userAnswer) {
+      DeletePoster();
+    }
+
   }
 
   let BarGraphData = new AccessibilityBarGraphData(props.AccessibilityRating);
@@ -190,12 +209,14 @@ function MyPoster(props) {
             { isEditing ?  
               <form id='editForm' onSubmit={UpdatePosterName}>
                 <input
+                  readOnly={IsProcessing}
                   id='editPosterNameInput'
                   placeholder={props.PosterName}
                   type='text'
                   value={editPosterName}
                   onChange={editPosterNameHandler} />
                 <input
+                  readOnly={IsProcessing}
                   id='editPosterNameBtn'
                   type='submit'
                   value={"submit"} />
@@ -207,8 +228,15 @@ function MyPoster(props) {
             <>
               <div id='editingPosterDataFrom'>
                 <form onSubmit={UpdatePosterData}>
-                  <input type='File' accept='.png, .jpg' onChange={editPosterDatahandler} />
                   <input
+                    disabled={IsProcessing}
+                    readOnly={IsProcessing}
+                    type='File' 
+                    accept='.png, .jpg, .jpeg' 
+                    onChange={editPosterDatahandler} 
+                  />
+                  <input
+                    readOnly={IsProcessing}
                     id='editPosterDataBtn'
                     type='submit'
                     value={"Submit"}
@@ -235,7 +263,7 @@ function MyPoster(props) {
             <DeleteForeverIcon
               className='deleteIcon'
               fontSize='large'
-              onClick={DeletePoster}
+              onClick={DeleteForeverHandler}
             />
             <EditIcon
               className='editIcon'
