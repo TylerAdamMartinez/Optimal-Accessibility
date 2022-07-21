@@ -11,11 +11,13 @@
     <None Remove="Clients\" />
     <None Remove="Repositories\" />
     <None Remove="Services\" />
+    <None Remove="ReportTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Clients\" />
     <Folder Include="Repositories\" />
-    <Folder Include="Services\" />
+    <Folder Include="OptimalAccessibilityReportTemplate.hbs\" />
+    <Folder Include="ReportTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OptimalAccessibility.Domain\OptimalAccessibility.Domain.csproj">
