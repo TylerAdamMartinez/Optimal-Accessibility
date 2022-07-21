@@ -16,7 +16,8 @@ namespace OptimalAccessibility.Application.Repositories
         public DatabaseResultTypes CreatePoster(PosterDTO newPoster, Guid userId);
         public List<PosterDTO> GetPostersByUserId(Guid userId);
         public List<PosterDTO> GetAllPosters();
-        public DatabaseResultTypes UpdatePoster(string posterName, Guid userId, string newPosterName);
+        public DatabaseResultTypes UpdatePosterName(string posterName, Guid userId, string newPosterName);
+        public DatabaseResultTypes UpdatePosterData(string posterName, Guid userId, PosterDTO newPosterDTO);
         public DatabaseResultTypes DeletePoster(string posterName, Guid userId);
 
 

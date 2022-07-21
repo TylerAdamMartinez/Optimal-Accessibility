@@ -7,6 +7,8 @@ import AccessibilityBarGraphData from './AccessibilityBarGraphData';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import Cookies from 'universal-cookie';
+import ConvertImageToBase64 from '../Utils/ConvertImageToBase64';
+import { getImageGrid } from '../Utils/Structure';
 
 function MyPoster(props) {
   const imgRef = useRef();
@@ -55,7 +57,7 @@ function MyPoster(props) {
     });
   }
 
-  function UpdatePoster(event) {
+  function UpdatePosterName(event) {
     setIsEditing(false);
     event.preventDefault();
     let errorFlag = false;
@@ -63,7 +65,7 @@ function MyPoster(props) {
     let cookies = new Cookies();
     let Jwt = cookies.get('jwt');
 
-    fetch(`https://localhost:7267/api/User/UpdatePosterByUserId/${userId}/ByPosterName/${props.PosterName}?newPosterName=${editPosterName}`, {
+    fetch(`https://localhost:7267/api/User/UpdatePosterNameByUserId/${userId}/ByPosterName/${props.PosterName}?newPosterName=${editPosterName}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -89,12 +91,75 @@ function MyPoster(props) {
     });
   }
 
+  async function UpdatePosterData(event) {
+    setIsEditing(false);
+    event.preventDefault();
+    let errorFlag = false;
+    let userId = localStorage.getItem('userId');
+    let cookies = new Cookies();
+    let Jwt = cookies.get('jwt');
+
+    async function getAccessibilityScore(poster) {
+      poster = await ConvertImageToBase64(poster);
+      let posterGrades = await getImageGrid('data:image/png;base64,' + poster).then((score) => {
+        let posterGrade = {
+          textRating: Math.round(score.textGrade),
+          structureRating: Math.round(score.structureGrade),
+          colorRating: Math.round(score.colorGrade),
+        };
+
+        return posterGrade;
+      });
+      
+      return posterGrades;
+    }
+
+    let name = props.PosterName;
+    let title = Math.random().toString();
+    let accessibilityScore = await getAccessibilityScore(editPosterData);
+    ConvertImageToBase64(editPosterData)
+    .then((data) => {
+      const addPosterBody = { name, title, data, accessibilityScore };
+
+      fetch(`https://localhost:7267/api/User/UpdatePosterDataByUserId/${userId}/ByPosterName/${name}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          accept: 'application/json',
+          Authorization: `bearer ${Jwt}`,
+        },
+        body: JSON.stringify(addPosterBody),
+      })
+      .then((responce) => {
+        if (!responce.ok) {
+          errorFlag = true;
+          return responce.json();
+        }
+      })
+      .then((responseJSON) => {
+        if (errorFlag) {
+          throw new Error(`${responseJSON}`);
+        }
+        window.location.reload(false);
+      })
+      .catch((err) => {
+        alert(err);
+        console.error(err);
+      });
+    })
+    .catch((err) => {
+      alert(err);
+      console.error(err);
+    });
+  }
+
   function editPosterNameHandler(event) {
     setEditPosterName(event.target.value);
   }
 
   function editPosterDatahandler(event){
-    setEditPosterData(event.target.value);
+    let file = event.target.files[0];
+    setEditPosterData(file);
   }
 
   let BarGraphData = new AccessibilityBarGraphData(props.AccessibilityRating);
@@ -123,7 +188,7 @@ function MyPoster(props) {
         <div className='PosterImgAndNameContainer'>
           <div id='PosterPopUpMenuPosterNameDiv'>
             { isEditing ?  
-              <form id='editForm' onSubmit={UpdatePoster}>
+              <form id='editForm' onSubmit={UpdatePosterName}>
                 <input
                   id='editPosterNameInput'
                   placeholder={props.PosterName}
@@ -141,12 +206,14 @@ function MyPoster(props) {
             { isEditing ?
             <>
               <div id='editingPosterDataFrom'>
-                <input type='File' accept='.png, .jpg' onChange={editPosterDatahandler} />
-                <input
-                  id='editPosterDataBtn'
-                  type='submit'
-                  value={"Submit"}
-                />
+                <form onSubmit={UpdatePosterData}>
+                  <input type='File' accept='.png, .jpg' onChange={editPosterDatahandler} />
+                  <input
+                    id='editPosterDataBtn'
+                    type='submit'
+                    value={"Submit"}
+                  />
+                </form>
               </div>
               <img
                 id='editingPosterDataImage'
