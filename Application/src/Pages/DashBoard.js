@@ -8,6 +8,7 @@ import AccessibilityBarGraphData from '../Components/AccessibilityBarGraphData';
 
 function DashBoard() {
 	let [NewPosterAdded, SetNewPosterAdded] = useState("");
+	let [OldPosterEdited, SetOldPosterEdited] = useState("");
 	let [OverallAccessibilityScore, SetOverallAccessibilityScore] = useState({textRating: 5, structureRating: 5, colorRating: 5});
 	useEffect(() => {
 		let cookies = new Cookies();
@@ -27,7 +28,7 @@ function DashBoard() {
 			SetOverallAccessibilityScore(responseJSON);
 		})
 		.catch((err) => console.error(err));
-	}, [NewPosterAdded]);
+	}, [NewPosterAdded, OldPosterEdited]);
 
 	const [Posters, SetPosters] = useState([{name: "string", data: "", accessibilityScore: {textRating: 55, structureRating: 55, colorRating: 55}}]);
 	useEffect(() => {
@@ -48,10 +49,14 @@ function DashBoard() {
 			SetPosters(responseJSON);
 		})
 		.catch((err) => console.error(err));
-	}, [NewPosterAdded]);
+	}, [NewPosterAdded, OldPosterEdited]);
 
 	function addPosterCallbackHandler(name) {
 		SetNewPosterAdded(name);
+	}
+
+	function editPosterCallbackHandler(title) {
+		SetOldPosterEdited(title);
 	}
 
 	let OverallAccessibilityBarGraphData = new AccessibilityBarGraphData(OverallAccessibilityScore);
@@ -60,7 +65,7 @@ function DashBoard() {
 		<>
 			<NavBar addPosterCallback={addPosterCallbackHandler}/>
 			<div className='App'>
-				<MyPostersSection myPosters={Posters}/>
+				<MyPostersSection myPosters={Posters} editPosterCallback={editPosterCallbackHandler}/>
 				<OverallAccessibilitySection chartData={OverallAccessibilityBarGraphData.build} />
 			</div>
 		</>

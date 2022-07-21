@@ -49,7 +49,7 @@ function MyPoster(props) {
       if (errorFlag) {
         throw new Error(`${responseJSON}`);
       }
-      window.location.reload(false);
+      props.editPosterCallback(Math.random());
     })
     .catch((err) => {
       alert(err);
@@ -83,7 +83,7 @@ function MyPoster(props) {
       if (errorFlag) {
         throw new Error(`${responseJSON}`);
       }
-      window.location.reload(false);
+      props.editPosterCallback(editPosterName);
     })
     .catch((err) => {
       alert(err);
@@ -140,7 +140,7 @@ function MyPoster(props) {
         if (errorFlag) {
           throw new Error(`${responseJSON}`);
         }
-        window.location.reload(false);
+        props.editPosterCallback(editPosterData);
       })
       .catch((err) => {
         alert(err);
