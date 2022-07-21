@@ -461,7 +461,7 @@ namespace OptimalAccessibility.API.Repositories
 
         }
 
-        OptimalAccessibilityReportDetails GetReportDetails(Guid userId)
+        public OptimalAccessibilityReportDetails GetReportDetails(Guid userId)
         {
             var user =  _context.Users
                         .Where(user => user.userId == userId).Single();
