@@ -134,5 +134,14 @@ namespace OptimalAccessibility.API.Controllers
         {
             return BadRequest("Not impl yet");
         }
+
+        [Authorize]
+        [HttpGet("GenerateReportByUserId/{userId:Guid}")]
+        public async Task<IActionResult> GenerateReport([FromRoute] Guid userId)
+        {
+            await _userRepo.GenerateReport(userId);
+            return Ok();
+        }
+
     }
 }

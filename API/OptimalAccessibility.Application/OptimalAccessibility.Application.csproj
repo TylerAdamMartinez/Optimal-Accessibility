@@ -12,16 +12,22 @@
     <None Remove="Repositories\" />
     <None Remove="Services\" />
     <None Remove="ReportTemplates\" />
+    <None Remove="Handlebars.Net" />
+    <None Remove="PuppeteerSharp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Clients\" />
     <Folder Include="Repositories\" />
-    <Folder Include="OptimalAccessibilityReportTemplate.hbs\" />
+    <Folder Include="Services\" />
     <Folder Include="ReportTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OptimalAccessibility.Domain\OptimalAccessibility.Domain.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Handlebars.Net" Version="2.1.2" />
+    <PackageReference Include="PuppeteerSharp" Version="7.1.0" />
   </ItemGroup>
 </Project>

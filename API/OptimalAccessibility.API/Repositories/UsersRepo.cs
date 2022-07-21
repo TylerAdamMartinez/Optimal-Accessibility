@@ -10,12 +10,14 @@ namespace OptimalAccessibility.API.Repositories
     {
         private readonly OptimalAccessibilityContext _context;
         private readonly IAuthRepo _authRepo;
+        private readonly IReporting _reporting;
         private readonly ILogger<UsersRepo> _logger;
 
-        public UsersRepo(OptimalAccessibilityContext context, IAuthRepo authRepo, ILogger<UsersRepo> logger)
+        public UsersRepo(OptimalAccessibilityContext context, IAuthRepo authRepo, IReporting reporting, ILogger<UsersRepo> logger)
         {
             _context = context;
             _authRepo = authRepo;
+            _reporting = reporting;
             _logger = logger;
         }
 
@@ -457,6 +459,55 @@ namespace OptimalAccessibility.API.Repositories
             }
             return DatabaseResultTypes.Successful;
 
+        }
+
+        OptimalAccessibilityReportDetails GetReportDetails(Guid userId)
+        {
+            var user =  _context.Users
+                        .Where(user => user.userId == userId).Single();
+
+            var userAccessibilityScore = _context.UserAccessibilityScores
+                                         .Where(uas => uas.userId == userId)
+                                         .Select(uas => new AccessibilityScoreDTO()
+                                         {
+                                             TextRating = uas.TextRating,
+                                             StructureRating = uas.StructureRating,
+                                             ColorRating = uas.ColorRating
+                                         }).Single();
+
+            var userPosters = _context.Posters
+                             .Where(poster => poster.userId == userId)
+                             .Join(
+                             _context.PosterAccessibilityScores,
+                             poster => poster.posterId,
+                             posterAccessibilityScore => posterAccessibilityScore.posterId,
+                             (poster, posterAccessibilityScore) => new PosterReportDetails()
+                             {
+                                Name = poster.PosterName,
+                                AccessibilityScore = new AccessibilityScoreDTO()
+                                {
+                                    TextRating = posterAccessibilityScore.TextRating,
+                                    StructureRating = posterAccessibilityScore.StructureRating,
+                                    ColorRating = posterAccessibilityScore.ColorRating
+                                }
+                             })
+                             .OrderBy(poster => poster.Name)
+                             .ToList();
+
+            return new OptimalAccessibilityReportDetails()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                AccessibilityScore = userAccessibilityScore,
+                Posters = userPosters
+            };
+        }
+
+        public async Task GenerateReport(Guid userId)
+        {
+            var reportData = GetReportDetails(userId);
+            var document = _reporting.ComplieReportTemplateWithData(reportData);
+            var pdfStream = await _reporting.CompileReportPdf(document);
         }
     }
 }
