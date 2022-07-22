@@ -49,9 +49,18 @@ export async function getColors(image) {
   });
 
   let colorGrade = 0;
+  let counter = 0;
   cgArr.forEach((grade) => {
+    if (grade === 3) {
+      counter++;
+    }
     colorGrade += grade;
   });
+
+  // if counter === 9 then the image should be one solid color, gets a rating of 0
+  if (counter === 9) {
+    colorGrade = 0;
+  }
 
   colorGrade.toFixed(2);
 
@@ -59,8 +68,8 @@ export async function getColors(image) {
     colorGrade = 95;
   } else if (colorGrade >= 30 && colorGrade < 50) {
     colorGrade += 45;
-  } else {
-    colorGrade += 45;
+  } else if (colorGrade > 0 && colorGrade < 30) {
+    colorGrade += 25;
   }
 
   let obj = {
@@ -80,7 +89,7 @@ const getScore = (color) => {
     scores[2] = colorContrastRatioCalculator(color[1], color[2]);
   } else {
     // If 'color' received by getScore() is only one value, no need to find contrast ratio for that square
-    return 15;
+    return 3;
   }
 
   scores.forEach((score) => {
