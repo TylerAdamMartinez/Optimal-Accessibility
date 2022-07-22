@@ -8,7 +8,7 @@ export async function getText(image) {
 
   grade = grade / 3;
   if (grade < 60 && grade > 0) {
-    grade += 30;
+    grade += 15;
   } else if (grade < 70 && grade > 60) {
     grade += 25;
   } else if (grade < 80 && grade > 70) {
@@ -67,7 +67,7 @@ const findOutlier = (image, grade) => {
   console.log('Bottom: ', bottomGrade);
 
   // edge case for no text
-  if (topGrade < 5 && middleGrade < 5 && bottomGrade < 5) {
+  if (topGrade < 15 && middleGrade < 15 && bottomGrade < 15) {
     grade = 0;
   } else {
     // find outlier, generally, the section of the image has no text is getting a low score
