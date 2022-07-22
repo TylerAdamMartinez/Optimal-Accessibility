@@ -28,6 +28,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="NUnit" Version="3.13.3" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +40,8 @@
     <None Remove="Microsoft.Extensions.Logging" />
     <None Remove="MartinCostello.Logging.XUnit" />
     <None Remove="Microsoft.EntityFrameworkCore.Design" />
+    <None Remove="NUnit" />
+    <None Remove="NUnit3TestAdapter" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
