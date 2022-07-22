@@ -21,7 +21,7 @@ namespace OptimalAccessibility.Application.Repositories
         public DatabaseResultTypes DeletePoster(string posterName, Guid userId);
 
         public OptimalAccessibilityReportDetails GetReportDetails(Guid userId);
-        public Task GenerateReport(Guid userId);
+        public byte[] GenerateReport(Guid userId);
     }
 }
 

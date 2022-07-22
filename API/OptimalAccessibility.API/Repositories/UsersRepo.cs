@@ -498,16 +498,17 @@ namespace OptimalAccessibility.API.Repositories
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                Euid = user.EUID,
                 AccessibilityScore = userAccessibilityScore,
                 Posters = userPosters
             };
         }
 
-        public async Task GenerateReport(Guid userId)
+        public byte[] GenerateReport(Guid userId)
         {
             var reportData = GetReportDetails(userId);
             var document = _reporting.ComplieReportTemplateWithData(reportData);
-            var pdfStream = await _reporting.CompileReportPdf(document);
+            return _reporting.CompileReportPdf(document);
         }
     }
 }

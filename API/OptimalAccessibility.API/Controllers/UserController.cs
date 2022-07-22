@@ -137,10 +137,10 @@ namespace OptimalAccessibility.API.Controllers
 
         [Authorize]
         [HttpGet("GenerateReportByUserId/{userId:Guid}")]
-        public async Task<IActionResult> GenerateReport([FromRoute] Guid userId)
+        public IActionResult GenerateReport([FromRoute] Guid userId)
         {
-            await _userRepo.GenerateReport(userId);
-            return Ok();
+            var file = _userRepo.GenerateReport(userId);
+            return File(file, "application/pdf", $"Optimal-Accessibility-Report-{userId}-{DateTime.Today.ToString("MM-dd-yyyy")}.pdf");
         }
 
     }

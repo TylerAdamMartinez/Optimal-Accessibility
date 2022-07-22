@@ -5,7 +5,7 @@ namespace OptimalAccessibility.Application.Repositories
     public interface IReporting
     {
         public string ComplieReportTemplateWithData(OptimalAccessibilityReportDetails data);
-        public Task<Stream> CompileReportPdf(string document);
+        public byte[] CompileReportPdf(string document);
     }
 }
 
