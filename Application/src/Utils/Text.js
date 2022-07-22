@@ -62,10 +62,6 @@ const findOutlier = (image, grade) => {
   let middleGrade = image.tempImages.middle.textConfidence;
   let bottomGrade = image.tempImages.bottom.textConfidence;
 
-  console.log('Top: ', topGrade);
-  console.log('Middle: ', middleGrade);
-  console.log('Bottom: ', bottomGrade);
-
   // edge case for no text
   if (topGrade < 15 && middleGrade < 15 && bottomGrade < 15) {
     grade = 0;
