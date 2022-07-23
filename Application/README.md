@@ -33,7 +33,7 @@ This is the Web Application portion of the code base
 ```json
 {
   "name": "optimal-accessibility.web.application",
-  "version": "0.2.0",
+  "version": "0.3.0",
 }
 ```
 

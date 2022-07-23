@@ -20,7 +20,8 @@ namespace OptimalAccessibility.Application.Repositories
         public DatabaseResultTypes UpdatePosterData(string posterName, Guid userId, PosterDTO newPosterDTO);
         public DatabaseResultTypes DeletePoster(string posterName, Guid userId);
 
-
+        public OptimalAccessibilityReportDetails GetReportDetails(Guid userId);
+        public byte[] GenerateReport(Guid userId);
     }
 }
 

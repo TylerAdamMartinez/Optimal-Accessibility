@@ -2,6 +2,7 @@ import './NavBar.css';
 import AddIcon from '@mui/icons-material/Add';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import HelpIcon from '@mui/icons-material/Help';
+import PictureAsPdf from '@mui/icons-material/PictureAsPdf';
 import Popup from 'reactjs-popup';
 import OptimalAccessibilityLogo from './Optimal-Accessibility-Logo.png';
 import HelpPage from './HelpPage';
@@ -123,6 +124,59 @@ If the color rating for your poster is low, the following list could help you fi
       });
   }
 
+  function generatePDF() {
+    let errorFlag = false;
+    let userId = localStorage.getItem('userId');
+    let cookies = new Cookies();
+    let Jwt = cookies.get('jwt');
+
+    function formatDate() {
+      let d = new Date();
+      let month = (d.getMonth() + 1).toString();
+      let day = d.getDate().toString();
+      let year = d.getFullYear();
+      if (month.length < 2) {
+        month = '0' + month;
+      }
+      if (day.length < 2) {
+        day = '0' + day;
+      }
+      return  [month, day, year].join('-');
+    }
+
+    fetch(`https://localhost:7267/api/User/GenerateReportByUserId/${userId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/pdf',
+        Authorization: `bearer ${Jwt}`,
+      },
+    })
+    .then((response) => {
+      if (!response.ok) {
+        errorFlag = true;
+      }
+      return response.blob();
+    })
+    .then((blob) => {
+      if (errorFlag) {
+        throw new Error(`${blob}`);
+      }
+      let today = formatDate();
+      var url = window.URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = `Optimal-Accessibility-Report-${userId}-${today}.pdf`;
+      document.body.appendChild(a);
+      a.click();    
+      a.remove();
+    })
+    .catch((err) => {
+      alert(err);
+      console.error(err);
+    });  
+  }
+
   function handleNameChange(event) {
     SetPosterName(event.target.value);
   }
@@ -215,6 +269,9 @@ If the color rating for your poster is low, the following list could help you fi
                 </div>
               </div>
             </Popup>
+          </li>
+          <li>
+            <PictureAsPdf onClick={generatePDF} fontSize='large' />
           </li>
           <li>
             <Popup trigger={<AccountCircleIcon fontSize='large' />}>

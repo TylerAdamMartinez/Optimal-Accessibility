@@ -27,31 +27,21 @@ The Optimal Accessibility project aims to create a web application that calculat
 
 ---
 
-### Required to run /Application (frontend)
-* Node.js
-* create-react-app
-* react-router-dom
-* @mui/icons-material
-* react-chartjs-2
-* chart.js
-* reactjs-popup
-* image-js
-* tesseract.js
-* @mdhnpm/color-contrast-ratio-calculator
+### /Application (frontend)
+* React.js web user interface
+* For dependency and general info checkout <a href="https://github.com/TylerAdamMartinez/Optimal-Accessibility/tree/GeneratePdfReport/Application#readme">README</a>
 
-### Required to run /API (backend)
-* ASP .NET 6 Core (*API*)
-* Microsoft.EntityFrameworkCore
-* Microsoft.EntityFrameworkCore.Design
-* Microsoft.EntityFrameworkCore.Sqlite
-* Microsoft.Extensions.Dependencyinjection
+### /API (backend)
+* C# ASP .NET Core 6 Web API
+* For dependency and general info checkout <a href="https://github.com/TylerAdamMartinez/Optimal-Accessibility/tree/GeneratePdfReport/API#readme">README</a>
 
 
 ### How to run the project
 1. Go to the project's API directory
-2. rebuild and run program
-3. Go to the project's Application directory
-4. Run the terminal command: `npm run`
+2. Run the terminal command: `dotnet run`
+3. Open another terminal instance then
+4. Go to the project's Application directory
+5. Run the terminal command: `npm run`
 
 ---
 
