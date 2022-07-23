@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OptimalAccessibility.API;
 using OptimalAccessibility.API.Repositories;
+using OptimalAccessibility.API.Services;
 using OptimalAccessibility.Application.Repositories;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -42,6 +43,7 @@ builder.Services.AddDbContext<OptimalAccessibilityContext>(options => {
 
 builder.Services.AddTransient<IAuthRepo, AuthRepo>();
 builder.Services.AddTransient<IUserRepo, UsersRepo>();
+builder.Services.AddTransient<IReporting, ReportingsService>();
 
 builder.Services.AddCors(b => b.AddPolicy("CORS_Policy", builder => {
     builder.WithOrigins("*")

@@ -134,5 +134,14 @@ namespace OptimalAccessibility.API.Controllers
         {
             return BadRequest("Not impl yet");
         }
+
+        [Authorize]
+        [HttpGet("GenerateReportByUserId/{userId:Guid}")]
+        public IActionResult GenerateReport([FromRoute] Guid userId)
+        {
+            var file = _userRepo.GenerateReport(userId);
+            return File(file, "application/pdf", $"Optimal-Accessibility-Report-{userId}-{DateTime.Today.ToString("MM-dd-yyyy")}.pdf");
+        }
+
     }
 }

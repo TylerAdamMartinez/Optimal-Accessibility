@@ -96,25 +96,11 @@ namespace OptimalAccessibility.API.Controllers
                 return Unauthorized("Incorrect Password Entered");
             }
 
-            var posters = _userRepo.GetPostersByUserId(AttemptUserRequest.userId);
-            var overallAccessiblityScore = _userRepo.GetOverallAccessibilityScoreByUserId(AttemptUserRequest.userId);
-            var loginUserDTO = new UserDTO()
-            {
-                UserId = AttemptUserRequest.userId,
-                FirstName = AttemptUserRequest.FirstName,
-                LastName = AttemptUserRequest.LastName,
-                EUID = AttemptUserRequest.EUID,
-                posters = posters,
-                AccessibilityScore = overallAccessiblityScore,
-            };
-
-            var LoginResponseResult = new LoginUserResponse()
+            return Ok(new LoginUserResponse()
             {
                 Jwt = _authRepo.CreateJSONWebToken(loginRequest),
-                userDTO = loginUserDTO
-            };
-
-            return Ok(LoginResponseResult);
+                userId = AttemptUserRequest.userId
+            });
         }
 
         [Authorize]
