@@ -88,6 +88,13 @@ export async function getImageGrid(image) {
 
   grades.structureGrade = structureGrade / 2;
 
+  if (grades.textGrade < 30) {
+    grades.structureGrade = grades.textGrade / 2;
+  } else if (grades.textGrade > 80 && grades.colorGrade > 80) {
+    let difference = 100 - grades.structureGrade;
+    grades.structureGrade += difference / 2;
+  }
+
   return grades;
 }
 
