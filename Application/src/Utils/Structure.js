@@ -95,6 +95,11 @@ export async function getImageGrid(image) {
     grades.structureGrade += difference / 2;
   }
 
+  let difference = grades.textGrade - grades.colorGrade;
+  if (difference >= 15) {
+    grades.colorGrade += difference + 3;
+  }
+
   return grades;
 }
 
