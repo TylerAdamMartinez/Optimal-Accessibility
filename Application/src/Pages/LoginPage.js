@@ -1,6 +1,6 @@
 import './LoginPage.css';
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Logo from './../Components/Optimal-Accessibility-Logo.png';
 import Cookies from 'universal-cookie';
 
@@ -9,6 +9,13 @@ function Login() {
     const [password, SetPASSWORD] = useState('');
     const navigate = useNavigate();
   
+    useEffect(() => {
+		let cookies = new Cookies();
+		if (cookies.get('jwt') != null && localStorage.getItem('userId') != null) {
+			navigate("/dashboard");
+		}
+	}, [navigate]);
+
     function handleSubmit(event) {
         event.preventDefault();
         let errorFlag = false;
@@ -51,6 +58,11 @@ function Login() {
         SetPASSWORD(event.target.value)
     }
 
+    function LinkToRegister(event) {
+        event.preventDefault();
+        navigate(`/register`);
+    }
+
 	return (
 		<div id='LoginPageDiv'>
             <div id='LoginLogoBanner'>
@@ -64,7 +76,7 @@ function Login() {
                     <input placeholder="PASSWORD" type="password"  value={password} onChange={handlePASSWORDChange}/>
                     <div id='LoginBtnsSection'>
                         <input type="submit" value="Login" className='PopUpAccountMenuDivbtn'/>
-                        <button className='PopUpAccountMenuDivbtn'><Link to="/register">Sign Up</Link></button>
+                        <button className='PopUpAccountMenuDivbtn' onClick={LinkToRegister}>Sign Up</button>
                     </div>
                   </form>
             </div>
