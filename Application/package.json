@@ -3,7 +3,7 @@
   "version": "0.3.0",
   "proxy": "https://localhost:7267",
   "private": true,
-  "homepage": "https://OptimalAccessibility.com",
+  "homepage": "https://tyleradammartinez.github.io/Optimal-Accessibility",
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
