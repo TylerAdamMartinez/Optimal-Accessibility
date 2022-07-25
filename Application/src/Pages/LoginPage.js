@@ -64,7 +64,7 @@ function Login() {
                     <input placeholder="PASSWORD" type="password"  value={password} onChange={handlePASSWORDChange}/>
                     <div id='LoginBtnsSection'>
                         <input type="submit" value="Login" className='PopUpAccountMenuDivbtn'/>
-                        <Link to="/register"><button className='PopUpAccountMenuDivbtn'>Sign Up</button></Link>
+                        <button className='PopUpAccountMenuDivbtn'><Link to="/register">Sign Up</Link></button>
                     </div>
                   </form>
             </div>

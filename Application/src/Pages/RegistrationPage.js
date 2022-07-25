@@ -76,7 +76,7 @@ function Register() {
 					<input placeholder="Confirm Password" type="password"  value={ConfirmPassword} onChange={handleConfirmPasswordChange}/>
                     <div id='LoginBtnsSection'>
                         <input type="submit" value="Register" className='PopUpAccountMenuDivbtn'/>
-                        <Link to="/"><button className='PopUpAccountMenuDivbtn'>Back to Login</button></Link>
+                        <button className='PopUpAccountMenuDivbtn'><Link to="/">Back to Login</Link></button>
                     </div>
                   </form>
             </div>

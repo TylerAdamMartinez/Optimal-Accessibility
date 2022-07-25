@@ -7,6 +7,33 @@
     width: 100vw;
 }
 
+
+@media screen and (min-width: 1500px) {
+    #LoginPageDiv {
+        grid-template-columns: auto 500px auto;
+    } 
+}
+
+@media screen and (max-width: 1050px) {
+    #LoginLogoBanner h1 {
+        font-size: 1.5em !important;
+    }
+
+    #LoginLogoBanner img {
+        height: 48px !important;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    #LoginLogoBanner h1 {
+        font-size: 1.75em;
+    }
+
+    #LoginLogoBanner img {
+        height: 56px !important;
+    }
+}
+
 #LoginLogoBanner {
     color: #333;
     background-color: #f6f6f6;
@@ -80,6 +107,20 @@
     justify-content: space-between;
 }
 
+@media screen and (max-width: 1150px) {
+    #SignInForm {
+        grid-template-rows: 1fr 1fr auto !important;
+    }
+
+    #LoginBtnsSection {
+        font-size: 14pt;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 1em;
+    }
+}
+
 #LoginBtnsSection input {
     padding-left: 1.1em;
     padding-right: 1.1em;
@@ -99,6 +140,10 @@
     padding-right: .6em;
     border-radius: 5px;
     transition: box-shadow .2s ease-in-out;
+}
+
+#LoginBtnsSection button a {
+    color: #f6f6f6;
 }
 
 #LoginBtnsSection button:hover { 

@@ -7,6 +7,12 @@
     width: 100vw;
 }
 
+@media screen and (min-width: 1500px) {
+    #RegistrationPageDiv {
+        grid-template-columns: auto 500px auto;
+    } 
+}
+
 #LoginLogoBanner {
     color: #333;
     background-color: #f6f6f6;
