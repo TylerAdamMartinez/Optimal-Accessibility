@@ -7,7 +7,7 @@
 
 
 <p align="center" style="display: flex;" >
-<img alt="Optimal-Accessibility-Missing-Image" src="https://github.com/TylerAdamMartinez/Optimal-Accessibility/blob/main/Application/src/Components/missing_image.jpg" />
+<img alt="Optimal-Accessibility-Frontend-Image" src="https://github.com/TylerAdamMartinez/Optimal-Accessibility/blob/ImproveScreenStyling/Docs/Assets/Logo/Optimal-Accessibility-Frontend-Logo.svg" height="384px" width="384px" />
  </p>
 
 This is the Web Application portion of the code base
