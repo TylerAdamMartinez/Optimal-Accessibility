@@ -277,6 +277,9 @@ If the color rating for your poster is low, the following list could help you fi
             <Popup trigger={<AccountCircleIcon fontSize='large' />}>
               <div id='PopUpAccountpMenuDivSection'>
                 <ul id='PopUpAccountMenuDiv'>
+                  <Link to='/settings'>
+                    <li className='PopUpAccountMenuDivbtn'>Settings</li>
+                  </Link>
                   <Link to='/' onClick={handleLogout}>
                     <li className='PopUpAccountMenuDivbtn'>Logout</li>
                   </Link>

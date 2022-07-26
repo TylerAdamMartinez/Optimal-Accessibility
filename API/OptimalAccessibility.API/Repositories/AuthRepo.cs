@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using OptimalAccessibility.Application.Repositories;
 using OptimalAccessibility.Domain.Models.Auth;
 using OptimalAccessibility.Domain.Models.Database;
+using OptimalAccessibility.Domain.Models.DataTransferObjects;
 
 namespace OptimalAccessibility.API.Repositories
 {
@@ -40,9 +41,12 @@ namespace OptimalAccessibility.API.Repositories
             }
         }
 
-        public User? GetUserByEUID(string EUID)
+        public (Guid?, byte[]?, byte[]?) GetUserGuidAndPasswordHashByEUID(string EUID)
         {
-            return _context.Users.Where(user => user.EUID == EUID).FirstOrDefault();
+            var result = _context.Users.Where(user => user.EUID == EUID).FirstOrDefault();
+            if (result == null) return (null, null, null);
+
+            return (result.userId, result.passwordSalt, result.passwordHash);
         }
 
         public bool IsUniqueEUID(string EUID)
@@ -54,6 +58,24 @@ namespace OptimalAccessibility.API.Repositories
             }
 
             return false;
+        }
+
+        public UserDTO? GetUserDTOByUserId(Guid userId)
+        {
+            return _context.Users
+                        .Where(user => user.userId == userId)
+                        .Select(user => new UserDTO()
+                        {
+                            EUID = user.EUID,
+                            FirstName = user.FirstName,
+                            MiddleInitial = user.MiddleInitial,
+                            LastName = user.LastName,
+                            Email = user.Email,
+                            Birthday = user.Birthday,
+                            Classfication = user.Classfication,
+                            Gender = user.Gender
+                        })
+                        .SingleOrDefault();
         }
 
         public string CreateJSONWebToken(LoginUserBody loginUserBody)

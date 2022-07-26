@@ -1,15 +1,17 @@
-﻿using OptimalAccessibility.Domain.Models.Database;
+﻿using OptimalAccessibility.Domain.Enum;
 
 namespace OptimalAccessibility.Domain.Models.DataTransferObjects
 {
     public class UserDTO
     {
-        public Guid UserId { get; set; }
         public string EUID { get; set; } = string.Empty;
+        public string? Email { get; set; }
         public string FirstName { get; set; } = string.Empty;
+        public char? MiddleInitial { get; set; }
         public string LastName { get; set; } = string.Empty;
-        public List<PosterDTO>? posters { get; set; }
-        public AccessibilityScoreDTO? AccessibilityScore { get; set; }
+        public DateTime? Birthday { get; set; }
+        public Gender Gender { get; set; } = default;
+        public Classfication Classfication { get; set; } = default;
     }
 }
 

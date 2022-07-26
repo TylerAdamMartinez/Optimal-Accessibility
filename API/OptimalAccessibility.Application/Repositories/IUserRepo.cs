@@ -10,7 +10,6 @@ namespace OptimalAccessibility.Application.Repositories
 
         public bool AddNewUser(UserDTO newUser, string Password);
         public DatabaseResultTypes DeleteUserByUserId(Guid userId);
-        public UserDTO GetUserByEUID(string EUID);
 
         public bool IsUniquePosterName(string posterName, Guid userId);
         public DatabaseResultTypes CreatePoster(PosterDTO newPoster, Guid userId);

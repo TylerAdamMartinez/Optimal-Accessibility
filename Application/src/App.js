@@ -9,6 +9,7 @@ import {
 	Route,
 	Routes,
   } from "react-router-dom";
+import SettingsPage from './Pages/SettingsPage';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
 				<Route path="/register" element={<RegistrationPage />} />
 				<Route element={<PrivateRoutes />} >
 					<Route path="/dashboard" element={<DashBoard />} />
+					<Route path="/settings" element={<SettingsPage />} />
 				</Route>
 				<Route path='*' element={<NotFound404ErrorPage />} />
 			</Routes>
