@@ -1,10 +1,10 @@
-import './../App.css';
-import NavBar from './../Components/NavBar.js';
-import MyPostersSection from './../Components/MyPostersSection';
-import OverallAccessibilitySection from './../Components/OverallAccessibilitySection';
+import './../../App.css';
+import NavBar from '../../Components/NavBar.js';
+import MyPostersSection from './MyPostersSection';
+import OverallAccessibilitySection from './OverallAccessibilitySection';
 import { useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
-import AccessibilityBarGraphData from '../Components/AccessibilityBarGraphData';
+import AccessibilityBarGraphData from '../../Components/AccessibilityBarGraphData';
 
 function DashBoard() {
 	let [NewPosterAdded, SetNewPosterAdded] = useState("");

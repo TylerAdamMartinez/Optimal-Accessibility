@@ -1,5 +1,5 @@
 import './OverallAccessibilitySection.css';
-import BarGraph from './BarGraph';
+import BarGraph from '../../Components/BarGraph';
 
 function OverallAccessibilitySection(props) {
 

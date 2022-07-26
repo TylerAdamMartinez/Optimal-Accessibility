@@ -1,7 +1,7 @@
 import './LoginPage.css';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Logo from './../Components/Optimal-Accessibility-Logo.png';
+import Logo from './../Images/Optimal-Accessibility-Logo.png';
 import Cookies from 'universal-cookie';
 
 function Login() {

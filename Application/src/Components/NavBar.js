@@ -4,7 +4,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import HelpIcon from '@mui/icons-material/Help';
 import PictureAsPdf from '@mui/icons-material/PictureAsPdf';
 import Popup from 'reactjs-popup';
-import OptimalAccessibilityLogo from './Optimal-Accessibility-Logo.png';
+import OptimalAccessibilityLogo from '../Images/Optimal-Accessibility-Logo.png';
 import HelpPage from './HelpPage';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';

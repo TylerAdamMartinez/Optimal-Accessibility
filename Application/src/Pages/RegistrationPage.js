@@ -1,6 +1,6 @@
 import './RegistrationPage.css';
 import { useEffect, useState } from "react";
-import Logo from './../Components/Optimal-Accessibility-Logo.png';
+import Logo from './../Images/Optimal-Accessibility-Logo.png';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 

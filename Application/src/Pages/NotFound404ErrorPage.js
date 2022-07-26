@@ -1,6 +1,6 @@
 import './NotFound404ErrorPage.css';
 import { Link, useLocation } from "react-router-dom";
-import Logo from './../Components/Optimal-Accessibility-Logo.png';
+import Logo from './../Images/Optimal-Accessibility-Logo.png';
 
 
 function NoMatch() {

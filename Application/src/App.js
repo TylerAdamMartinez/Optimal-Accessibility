@@ -1,7 +1,7 @@
 import './App.css';
 import LoginPage from './Pages/LoginPage';
 import RegistrationPage from './Pages/RegistrationPage';
-import DashBoard from './Pages/DashBoard.js';
+import DashBoard from './Pages/DashBoard/DashBoard.js';
 import NotFound404ErrorPage from './Pages/NotFound404ErrorPage';
 import PrivateRoutes from './Components/PrivateRoutes';
 import {

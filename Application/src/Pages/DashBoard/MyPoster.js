@@ -1,14 +1,14 @@
 import './MyPoster.css';
-import DefaultImage from './missing_image.jpg';
+import DefaultImage from '../../Images/missing_image.jpg';
 import Popup from 'reactjs-popup';
-import BarGraph from './BarGraph.js';
+import BarGraph from '../../Components/BarGraph';
 import { useState, useRef } from 'react';
-import AccessibilityBarGraphData from './AccessibilityBarGraphData';
+import AccessibilityBarGraphData from '../../Components/AccessibilityBarGraphData';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import Cookies from 'universal-cookie';
-import ConvertImageToBase64 from '../Utils/ConvertImageToBase64';
-import { getImageGrid } from '../Utils/Structure';
+import ConvertImageToBase64 from '../../Utils/ConvertImageToBase64';
+import { getImageGrid } from '../../Utils/Structure';
 
 function MyPoster(props) {
   const imgRef = useRef();
