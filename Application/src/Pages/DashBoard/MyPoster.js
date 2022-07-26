@@ -6,6 +6,7 @@ import { useState, useRef } from 'react';
 import AccessibilityBarGraphData from '../../Components/AccessibilityBarGraphData';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
+import CloseRounded from '@mui/icons-material/CloseRounded';
 import Cookies from 'universal-cookie';
 import ConvertImageToBase64 from '../../Utils/ConvertImageToBase64';
 import { getImageGrid } from '../../Utils/Structure';
@@ -22,7 +23,7 @@ function MyPoster(props) {
   let [editPosterData, setEditPosterData] = useState(props.Data);
   const [IsProcessing, setIsProcessing] = useState(false);
 
-  function handleOpen() {
+  function closeModel() {
     setIsOpen(false);
   }
 
@@ -201,83 +202,93 @@ function MyPoster(props) {
         </div>
       }
       open={isOpen}
-      onOpen={handleOpen}
+      onClose={closeModel}
     >
-      <div id='PosterPopUpMenuDiv'>
-        <div className='PosterImgAndNameContainer'>
-          <div id='PosterPopUpMenuPosterNameDiv'>
-            { isEditing ?  
-              <form id='editForm' onSubmit={UpdatePosterName}>
-                <input
-                  readOnly={IsProcessing}
-                  id='editPosterNameInput'
-                  placeholder={props.PosterName}
-                  type='text'
-                  value={editPosterName}
-                  onChange={editPosterNameHandler} />
-                <input
-                  readOnly={IsProcessing}
-                  id='editPosterNameBtn'
-                  type='submit'
-                  value={"submit"} />
-              </form> : <h3>{props.PosterName}</h3>
-            }
-          </div>
-          <div id='PosterPopUpMenuImgDiv'>
-            { isEditing ?
-            <>
-              <div id='editingPosterDataFrom'>
-                <form onSubmit={UpdatePosterData}>
-                  <input
-                    disabled={IsProcessing}
-                    readOnly={IsProcessing}
-                    type='File' 
-                    accept='.png, .jpg, .jpeg' 
-                    onChange={editPosterDatahandler} 
+      <div id='PosterPopUpMenuContainerDiv' >
+          <div className='PosterPopUpMenuDivContainer'>
+            <CloseRounded
+              id="closePosterPopupBtn"
+              className='PopupIcon'
+              fontSize='large'
+              onClick={()=> {setIsOpen(!isOpen)}}
+            />
+            <div id='PosterPopUpMenuDiv'>
+              <div className='PosterImgAndNameContainer'>
+                <div id='PosterPopUpMenuPosterNameDiv'>
+                  { isEditing ?  
+                    <form id='editForm' onSubmit={UpdatePosterName}>
+                      <input
+                        readOnly={IsProcessing}
+                        id='editPosterNameInput'
+                        placeholder={props.PosterName}
+                        type='text'
+                        value={editPosterName}
+                        onChange={editPosterNameHandler} />
+                      <input
+                        readOnly={IsProcessing}
+                        id='editPosterNameBtn'
+                        type='submit'
+                        value={"submit"} />
+                    </form> : <h3>{props.PosterName}</h3>
+                  }
+                </div>
+                <div id='PosterPopUpMenuImgDiv'>
+                  { isEditing ?
+                  <>
+                    <div id='editingPosterDataFrom'>
+                      <form onSubmit={UpdatePosterData}>
+                        <input
+                          disabled={IsProcessing}
+                          readOnly={IsProcessing}
+                          type='File' 
+                          accept='.png, .jpg, .jpeg' 
+                          onChange={editPosterDatahandler} 
+                        />
+                        <input
+                          readOnly={IsProcessing}
+                          id='editPosterDataBtn'
+                          type='submit'
+                          value={"Submit"}
+                        />
+                      </form>
+                    </div>
+                    <img
+                      id='editingPosterDataImage'
+                      ref={imgRef}
+                      onError={onImageError}
+                      src={`data:image/png;base64,${props.Data}`}
+                      alt={`Poster number ${props.Id}`}
+                    /> 
+                  </>
+                  :        
+                  <img
+                    ref={imgRef}
+                    onError={onImageError}
+                    src={`data:image/png;base64,${props.Data}`}
+                    alt={`Poster number ${props.Id}`}
+                  /> }
+                </div>
+                <div className='PosterPopUpMenuIconContainer'>
+                  <DeleteForeverIcon
+                    className='PopupIcon'
+                    fontSize='large'
+                    onClick={DeleteForeverHandler}
                   />
-                  <input
-                    readOnly={IsProcessing}
-                    id='editPosterDataBtn'
-                    type='submit'
-                    value={"Submit"}
+                  <EditIcon
+                    className='PopupIcon'
+                    fontSize='large'
+                    onClick={() => {setIsEditing(!isEditing);}}
                   />
-                </form>
+                </div>
               </div>
-              <img
-                id='editingPosterDataImage'
-                ref={imgRef}
-                onError={onImageError}
-                src={`data:image/png;base64,${props.Data}`}
-                alt={`Poster number ${props.Id}`}
-              /> 
-            </>
-            :        
-            <img
-              ref={imgRef}
-              onError={onImageError}
-              src={`data:image/png;base64,${props.Data}`}
-              alt={`Poster number ${props.Id}`}
-            /> }
+              <div className='AccessibilityBarGraphScoreContainer'>
+                <h3>Accessibility Score</h3>
+                <div id='PosterPopUpMenuBarGraphDiv'>
+                  <BarGraph chartData={BarGraphData.build} />
+                </div>
+              </div>
+            </div>
           </div>
-          <div className='PosterPopUpMenuIconContainer'>
-            <DeleteForeverIcon
-              className='deleteIcon'
-              fontSize='large'
-              onClick={DeleteForeverHandler}
-            />
-            <EditIcon
-              className='editIcon'
-              fontSize='large'
-              onClick={() => {setIsEditing(!isEditing);}}
-            />
-          </div>
-        </div>
-        <div className='AccessibilityBarGraphScoreContainer'>
-          <h3>Accessibility Score</h3>
-          <div id='PosterPopUpMenuBarGraphDiv'>
-            <BarGraph chartData={BarGraphData.build} />
-          </div>
-        </div>
       </div>
     </Popup>
   );

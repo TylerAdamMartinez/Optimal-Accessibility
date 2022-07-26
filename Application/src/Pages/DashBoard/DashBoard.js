@@ -62,13 +62,11 @@ function DashBoard() {
 	let OverallAccessibilityBarGraphData = new AccessibilityBarGraphData(OverallAccessibilityScore);
 
 	return (
-		<>
+		<div className='App'>
 			<NavBar addPosterCallback={addPosterCallbackHandler}/>
-			<div className='App'>
-				<MyPostersSection myPosters={Posters} editPosterCallback={editPosterCallbackHandler}/>
-				<OverallAccessibilitySection chartData={OverallAccessibilityBarGraphData.build} />
-			</div>
-		</>
+			<MyPostersSection myPosters={Posters} editPosterCallback={editPosterCallbackHandler}/>
+			<OverallAccessibilitySection chartData={OverallAccessibilityBarGraphData.build} />
+		</div>
 	);
 }
 
