@@ -1,16 +1,16 @@
-import './NavBar.css';
-import AddIcon from '@mui/icons-material/Add';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import HelpIcon from '@mui/icons-material/Help';
-import PictureAsPdf from '@mui/icons-material/PictureAsPdf';
-import Popup from 'reactjs-popup';
-import OptimalAccessibilityLogo from '../Images/Optimal-Accessibility-Logo.png';
-import HelpPage from './HelpPage';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Cookies from 'universal-cookie';
-import { getImageGrid } from '../Utils/Structure';
-import ConvertImageToBase64 from '../Utils/ConvertImageToBase64';
+import "./NavBar.css";
+import AddIcon from "@mui/icons-material/Add";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import HelpIcon from "@mui/icons-material/Help";
+import PictureAsPdf from "@mui/icons-material/PictureAsPdf";
+import Popup from "reactjs-popup";
+import OptimalAccessibilityLogo from "../Images/Optimal-Accessibility-Logo.png";
+import HelpPage from "./HelpPage";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import Cookies from "universal-cookie";
+import { getImageGrid } from "../Utils/Structure";
+import ConvertImageToBase64 from "../Utils/ConvertImageToBase64";
 
 function NavBar(props) {
   let textHelpInfo = `The text rating is mainly based on the readability of the text. If the text cannot be easily read by the computer, then it probably can't be easily read by a person. The size of the text, as well as the color contrast with its surroundings, are the largest factors.
@@ -40,17 +40,17 @@ If the color rating for your poster is low, the following list could help you fi
 `;
 
   function MouseOverExitSpotHandler() {
-    let close_popup_menu_element = document.querySelector('#ExitSpot p');
-    close_popup_menu_element.textContent = 'close popup';
+    let close_popup_menu_element = document.querySelector("#ExitSpot p");
+    close_popup_menu_element.textContent = "close popup";
   }
 
   function MouseLeaveExitSpotHandler() {
-    let close_popup_menu_element = document.querySelector('#ExitSpot p');
-    close_popup_menu_element.textContent = '';
+    let close_popup_menu_element = document.querySelector("#ExitSpot p");
+    close_popup_menu_element.textContent = "";
   }
 
-  const [name, SetPosterName] = useState('');
-  const [FileData, SetPosterFileData] = useState('');
+  const [name, SetPosterName] = useState("");
+  const [FileData, SetPosterFileData] = useState("");
   const [loadingState, setLoadingState] = useState("submit");
   const [IsProcessing, setIsProcessing] = useState(false);
 
@@ -60,12 +60,14 @@ If the color rating for your poster is low, the following list could help you fi
     let errorFlag = false;
 
     let title = Math.random().toString();
-  
+
     async function getAccessibilityScore(poster) {
-      setLoadingState('Uploading image...');
+      setLoadingState("Uploading image...");
       poster = await ConvertImageToBase64(poster);
-      setLoadingState('Calculating accessibility score...');
-      let posterGrades = await getImageGrid('data:image/png;base64,' + poster).then((score) => {
+      setLoadingState("Calculating accessibility score...");
+      let posterGrades = await getImageGrid(
+        "data:image/png;base64," + poster
+      ).then((score) => {
         let posterGrade = {
           textRating: Math.round(score.textGrade),
           structureRating: Math.round(score.structureGrade),
@@ -79,20 +81,20 @@ If the color rating for your poster is low, the following list could help you fi
     }
 
     let accessibilityScore = await getAccessibilityScore(FileData);
-    setLoadingState('Sending Poster...');
+    setLoadingState("Sending Poster...");
     ConvertImageToBase64(FileData)
       .then((data) => {
         const addPosterBody = { name, title, data, accessibilityScore };
-        let userId = localStorage.getItem('userId');
+        let userId = localStorage.getItem("userId");
         let cookies = new Cookies();
-        let Jwt = cookies.get('jwt');
+        let Jwt = cookies.get("jwt");
 
         setLoadingState("Sent");
         fetch(`https://localhost:7267/api/User/AddPosterByUserId/${userId}`, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
-            accept: 'application/json',
+            "Content-Type": "application/json",
+            accept: "application/json",
             Authorization: `bearer ${Jwt}`,
           },
           body: JSON.stringify(addPosterBody),
@@ -102,7 +104,7 @@ If the color rating for your poster is low, the following list could help you fi
               errorFlag = true;
             }
 
-            setLoadingState('Sent');
+            setLoadingState("Sent");
             return responce.json();
           })
           .then((responseJSON) => {
@@ -111,7 +113,7 @@ If the color rating for your poster is low, the following list could help you fi
             }
             setIsProcessing(false);
             props.addPosterCallback(name);
-            setLoadingState("Submit")
+            setLoadingState("Submit");
           })
           .catch((err) => {
             alert(err);
@@ -126,9 +128,9 @@ If the color rating for your poster is low, the following list could help you fi
 
   function generatePDF() {
     let errorFlag = false;
-    let userId = localStorage.getItem('userId');
+    let userId = localStorage.getItem("userId");
     let cookies = new Cookies();
-    let Jwt = cookies.get('jwt');
+    let Jwt = cookies.get("jwt");
 
     function formatDate() {
       let d = new Date();
@@ -136,45 +138,45 @@ If the color rating for your poster is low, the following list could help you fi
       let day = d.getDate().toString();
       let year = d.getFullYear();
       if (month.length < 2) {
-        month = '0' + month;
+        month = "0" + month;
       }
       if (day.length < 2) {
-        day = '0' + day;
+        day = "0" + day;
       }
-      return  [month, day, year].join('-');
+      return [month, day, year].join("-");
     }
 
     fetch(`https://localhost:7267/api/User/GenerateReportByUserId/${userId}`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        accept: 'application/pdf',
+        "Content-Type": "application/json",
+        accept: "application/pdf",
         Authorization: `bearer ${Jwt}`,
       },
     })
-    .then((response) => {
-      if (!response.ok) {
-        errorFlag = true;
-      }
-      return response.blob();
-    })
-    .then((blob) => {
-      if (errorFlag) {
-        throw new Error(`${blob}`);
-      }
-      let today = formatDate();
-      var url = window.URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = url;
-      a.download = `Optimal-Accessibility-Report-${userId}-${today}.pdf`;
-      document.body.appendChild(a);
-      a.click();    
-      a.remove();
-    })
-    .catch((err) => {
-      alert(err);
-      console.error(err);
-    });  
+      .then((response) => {
+        if (!response.ok) {
+          errorFlag = true;
+        }
+        return response.blob();
+      })
+      .then((blob) => {
+        if (errorFlag) {
+          throw new Error(`${blob}`);
+        }
+        let today = formatDate();
+        var url = window.URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = `Optimal-Accessibility-Report-${userId}-${today}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      })
+      .catch((err) => {
+        alert(err);
+        console.error(err);
+      });
   }
 
   function handleNameChange(event) {
@@ -189,43 +191,61 @@ If the color rating for your poster is low, the following list could help you fi
   function handleLogout() {
     localStorage.clear();
     let cookies = new Cookies();
-    cookies.remove('jwt');
+    cookies.remove("jwt");
   }
 
   return (
-    <div className='NavBar'>
+    <div className="NavBar">
       <span></span>
-      <Link to='/dashboard'>
-        <div id='LogoBox'>
-          <img id='LogoImg' alt='Optimal Accessibility Logo' src={OptimalAccessibilityLogo} />
+      <Link to="/dashboard">
+        <div id="LogoBox">
+          <img
+            id="LogoImg"
+            alt="Optimal Accessibility Logo"
+            src={OptimalAccessibilityLogo}
+          />
           <h1>Optimal Accessibility</h1>
         </div>
       </Link>
       <span
-        id='ExitSpot'
+        id="ExitSpot"
         onMouseOver={MouseOverExitSpotHandler}
         onMouseLeave={MouseLeaveExitSpotHandler}
       >
         <p></p>
       </span>
-      <div id='NavItemsBox'>
+      <div id="NavItemsBox">
         <ul>
           <li>
-            <Popup trigger={<HelpIcon fontSize='large' />}>
-              <div id='PopUpHelpMenuDivSection'>
-                <ul id='PopUpHelpMenuDiv'>
-                  <Popup trigger={<li id='PopUpHelpMenuDivTextField'>Text</li>}>
-                    <HelpPage PageName='Text' PageContent={textHelpInfo} Color={'#017F01'} />
-                  </Popup>
-                  <Popup trigger={<li id='PopUpHelpMenuDivStructureField'>Structure</li>}>
+            <Popup trigger={<HelpIcon fontSize="large" />}>
+              <div id="PopUpHelpMenuDivSection">
+                <ul id="PopUpHelpMenuDiv">
+                  <Popup trigger={<li id="PopUpHelpMenuDivTextField">Text</li>}>
                     <HelpPage
-                      PageName='Structure'
-                      PageContent={structureHelpInfo}
-                      Color={'#640665'}
+                      PageName="Text"
+                      PageContent={textHelpInfo}
+                      Color={"#017F01"}
                     />
                   </Popup>
-                  <Popup trigger={<li id='PopUpHelpMenuDivColorField'>Color</li>}>
-                    <HelpPage PageName='Color' PageContent={colorHelpInfo} Color={'#DA364A'} />
+                  <Popup
+                    trigger={
+                      <li id="PopUpHelpMenuDivStructureField">Structure</li>
+                    }
+                  >
+                    <HelpPage
+                      PageName="Structure"
+                      PageContent={structureHelpInfo}
+                      Color={"#640665"}
+                    />
+                  </Popup>
+                  <Popup
+                    trigger={<li id="PopUpHelpMenuDivColorField">Color</li>}
+                  >
+                    <HelpPage
+                      PageName="Color"
+                      PageContent={colorHelpInfo}
+                      Color={"#DA364A"}
+                    />
                   </Popup>
                 </ul>
               </div>
@@ -236,34 +256,35 @@ If the color rating for your poster is low, the following list could help you fi
               trigger={
                 <AddIcon
                   onClick={() => {
-                    setLoadingState('Submit');
+                    setLoadingState("Submit");
                   }}
-                  fontSize='large'
+                  fontSize="large"
                 />
               }
             >
-              <div id='PopUpAddMenuDivSection'>
-                <div id='PopUpAddMenuDiv'>
+              <div id="PopUpAddMenuDivSection">
+                <div id="PopUpAddMenuDiv">
                   <h2>New Poster</h2>
-                  <form onSubmit={handleSubmit} id='PopUpAddMenuForm'>
+                  <form onSubmit={handleSubmit} id="PopUpAddMenuForm">
                     <input
                       readOnly={IsProcessing}
-                      placeholder='Name'
-                      type='text'
+                      placeholder="Name"
+                      type="text"
                       value={name}
                       onChange={handleNameChange}
                     />
                     <input
                       disabled={IsProcessing}
-                      readOnly={IsProcessing} 
-                      type='File' accept='.png, .jpg' 
-                      onChange={handleFileChange} 
+                      readOnly={IsProcessing}
+                      type="File"
+                      accept=".png, .jpg"
+                      onChange={handleFileChange}
                     />
                     <input
                       readOnly={IsProcessing}
-                      type='submit'
+                      type="submit"
                       value={loadingState}
-                      className='PopUpAccountMenuDivbtn'
+                      className="PopUpAccountMenuDivbtn"
                     />
                   </form>
                 </div>
@@ -271,17 +292,17 @@ If the color rating for your poster is low, the following list could help you fi
             </Popup>
           </li>
           <li>
-            <PictureAsPdf onClick={generatePDF} fontSize='large' />
+            <PictureAsPdf onClick={generatePDF} fontSize="large" />
           </li>
           <li>
-            <Popup trigger={<AccountCircleIcon fontSize='large' />}>
-              <div id='PopUpAccountpMenuDivSection'>
-                <ul id='PopUpAccountMenuDiv'>
-                  <Link to='/settings'>
-                    <li className='PopUpAccountMenuDivbtn'>Settings</li>
+            <Popup trigger={<AccountCircleIcon fontSize="large" />}>
+              <div id="PopUpAccountpMenuDivSection">
+                <ul id="PopUpAccountMenuDiv">
+                  <Link to="/settings">
+                    <li className="PopUpAccountMenuDivbtn">Settings</li>
                   </Link>
-                  <Link to='/' onClick={handleLogout}>
-                    <li className='PopUpAccountMenuDivbtn'>Logout</li>
+                  <Link to="/" onClick={handleLogout}>
+                    <li className="PopUpAccountMenuDivbtn">Logout</li>
                   </Link>
                 </ul>
               </div>
