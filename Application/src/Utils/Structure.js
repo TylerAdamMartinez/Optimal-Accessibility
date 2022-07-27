@@ -1,6 +1,6 @@
-import { Image } from 'image-js';
-import { changeDpiDataUrl } from 'changedpi';
-import { getText } from './Text';
+import { Image } from "image-js";
+import { changeDpiDataUrl } from "changedpi";
+import { getText } from "./Text";
 
 export async function getImageGrid(image) {
   const ogImage = await Image.load(image);
@@ -215,7 +215,10 @@ const smallGrid = async (newImages, ogImage, height, width) => {
     .toDataURL();
   let img = await Image.load(newImages.tempImages.top.img);
   newImages.tempImages.top.img = img.grey().mask(maskOptions).toDataURL();
-  newImages.tempImages.top.img = changeDpiDataUrl(newImages.tempImages.top.img, 300);
+  newImages.tempImages.top.img = changeDpiDataUrl(
+    newImages.tempImages.top.img,
+    300
+  );
 
   newImages.tempImages.middle.img = ogImage
     .crop({
@@ -227,7 +230,10 @@ const smallGrid = async (newImages, ogImage, height, width) => {
     .toDataURL();
   img = await Image.load(newImages.tempImages.middle.img);
   newImages.tempImages.middle.img = img.grey().mask(maskOptions).toDataURL();
-  newImages.tempImages.middle.img = changeDpiDataUrl(newImages.tempImages.middle.img, 300);
+  newImages.tempImages.middle.img = changeDpiDataUrl(
+    newImages.tempImages.middle.img,
+    300
+  );
 
   newImages.tempImages.bottom.img = ogImage
     .crop({
@@ -239,7 +245,10 @@ const smallGrid = async (newImages, ogImage, height, width) => {
     .toDataURL();
   img = await Image.load(newImages.tempImages.bottom.img);
   newImages.tempImages.bottom.img = img.grey().mask(maskOptions).toDataURL();
-  newImages.tempImages.bottom.img = changeDpiDataUrl(newImages.tempImages.bottom.img, 300);
+  newImages.tempImages.bottom.img = changeDpiDataUrl(
+    newImages.tempImages.bottom.img,
+    300
+  );
 
   return newImages;
 };

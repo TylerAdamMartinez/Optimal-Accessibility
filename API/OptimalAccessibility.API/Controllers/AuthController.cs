@@ -80,18 +80,18 @@ namespace OptimalAccessibility.API.Controllers
                 return BadRequest("Password is a required field");
             }
 
-            var AttemptUserRequest = _authRepo.GetUserByEUID(loginRequest.EUID);
-            if (AttemptUserRequest == null)
+            var (AttemptUserGuid, AttemptUserSalt, AttemptUserHash) = _authRepo.GetUserGuidAndPasswordHashByEUID(loginRequest.EUID);
+            if (AttemptUserGuid == null)
             {
                 return BadRequest($"No user with EUID {loginRequest.EUID} was found in database");
             }
 
-            if(AttemptUserRequest.passwordHash == null || AttemptUserRequest.passwordSalt == null)
+            if(AttemptUserSalt == null || AttemptUserHash == null)
             {
                 return NotFound("Failed to comfirm password");
             }
 
-            if (!_authRepo.VerifyPasswordHash(loginRequest.Password, AttemptUserRequest.passwordHash, AttemptUserRequest.passwordSalt))
+            if (!_authRepo.VerifyPasswordHash(loginRequest.Password, AttemptUserHash, AttemptUserSalt))
             {
                 return Unauthorized("Incorrect Password Entered");
             }
@@ -99,8 +99,20 @@ namespace OptimalAccessibility.API.Controllers
             return Ok(new LoginUserResponse()
             {
                 Jwt = _authRepo.CreateJSONWebToken(loginRequest),
-                userId = AttemptUserRequest.userId
+                userId = (Guid)AttemptUserGuid
             });
+        }
+
+        [Authorize]
+        [HttpGet("GetUserById/{userId:Guid}")]
+        public ActionResult<UserDTO> GetUserDTOByUserId([FromRoute] Guid userId)
+        {
+            var result = _authRepo.GetUserDTOByUserId(userId);
+            if (result == null)
+            {
+                return BadRequest($"No user with userId {userId} was found in database");
+            }
+            return Ok(result);
         }
 
         [Authorize]

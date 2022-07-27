@@ -1,52 +1,70 @@
-import { prominent } from 'color.js';
-import { colorContrastRatioCalculator } from '@mdhnpm/color-contrast-ratio-calculator';
+import { prominent } from "color.js";
+import { colorContrastRatioCalculator } from "@mdhnpm/color-contrast-ratio-calculator";
 
 export async function getColors(image) {
   let cgArr = [];
-  await prominent(image.topLeft.img, { amount: 3, format: 'hex' }).then((color) => {
-    image.topLeft.color = color;
-    cgArr[0] = getScore(image.topLeft.color);
-  });
+  await prominent(image.topLeft.img, { amount: 3, format: "hex" }).then(
+    (color) => {
+      image.topLeft.color = color;
+      cgArr[0] = getScore(image.topLeft.color);
+    }
+  );
 
-  await prominent(image.topMiddle.img, { amount: 3, format: 'hex' }).then((color) => {
-    image.topMiddle.color = color;
-    cgArr[1] = getScore(image.topMiddle.color);
-  });
+  await prominent(image.topMiddle.img, { amount: 3, format: "hex" }).then(
+    (color) => {
+      image.topMiddle.color = color;
+      cgArr[1] = getScore(image.topMiddle.color);
+    }
+  );
 
-  await prominent(image.topRight.img, { amount: 3, format: 'hex' }).then((color) => {
-    image.topRight.color = color;
-    cgArr[2] = getScore(image.topRight.color);
-  });
+  await prominent(image.topRight.img, { amount: 3, format: "hex" }).then(
+    (color) => {
+      image.topRight.color = color;
+      cgArr[2] = getScore(image.topRight.color);
+    }
+  );
 
-  await prominent(image.middleLeft.img, { amount: 3, format: 'hex' }).then((color) => {
-    image.middleLeft.color = color;
-    cgArr[3] = getScore(image.middleLeft.color);
-  });
+  await prominent(image.middleLeft.img, { amount: 3, format: "hex" }).then(
+    (color) => {
+      image.middleLeft.color = color;
+      cgArr[3] = getScore(image.middleLeft.color);
+    }
+  );
 
-  await prominent(image.middle.img, { amount: 3, format: 'hex' }).then((color) => {
-    image.middle.color = color;
-    cgArr[4] = getScore(image.middle.color);
-  });
+  await prominent(image.middle.img, { amount: 3, format: "hex" }).then(
+    (color) => {
+      image.middle.color = color;
+      cgArr[4] = getScore(image.middle.color);
+    }
+  );
 
-  await prominent(image.middleRight.img, { amount: 3, format: 'hex' }).then((color) => {
-    image.middleRight.color = color;
-    cgArr[5] = getScore(image.middleRight.color);
-  });
+  await prominent(image.middleRight.img, { amount: 3, format: "hex" }).then(
+    (color) => {
+      image.middleRight.color = color;
+      cgArr[5] = getScore(image.middleRight.color);
+    }
+  );
 
-  await prominent(image.bottomLeft.img, { amount: 3, format: 'hex' }).then((color) => {
-    image.bottomLeft.color = color;
-    cgArr[6] = getScore(image.bottomLeft.color);
-  });
+  await prominent(image.bottomLeft.img, { amount: 3, format: "hex" }).then(
+    (color) => {
+      image.bottomLeft.color = color;
+      cgArr[6] = getScore(image.bottomLeft.color);
+    }
+  );
 
-  await prominent(image.bottomMiddle.img, { amount: 3, format: 'hex' }).then((color) => {
-    image.bottomMiddle.color = color;
-    cgArr[7] = getScore(image.bottomMiddle.color);
-  });
+  await prominent(image.bottomMiddle.img, { amount: 3, format: "hex" }).then(
+    (color) => {
+      image.bottomMiddle.color = color;
+      cgArr[7] = getScore(image.bottomMiddle.color);
+    }
+  );
 
-  await prominent(image.bottomRight.img, { amount: 3, format: 'hex' }).then((color) => {
-    image.bottomRight.color = color;
-    cgArr[8] = getScore(image.bottomRight.color);
-  });
+  await prominent(image.bottomRight.img, { amount: 3, format: "hex" }).then(
+    (color) => {
+      image.bottomRight.color = color;
+      cgArr[8] = getScore(image.bottomRight.color);
+    }
+  );
 
   let colorGrade = 0;
   let counter = 0;

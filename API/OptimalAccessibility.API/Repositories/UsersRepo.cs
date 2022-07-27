@@ -163,45 +163,6 @@ namespace OptimalAccessibility.API.Repositories
             };
         }
 
-        public UserDTO GetUserByEUID(string EUID)
-        {
-            var user = _context.Users.Where(user => user.EUID == EUID).FirstOrDefault();
-            var userId = user?.userId ?? throw new ArgumentNullException(nameof(user), $"There is no user with the EUID of {EUID}");
-            var userAccessibilityScore = GetOverallAccessibilityScoreByUserId(userId);
-            var posters = GetPostersByUserId(userId);
-
-            if (userAccessibilityScore == null)
-            {
-                return new UserDTO
-                {
-                    UserId = userId,
-                    EUID = user.EUID,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    AccessibilityScore = null,
-                    posters = posters
-                };
-            }
-            else
-            {
-                return new UserDTO
-                {
-                    UserId = userId,
-                    EUID = user.EUID,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    AccessibilityScore = new AccessibilityScoreDTO()
-                    {
-                        TextRating = userAccessibilityScore.TextRating,
-                        StructureRating = userAccessibilityScore.StructureRating,
-                        ColorRating = userAccessibilityScore.ColorRating
-                    },
-                    posters = posters
-                };
-            }
-
-        }
-
         public bool IsUniquePosterName(string posterName, Guid userId)
         {
             Poster? Result;

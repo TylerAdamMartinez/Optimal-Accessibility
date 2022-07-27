@@ -1,5 +1,5 @@
-import Tesseract from 'tesseract.js';
-import { getColors } from './Color';
+import Tesseract from "tesseract.js";
+import { getColors } from "./Color";
 
 export async function getText(image) {
   let grade = 0;
@@ -34,23 +34,29 @@ export async function getText(image) {
 }
 
 const findText = async (image, grade) => {
-  await Tesseract.recognize(image.tempImages.top.img, 'eng').then(({ data }) => {
-    image.tempImages.top.text = data.text;
-    image.tempImages.top.textConfidence = data.confidence;
-    grade += data.confidence;
-  });
+  await Tesseract.recognize(image.tempImages.top.img, "eng").then(
+    ({ data }) => {
+      image.tempImages.top.text = data.text;
+      image.tempImages.top.textConfidence = data.confidence;
+      grade += data.confidence;
+    }
+  );
 
-  await Tesseract.recognize(image.tempImages.middle.img, 'eng').then(({ data }) => {
-    image.tempImages.middle.text = data.text;
-    image.tempImages.middle.textConfidence = data.confidence;
-    grade += data.confidence;
-  });
+  await Tesseract.recognize(image.tempImages.middle.img, "eng").then(
+    ({ data }) => {
+      image.tempImages.middle.text = data.text;
+      image.tempImages.middle.textConfidence = data.confidence;
+      grade += data.confidence;
+    }
+  );
 
-  await Tesseract.recognize(image.tempImages.bottom.img, 'eng').then(({ data }) => {
-    image.tempImages.bottom.text = data.text;
-    image.tempImages.bottom.textConfidence = data.confidence;
-    grade += data.confidence;
-  });
+  await Tesseract.recognize(image.tempImages.bottom.img, "eng").then(
+    ({ data }) => {
+      image.tempImages.bottom.text = data.text;
+      image.tempImages.bottom.textConfidence = data.confidence;
+      grade += data.confidence;
+    }
+  );
 
   grade = findOutlier(image, grade);
 

@@ -1,4 +1,4 @@
-# <p align="center"> Optimal-Accessibility (*CSCE 3444 Main Project*)
+# <p align="center"> The Optimal Accessibility Project
 
 <p align="center" style="display: flex;" >
 <img src="https://visitor-badge.glitch.me/badge?page_id=tyleradammartinez.Optimal-Accessibility" />
@@ -7,10 +7,10 @@
 
 
 <p align="center" style="display: flex;" >
-<img alt="Optimal-Accessibility-Logo" src="https://github.com/TylerAdamMartinez/Optimal-Accessibility/blob/main/Application/src/Components/Optimal-Accessibility-Logo.png" />
+<img alt="Optimal-Accessibility-Image" src="https://github.com/TylerAdamMartinez/Optimal-Accessibility/blob/ImproveScreenStyling/Docs/Assets/Logo/Optimal-Accessibility-Logo.svg" height="384px" width="384px" />
  </p>
 
-The Optimal Accessibility project aims to create a web application that calculates the accessibility rating of academic posters.
+We believe online and offline accessibility matters, so we created the Optimal Acessibilty project. Our mission is to create a web application that calculates the accessibility rating of academic posters.
 ---
 
 ### Team Members
