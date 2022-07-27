@@ -7,7 +7,7 @@
 
 
 <p align="center" style="display: flex;" >
-<img alt="Optimal-Accessibility-Backend-Image" src="https://github.com/TylerAdamMartinez/Optimal-Accessibility/blob/ImproveScreenStyling/Docs/Assets/Logo/Optimal-Accessibility-Backend-Logo.svg" height="384px" width="384px" />
+<img alt="Optimal-Accessibility-Backend-Image" src="https://github.com/TylerAdamMartinez/Optimal-Accessibility/blob/main/Docs/Assets/Logo/Optimal-Accessibility-Backend-Logo.svg" height="300px" width="300px" />
  </p>
 
 This is the Web API and database integration portion of the code base
