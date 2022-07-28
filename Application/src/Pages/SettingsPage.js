@@ -130,12 +130,6 @@ function Settings() {
       <NavBar />
       <div id="MyPostersDiv">
         <div id="InnerMyPostersDiv">
-          <EditIcon
-            onClick={() => {
-              SetIsEditing(!IsEditing);
-            }}
-          />
-          <PersonRemoveIcon onClick={deleteProfileHandler} />
           <h2>Settings</h2>
           {IsEditing ? (
             <form onSubmit={handleSubmit} id="SettingsPageForm">
@@ -211,16 +205,56 @@ function Settings() {
               </div>
             </form>
           ) : (
-            <div id="SettingsPageInfo">
-              <p>EUID: {euid}</p>
-              <p>EMAIL: {Email}</p>
-              <p>FIRST NAME: {FirstName}</p>
-              <p>LAST NAME: {LastName}</p>
-              <p>MIDDLE INTITIAL: {MiddleInitial}</p>
-              <p>BIRTHDAY: {Birthday}</p>
-              <p>GENDER: {Gender}</p>
-              <p>CLASSFICATION: {Classfication} </p>
-            </div>
+            <>
+              <div id="SettingsPageInfo">
+                <p>
+                  <span>EUID:</span>
+                  {euid}
+                </p>
+                <p>
+                  <span>Email:</span>
+                  {Email}
+                </p>
+                <p>
+                  <span>First Name:</span>
+                  {FirstName}
+                </p>
+                <p>
+                  <span>Last Name:</span>
+                  {LastName}
+                </p>
+                <p>
+                  <span>Middle Initial:</span>
+                  {MiddleInitial}
+                </p>
+                <p>
+                  <span>Birthday:</span>
+                  {Birthday}
+                </p>
+                <p>
+                  <span>Gender:</span>
+                  {Gender}
+                </p>
+                <p>
+                  <span>Classification:</span>
+                  {Classfication}
+                </p>
+              </div>
+              <div className="IconContainer">
+                <EditIcon
+                  className="IconHover"
+                  fontSize="large"
+                  onClick={() => {
+                    SetIsEditing(!IsEditing);
+                  }}
+                />
+                <PersonRemoveIcon
+                  className="IconHover"
+                  fontSize="large"
+                  onClick={deleteProfileHandler}
+                />
+              </div>
+            </>
           )}
         </div>
       </div>

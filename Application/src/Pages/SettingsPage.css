@@ -30,11 +30,30 @@
 }
 
 #SettingsPageInfo {
-    padding: 2em;
+    padding: 1em;
     font-size: 18pt;
 }
 
 #SettingsPageInfo p {
-    margin-block-start: 0.5em;
-    margin-block-end: 0.5em;
+    display: flex;
+}
+
+span {
+    display: flex;
+    font-weight: 600;
+    margin-right: 0.3em;
+    overflow-x: hidden !important;
+}
+
+.IconContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.IconHover:hover {
+    cursor: pointer;
+    color: #B90504;
 }
