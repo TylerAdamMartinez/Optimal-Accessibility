@@ -206,3 +206,9 @@
 .PopUpAccountMenuDivbtn:hover {
   box-shadow: 2px 2px 4px rgb(90, 90, 90);
 }
+
+.PopUpBackground {
+  background-color: #33333387;
+  height: 100vh;
+  width: 100vw;
+}

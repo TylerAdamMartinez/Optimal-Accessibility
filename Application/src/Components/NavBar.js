@@ -218,36 +218,46 @@ If the color rating for your poster is low, the following list could help you fi
         <ul>
           <li>
             <Popup trigger={<HelpIcon fontSize="large" />}>
-              <div id="PopUpHelpMenuDivSection">
-                <ul id="PopUpHelpMenuDiv">
-                  <Popup trigger={<li id="PopUpHelpMenuDivTextField">Text</li>}>
-                    <HelpPage
-                      PageName="Text"
-                      PageContent={textHelpInfo}
-                      Color={"#017F01"}
-                    />
-                  </Popup>
-                  <Popup
-                    trigger={
-                      <li id="PopUpHelpMenuDivStructureField">Structure</li>
-                    }
-                  >
-                    <HelpPage
-                      PageName="Structure"
-                      PageContent={structureHelpInfo}
-                      Color={"#640665"}
-                    />
-                  </Popup>
-                  <Popup
-                    trigger={<li id="PopUpHelpMenuDivColorField">Color</li>}
-                  >
-                    <HelpPage
-                      PageName="Color"
-                      PageContent={colorHelpInfo}
-                      Color={"#DA364A"}
-                    />
-                  </Popup>
-                </ul>
+              <div className="PopUpBackground">
+                <div id="PopUpHelpMenuDivSection">
+                  <ul id="PopUpHelpMenuDiv">
+                    <Popup
+                      trigger={<li id="PopUpHelpMenuDivTextField">Text</li>}
+                    >
+                      <div className="PopUpBackground">
+                        <HelpPage
+                          PageName="Text"
+                          PageContent={textHelpInfo}
+                          Color={"#017F01"}
+                        />
+                      </div>
+                    </Popup>
+                    <Popup
+                      trigger={
+                        <li id="PopUpHelpMenuDivStructureField">Structure</li>
+                      }
+                    >
+                      <div className="PopUpBackground">
+                        <HelpPage
+                          PageName="Structure"
+                          PageContent={structureHelpInfo}
+                          Color={"#640665"}
+                        />
+                      </div>
+                    </Popup>
+                    <Popup
+                      trigger={<li id="PopUpHelpMenuDivColorField">Color</li>}
+                    >
+                      <div className="PopUpBackground">
+                        <HelpPage
+                          PageName="Color"
+                          PageContent={colorHelpInfo}
+                          Color={"#DA364A"}
+                        />
+                      </div>
+                    </Popup>
+                  </ul>
+                </div>
               </div>
             </Popup>
           </li>
@@ -262,31 +272,33 @@ If the color rating for your poster is low, the following list could help you fi
                 />
               }
             >
-              <div id="PopUpAddMenuDivSection">
-                <div id="PopUpAddMenuDiv">
-                  <h2>New Poster</h2>
-                  <form onSubmit={handleSubmit} id="PopUpAddMenuForm">
-                    <input
-                      readOnly={IsProcessing}
-                      placeholder="Name"
-                      type="text"
-                      value={name}
-                      onChange={handleNameChange}
-                    />
-                    <input
-                      disabled={IsProcessing}
-                      readOnly={IsProcessing}
-                      type="File"
-                      accept=".png, .jpg"
-                      onChange={handleFileChange}
-                    />
-                    <input
-                      readOnly={IsProcessing}
-                      type="submit"
-                      value={loadingState}
-                      className="PopUpAccountMenuDivbtn"
-                    />
-                  </form>
+              <div className="PopUpBackground">
+                <div id="PopUpAddMenuDivSection">
+                  <div id="PopUpAddMenuDiv">
+                    <h2>New Poster</h2>
+                    <form onSubmit={handleSubmit} id="PopUpAddMenuForm">
+                      <input
+                        readOnly={IsProcessing}
+                        placeholder="Name"
+                        type="text"
+                        value={name}
+                        onChange={handleNameChange}
+                      />
+                      <input
+                        disabled={IsProcessing}
+                        readOnly={IsProcessing}
+                        type="File"
+                        accept=".png, .jpg"
+                        onChange={handleFileChange}
+                      />
+                      <input
+                        readOnly={IsProcessing}
+                        type="submit"
+                        value={loadingState}
+                        className="PopUpAccountMenuDivbtn"
+                      />
+                    </form>
+                  </div>
                 </div>
               </div>
             </Popup>
@@ -296,15 +308,22 @@ If the color rating for your poster is low, the following list could help you fi
           </li>
           <li>
             <Popup trigger={<AccountCircleIcon fontSize="large" />}>
-              <div id="PopUpAccountpMenuDivSection">
-                <ul id="PopUpAccountMenuDiv">
-                  <Link to="/settings">
-                    <li className="PopUpAccountMenuDivbtn">Settings</li>
-                  </Link>
-                  <Link to="/" onClick={handleLogout}>
-                    <li className="PopUpAccountMenuDivbtn">Logout</li>
-                  </Link>
-                </ul>
+              <div className="PopUpBackground">
+                <div id="PopUpAccountpMenuDivSection">
+                  <ul id="PopUpAccountMenuDiv">
+                    <Link to="/settings">
+                      <li
+                        className="PopUpAccountMenuDivbtn"
+                        style={{ marginBottom: 10 }}
+                      >
+                        Settings
+                      </li>
+                    </Link>
+                    <Link to="/" onClick={handleLogout}>
+                      <li className="PopUpAccountMenuDivbtn">Logout</li>
+                    </Link>
+                  </ul>
+                </div>
               </div>
             </Popup>
           </li>

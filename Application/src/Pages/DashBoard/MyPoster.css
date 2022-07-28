@@ -90,7 +90,7 @@
     border: 3px solid #333;
     box-shadow: 4px 4px 10px rgb(90, 90, 90);
     border-radius: 15px;
-    padding: 3em;
+    padding: 2em;
     display: grid;
     grid-template-rows: auto 1fr;
     grid-template-columns: 1fr;
@@ -105,11 +105,11 @@
 #PosterPopUpMenuDiv {
     grid-row: 2 / 3;
     grid-column: 1 / 2;
-    overflow-y: scroll;
-    height: 30em;
+    height: fit-content;
+    max-height: 40em;
     flex-direction: row;
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
 }
 
 @media screen and (max-width: 1050px) {
@@ -118,6 +118,7 @@
         grid-template-columns: 1fr;
         grid-template-rows: 1fr 1fr;
         justify-items: center;
+        overflow-y: scroll;
     }
 }
 
@@ -155,7 +156,7 @@
 #PosterPopUpMenuImgDiv img {
     pointer-events: none;
     max-width: 100%;
-    max-height: 21em;
+    max-height: 25em;
 }
 
 #PosterPopUpMenuBarGraphDiv {
@@ -170,7 +171,7 @@
 }
 
 .AccessibilityBarGraphScoreContainer {
-    width: 50%;
+    width: 70%;
     padding: 10px;
     margin-left: 1em;
 }
@@ -188,6 +189,17 @@
 
 .PopupIcon {
     cursor: pointer;
+}
+
+.CloseIcon {
+    cursor: pointer;
+    margin-top: -20px;
+    margin-right: -20px;
+    padding: 0px;
+}
+
+.CloseIcon:hover {
+    color: #990100;
 }
 
 .PopupIcon:hover {
@@ -299,4 +311,10 @@
     border: none !important;
     border-radius: 10px !important;
     transition: box-shadow .2s ease-in-out;
+}
+
+.PopUpBackground {
+    background-color: #33333387;
+    height: 100vh;
+    width: 100vw;
 }
