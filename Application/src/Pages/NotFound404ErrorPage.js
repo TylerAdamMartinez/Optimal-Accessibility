@@ -1,9 +1,23 @@
 import "./NotFound404ErrorPage.css";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "./../Images/Optimal-Accessibility-Logo.png";
+import { useState, useEffect } from "react";
+import Cookies from "universal-cookie";
 
 function NoMatch() {
   let location = useLocation();
+  let navigate = useNavigate();
+
+  const [ButtonName, SetButtonName] = useState("Return Home");
+  const [ReturnPath, SetReturnPath] = useState("/");
+
+  useEffect(() => {
+    let cookies = new Cookies();
+    if (cookies.get("jwt") != null && localStorage.getItem("userId") != null) {
+      SetButtonName("Go Back");
+      SetReturnPath(-1);
+    }
+  }, [navigate]);
 
   return (
     <div id="LoginPageDiv">
@@ -17,9 +31,12 @@ function NoMatch() {
           <h3>
             No match for <code>{location.pathname}</code>
           </h3>
-          <Link to="/">
-            <button className="PopUpAccountMenuDivbtn">Return to Home</button>
-          </Link>
+          <button
+            onClick={() => navigate(ReturnPath)}
+            className="PopUpAccountMenuDivbtn"
+          >
+            {ButtonName}
+          </button>
         </div>
       </div>
     </div>
