@@ -11,6 +11,8 @@ import { Link } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { getImageGrid } from "../Utils/Structure";
 import ConvertImageToBase64 from "../Utils/ConvertImageToBase64";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function NavBar(props) {
   let textHelpInfo = `The text rating is mainly based on the readability of the text. If the text cannot be easily read by the computer, then it probably can't be easily read by a person. The size of the text, as well as the color contrast with its surroundings, are the largest factors.
@@ -58,13 +60,20 @@ If the color rating for your poster is low, the following list could help you fi
     event.preventDefault();
     setIsProcessing(true);
     let errorFlag = false;
-
     let title = Math.random().toString();
 
     async function getAccessibilityScore(poster) {
       setLoadingState("Uploading image...");
+      toast.info("Uploading image...", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
       poster = await ConvertImageToBase64(poster);
       setLoadingState("Calculating accessibility score...");
+      toast.info("Calculating accessibility score...", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+      });
       let posterGrades = await getImageGrid(
         "data:image/png;base64," + poster
       ).then((score) => {
@@ -80,6 +89,10 @@ If the color rating for your poster is low, the following list could help you fi
       return posterGrades;
     }
 
+    toast.info("sent", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 2000,
+    });
     let accessibilityScore = await getAccessibilityScore(FileData);
     setLoadingState("Sending Poster...");
     ConvertImageToBase64(FileData)
@@ -102,8 +115,12 @@ If the color rating for your poster is low, the following list could help you fi
           .then((responce) => {
             if (!responce.ok) {
               errorFlag = true;
+            } else {
+              toast.success("New poster was successfully added!", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 2000,
+              });
             }
-
             setLoadingState("Sent");
             return responce.json();
           })
@@ -116,12 +133,19 @@ If the color rating for your poster is low, the following list could help you fi
             setLoadingState("Submit");
           })
           .catch((err) => {
-            alert(err);
+            setIsProcessing(false);
+            toast.error(`${err}`, {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: 2000,
+            });
             console.error(err);
           });
       })
       .catch((Error) => {
-        alert(Error);
+        toast.error(`${Error}`, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
         console.error(Error);
       });
   }
@@ -146,6 +170,10 @@ If the color rating for your poster is low, the following list could help you fi
       return [month, day, year].join("-");
     }
 
+    toast.info("Generating PDF Report...", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 2000,
+    });
     fetch(`https://localhost:7267/api/User/GenerateReportByUserId/${userId}`, {
       method: "GET",
       headers: {
@@ -164,6 +192,10 @@ If the color rating for your poster is low, the following list could help you fi
         if (errorFlag) {
           throw new Error(`${blob}`);
         }
+        toast.success("Successfully generated PDF report!", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
         let today = formatDate();
         var url = window.URL.createObjectURL(blob);
         var a = document.createElement("a");
@@ -174,7 +206,10 @@ If the color rating for your poster is low, the following list could help you fi
         a.remove();
       })
       .catch((err) => {
-        alert(err);
+        toast.error(`${err}`, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
         console.error(err);
       });
   }
@@ -330,6 +365,7 @@ If the color rating for your poster is low, the following list could help you fi
         </ul>
       </div>
       <span></span>
+      <ToastContainer autoClose={1000} limit={3} />
     </div>
   );
 }
