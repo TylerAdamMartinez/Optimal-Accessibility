@@ -35,6 +35,6 @@
 
 #InnerMyPostersDiv span {
     display: flex;
-    overflow-x: scroll;
+    overflow-x: scroll !important;
 }
 
