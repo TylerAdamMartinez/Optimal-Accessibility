@@ -3,7 +3,6 @@
   "version": "0.3.0",
   "proxy": "https://localhost:7267",
   "private": true,
-  "homepage": "https://tyleradammartinez.github.io/Optimal-Accessibility",
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
@@ -19,9 +18,7 @@
     "changedpi": "^1.0.4",
     "chart.js": "^3.8.0",
     "color.js": "^1.2.0",
-    "gh-pages": "^4.0.0",
     "image-js": "^0.34.1",
-    "notistack": "^2.0.5",
     "react": "^18.2.0",
     "react-chartjs-2": "^4.2.0",
     "react-dom": "^18.2.0",
