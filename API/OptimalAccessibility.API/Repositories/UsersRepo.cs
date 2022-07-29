@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OptimalAccessibility.Application.Repositories;
 using OptimalAccessibility.Domain.Enum;
+using OptimalAccessibility.Domain.Models.Auth;
 using OptimalAccessibility.Domain.Models.Database;
 using OptimalAccessibility.Domain.Models.DataTransferObjects;
 
@@ -70,6 +71,61 @@ namespace OptimalAccessibility.API.Repositories
                 return DatabaseResultTypes.UserNotFound;
             }
 
+            var AttemptUAS = _context.UserAccessibilityScores.Where(uas => uas.userId == AttemptUser.userId).FirstOrDefault();
+            if (AttemptUAS == null)
+            {
+                return DatabaseResultTypes.UserNotFound;
+            }
+
+            _context.UserAccessibilityScores.Remove(AttemptUAS);
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex.ToString());
+                return DatabaseResultTypes.FailedToDeleteUser;
+            }
+
+            var AttemptPASes = from poster in _context.Posters
+                               where poster.userId == AttemptUser.userId
+                               from pas in _context.PosterAccessibilityScores
+                               where pas.posterId == poster.posterId
+                               select pas;
+                                
+            foreach (var AttemptPAS in AttemptPASes)
+            {
+                _context.PosterAccessibilityScores.Remove(AttemptPAS);
+            }
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex.ToString());
+                return DatabaseResultTypes.FailedToDeleteUser;
+            }
+
+            var AttemptPosters = from poster in _context.Posters
+                               where poster.userId == AttemptUser.userId
+                               select poster;
+
+            foreach (var AttemptPoster in AttemptPosters)
+            {
+                _context.Posters.Remove(AttemptPoster);
+            }
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex.ToString());
+                return DatabaseResultTypes.FailedToDeleteUser;
+            }
+
             _context.Users.Remove(AttemptUser);
 
             try
@@ -80,6 +136,33 @@ namespace OptimalAccessibility.API.Repositories
             {
                 _logger.LogError(ex.ToString());
                 return DatabaseResultTypes.FailedToDeleteUser;
+            }
+            return DatabaseResultTypes.Successful;
+        }
+
+        public DatabaseResultTypes UpdateUserByUserId(Guid userId, UpdateUserBody updateUserBody)
+        {
+            var AttemptUser = _context.Users.Where(user => user.userId == userId).FirstOrDefault();
+            if (AttemptUser == null)
+            {
+                return DatabaseResultTypes.UserNotFound;
+            }
+
+            AttemptUser.Email = updateUserBody.Email;
+            AttemptUser.FirstName = updateUserBody.FirstName;
+            AttemptUser.LastName = updateUserBody.LastName;
+            AttemptUser.MiddleInitial = updateUserBody.MiddleInitial;
+            AttemptUser.Gender = updateUserBody.Gender;
+            AttemptUser.Classfication = updateUserBody.Classfication;
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex.ToString());
+                return DatabaseResultTypes.FailedToUpdateUser;
             }
             return DatabaseResultTypes.Successful;
         }

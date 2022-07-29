@@ -137,7 +137,7 @@ namespace OptimalAccessibility.API.Controllers
         [HttpPut("UpdateUserById/{userId:Guid}")]
         public IActionResult UpdateUserFieldByUserId([FromRoute] Guid userId, [FromBody] UpdateUserBody updateUserBody)
         {
-            var Result = _userRepo.DeleteUserByUserId(userId);
+            var Result = _userRepo.UpdateUserByUserId(userId, updateUserBody);
             if (Result == DatabaseResultTypes.UserNotFound)
             {
                 return NotFound($"No user with Guid of {userId} was found in database");
@@ -145,10 +145,10 @@ namespace OptimalAccessibility.API.Controllers
 
             if (Result == DatabaseResultTypes.FailedToUpdateUser)
             {
-                return NotFound($"Failed to delete user with Guid of {userId}");
+                return NotFound($"Failed to update user with Guid of {userId}");
             }
 
-            return Ok($"User with Guid of {userId} was successfull deleted from the database");
+            return Ok($"User with Guid of {userId} was successfull update from the database");
         }
     }
 
