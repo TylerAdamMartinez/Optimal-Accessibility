@@ -10,6 +10,8 @@ import CloseRounded from "@mui/icons-material/CloseRounded";
 import Cookies from "universal-cookie";
 import ConvertImageToBase64 from "../../Utils/ConvertImageToBase64";
 import { getImageGrid } from "../../Utils/Structure";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function MyPoster(props) {
   const imgRef = useRef();
@@ -34,6 +36,10 @@ function MyPoster(props) {
     let cookies = new Cookies();
     let Jwt = cookies.get("jwt");
 
+    toast.info("Sent", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 2000,
+    });
     fetch(
       `https://localhost:7267/api/User/DeletePosterByUserId/${userId}/ByPosterName/${props.PosterName}`,
       {
@@ -49,6 +55,11 @@ function MyPoster(props) {
         if (!responce.ok) {
           errorFlag = true;
           return responce.json();
+        } else {
+          toast.success("poster was successfully deleted", {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 2000,
+          });
         }
       })
       .then((responseJSON) => {
@@ -60,7 +71,11 @@ function MyPoster(props) {
         props.editPosterCallback(Math.random());
       })
       .catch((err) => {
-        alert(err);
+        setIsProcessing(false);
+        toast.error(`${err}`, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
         console.error(err);
       });
   }
@@ -74,6 +89,10 @@ function MyPoster(props) {
     let cookies = new Cookies();
     let Jwt = cookies.get("jwt");
 
+    toast.info("Sent", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 2000,
+    });
     fetch(
       `https://localhost:7267/api/User/UpdatePosterNameByUserId/${userId}/ByPosterName/${props.PosterName}?newPosterName=${editPosterName}`,
       {
@@ -89,6 +108,11 @@ function MyPoster(props) {
         if (!responce.ok) {
           errorFlag = true;
           return responce.json();
+        } else {
+          toast.success("Poster name was successfully updated", {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 2000,
+          });
         }
       })
       .then((responseJSON) => {
@@ -100,7 +124,11 @@ function MyPoster(props) {
         props.editPosterCallback(editPosterName);
       })
       .catch((err) => {
-        alert(err);
+        toast.error(`${err}`, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
+        setIsProcessing(false);
         console.error(err);
       });
   }
@@ -133,7 +161,15 @@ function MyPoster(props) {
 
     let name = props.PosterName;
     let title = Math.random().toString();
+    toast.info("Sent", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 2000,
+    });
     let accessibilityScore = await getAccessibilityScore(editPosterData);
+    toast.info("Caculating Accessibility Score...", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 2000,
+    });
     ConvertImageToBase64(editPosterData)
       .then((data) => {
         const addPosterBody = { name, title, data, accessibilityScore };
@@ -154,6 +190,11 @@ function MyPoster(props) {
             if (!responce.ok) {
               errorFlag = true;
               return responce.json();
+            } else {
+              toast.success("Successfully updated poster image", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 2000,
+              });
             }
           })
           .then((responseJSON) => {
@@ -165,12 +206,20 @@ function MyPoster(props) {
             props.editPosterCallback(editPosterData);
           })
           .catch((err) => {
-            alert(err);
+            setIsProcessing(false);
+            toast.error(`${err}`, {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: 2000,
+            });
             console.error(err);
           });
       })
       .catch((err) => {
-        alert(err);
+        setIsProcessing(false);
+        toast.error(`${err}`, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
         console.error(err);
       });
   }
@@ -211,6 +260,7 @@ function MyPoster(props) {
           <div id="PosterNameSection">
             <h3>{props.PosterName}</h3>
           </div>
+          <ToastContainer autoClose={1000} limit={3} />
         </div>
       }
       open={isOpen}

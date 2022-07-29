@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "./../Images/Optimal-Accessibility-Logo.png";
 import Cookies from "universal-cookie";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
   const [euid, SetEUID] = useState("");
@@ -18,6 +20,9 @@ function Login() {
 
   function handleSubmit(event) {
     event.preventDefault();
+    const id = toast.loading("Please wait...", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
     let errorFlag = false;
 
     const LoginBody = { euid, password };
@@ -46,10 +51,23 @@ function Login() {
           expires: new Date(Date.now() + 12096e5),
         });
         localStorage.setItem("userId", responseJSON.userId);
+        toast.update(id, {
+          render: "Successfully login!",
+          type: "success",
+          isLoading: false,
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
         navigate(`/dashboard`);
       })
       .catch((err) => {
-        alert(err);
+        toast.update(id, {
+          render: `${err}`,
+          type: "error",
+          isLoading: false,
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
         console.error(err);
       });
   }
@@ -100,6 +118,7 @@ function Login() {
           </div>
         </form>
       </div>
+      <ToastContainer autoClose={1000} limit={3} />
     </div>
   );
 }

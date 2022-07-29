@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import Logo from "./../Images/Optimal-Accessibility-Logo.png";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Register() {
   const [EUID, SetEUID] = useState("");
@@ -21,10 +23,12 @@ function Register() {
 
   function handleSubmit(event) {
     event.preventDefault();
+    const id = toast.loading("Please wait...", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
     let errorFlag = false;
 
     const RegisterBody = { EUID, FirstName, LastName, Password };
-    console.log(JSON.stringify(RegisterBody));
     fetch("https://localhost:7267/api/Auth/RegisterNewUser", {
       method: "POST",
       headers: {
@@ -43,9 +47,25 @@ function Register() {
         if (errorFlag) {
           throw new Error(`${responseJSON}`);
         }
+        toast.update(id, {
+          render: "Successfully Registerd!",
+          type: "success",
+          isLoading: false,
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
         navigate("/");
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        toast.update(id, {
+          render: `${err}`,
+          type: "error",
+          isLoading: false,
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 2000,
+        });
+        console.error(err);
+      });
   }
 
   function handleEUIDChange(event) {
@@ -124,6 +144,7 @@ function Register() {
           </div>
         </form>
       </div>
+      <ToastContainer autoClose={1000} limit={3} />
     </div>
   );
 }

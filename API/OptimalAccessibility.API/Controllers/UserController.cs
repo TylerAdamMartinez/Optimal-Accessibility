@@ -63,11 +63,14 @@ namespace OptimalAccessibility.API.Controllers
         public IActionResult UpdatePosterName([FromRoute] Guid userId, [FromRoute] string posterName, [FromQuery] string newPosterName)
         {
             var Result = _userRepo.UpdatePosterName(posterName, userId, newPosterName);
-            if (Result == Domain.Enum.DatabaseResultTypes.FailedToUpdatePoster)
+            if (Result == Domain.Enum.DatabaseResultTypes.UniqueKeyConstraintFailed)
             {
                 return BadRequest($"Poster Name {newPosterName} has been taken already");
             }
-
+            else if (Result == Domain.Enum.DatabaseResultTypes.FailedToUpdatePoster)
+            {
+                return BadRequest("Poster failed to be updated");
+            }
             else if (Result == Domain.Enum.DatabaseResultTypes.PosterNotFound)
             {
                 return BadRequest("Poster failed to be found");

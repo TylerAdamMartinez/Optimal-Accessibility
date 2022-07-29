@@ -1,4 +1,5 @@
 ﻿using OptimalAccessibility.Domain.Enum;
+using OptimalAccessibility.Domain.Models.Auth;
 using OptimalAccessibility.Domain.Models.DataTransferObjects;
 
 namespace OptimalAccessibility.Application.Repositories
@@ -10,6 +11,7 @@ namespace OptimalAccessibility.Application.Repositories
 
         public bool AddNewUser(UserDTO newUser, string Password);
         public DatabaseResultTypes DeleteUserByUserId(Guid userId);
+        public DatabaseResultTypes UpdateUserByUserId(Guid userId, UpdateUserBody updateUserBody);
 
         public bool IsUniquePosterName(string posterName, Guid userId);
         public DatabaseResultTypes CreatePoster(PosterDTO newPoster, Guid userId);

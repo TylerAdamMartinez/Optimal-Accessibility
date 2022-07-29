@@ -5,10 +5,10 @@
     padding: 2em;
     margin-right: 1em;
     margin-left: 1em;
-    gap: 2em;
+    gap: 1.575em;
 }
 
-#SettingsPageForm input {
+#SettingsPageForm input, #SettingsPageForm select {
     font-size: 18pt;
     color: #333;
     background-color: #f6f6f6;
@@ -17,11 +17,13 @@
     border-radius: 4px;
 }
 
-#SettingsPageForm input::placeholder {
+#SettingsPageForm input::placeholder, 
+#SettingsPageForm select::placeholder {
     color: #333;
 }
 
-#SettingsPageForm input:focus-visible {
+#SettingsPageForm input:focus-visible,
+#SettingsPageForm select:focus-visible {
     outline: none;
 }
 
@@ -36,10 +38,19 @@
 
 #SettingsPageInfo p {
     display: flex;
+    margin-block-start: 1.375em;
+    margin-block-end: 1.375em;
 }
 
 span {
     display: flex;
+    font-weight: 600;
+    margin-right: 0.3em;
+    overflow-x: hidden !important;
+}
+
+label {
+    font-size: 18pt;
     font-weight: 600;
     margin-right: 0.3em;
     overflow-x: hidden !important;
@@ -56,4 +67,29 @@ span {
 .IconHover:hover {
     cursor: pointer;
     color: #B90504;
+}
+
+
+#SettingsPageOnEditInfo {
+    font-size: 18pt;
+    margin-left: 2em;
+}
+
+#SettingsPageOnEditInfo p {
+    display: flex;
+    margin-block-start: 1em;
+    margin-block-end: -.15em;
+}
+
+.SettingsPageEditItem {
+    display: flex;
+}
+
+.SettingsPageEditItem label {
+    flex: inherit;
+}
+
+.SettingsPageEditItem input, 
+.SettingsPageEditItem select {
+    flex: auto;
 }
