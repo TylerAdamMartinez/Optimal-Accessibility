@@ -66,13 +66,13 @@ If the color rating for your poster is low, the following list could help you fi
       setLoadingState("Uploading image...");
       toast.info("Uploading image...", {
         position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
+        autoClose: 4000,
       });
       poster = await ConvertImageToBase64(poster);
       setLoadingState("Calculating accessibility score...");
       toast.info("Calculating accessibility score...", {
         position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 2000,
+        autoClose: 4000,
       });
       let posterGrades = await getImageGrid(
         "data:image/png;base64," + poster
@@ -91,7 +91,7 @@ If the color rating for your poster is low, the following list could help you fi
 
     toast.info("sent", {
       position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: 2000,
+      autoClose: 4000,
     });
     let accessibilityScore = await getAccessibilityScore(FileData);
     setLoadingState("Sending Poster...");
@@ -118,7 +118,7 @@ If the color rating for your poster is low, the following list could help you fi
             } else {
               toast.success("New poster was successfully added!", {
                 position: toast.POSITION.BOTTOM_RIGHT,
-                autoClose: 2000,
+                autoClose: 4000,
               });
             }
             setLoadingState("Sent");
@@ -136,7 +136,7 @@ If the color rating for your poster is low, the following list could help you fi
             setIsProcessing(false);
             toast.error(`${err}`, {
               position: toast.POSITION.BOTTOM_RIGHT,
-              autoClose: 2000,
+              autoClose: 4000,
             });
             console.error(err);
           });
@@ -144,7 +144,7 @@ If the color rating for your poster is low, the following list could help you fi
       .catch((Error) => {
         toast.error(`${Error}`, {
           position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 2000,
+          autoClose: 4000,
         });
         console.error(Error);
       });
