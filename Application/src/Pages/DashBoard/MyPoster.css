@@ -153,6 +153,14 @@
     justify-content: center;
 }
 
+.ScaleOnHover {
+    transition: transform 0.3s ease-in-out;
+}
+
+.ScaleOnHover:hover {
+    transform: scale(2);
+}
+
 #PosterPopUpMenuImgDiv img {
     pointer-events: none;
     max-width: 100%;
@@ -230,13 +238,15 @@
 }
 
 #editPosterNameBtn {
-    font-size: 34px;
-    height: 100%;
+    font-size: 18px;
+    padding: 10px;
     background-color: #B90504 !important;
     cursor: pointer;
     color: #f6f6f6 !important;
     border: none !important;
     border-radius: 10px !important;
+    justify-self: center;
+    align-self: center;
     transition: box-shadow .2s ease-in-out;
 }
 
@@ -258,7 +268,7 @@
 }
 
 #editingPosterDataFrom input {
-    font-size: 20pt;
+    font-size: 16pt;
     color: #333;
     background-color: #f6f6f6;
     border: none;
@@ -271,7 +281,7 @@
 }
 
 #editingPosterDataFrom input {
-    font-size: 20pt;
+    font-size: 16pt;
     color: #333;
     background-color: #f6f6f6;
     border: none;
@@ -297,13 +307,14 @@
     padding-left: .5em;
     padding-right: .5em;
     border-radius: 10px;
+    margin-top: 5px;
     margin-bottom: 5px;
     margin-right: 10px;
 }
 
 #editPosterDataBtn {
-    font-size: 34px;
-    height: 100%;
+    margin-top: 10px;
+    padding: 10px;
     width: fit-content;
     background-color: #B90504 !important;
     cursor: pointer;

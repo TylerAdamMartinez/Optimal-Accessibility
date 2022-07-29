@@ -294,7 +294,7 @@ function MyPoster(props) {
                         readOnly={IsProcessing}
                         id="editPosterNameBtn"
                         type="submit"
-                        value={"submit"}
+                        value={"Submit"}
                       />
                     </form>
                   ) : (
@@ -330,12 +330,14 @@ function MyPoster(props) {
                       />
                     </>
                   ) : (
-                    <img
-                      ref={imgRef}
-                      onError={onImageError}
-                      src={`data:image/png;base64,${props.Data}`}
-                      alt={`Poster number ${props.Id}`}
-                    />
+                    <div className="ScaleOnHover">
+                      <img
+                        ref={imgRef}
+                        onError={onImageError}
+                        src={`data:image/png;base64,${props.Data}`}
+                        alt={`Poster number ${props.Id}`}
+                      />
+                    </div>
                   )}
                 </div>
                 <div className="PosterPopUpMenuIconContainer">
