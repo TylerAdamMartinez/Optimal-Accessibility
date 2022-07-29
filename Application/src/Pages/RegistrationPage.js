@@ -29,7 +29,8 @@ function Register() {
     let errorFlag = false;
 
     const RegisterBody = { EUID, FirstName, LastName, Password };
-    fetch("https://localhost:7267/api/Auth/RegisterNewUser", {
+    //fetch("https://localhost:7267/api/Auth/RegisterNewUser", {
+    fetch("http://backend:80/api/Auth/RegisterNewUser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

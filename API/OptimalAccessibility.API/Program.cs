@@ -1,7 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using OptimalAccessibility.API;
 using OptimalAccessibility.API.Repositories;
@@ -36,9 +36,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-var connectionString = "Filename=OptimalAccessibilityDatabase.db";
+var envVars = Environment.GetEnvironmentVariables();
+var host = envVars["CONNECTION_HOST"] ?? "ec2-44-209-186-51.compute-1.amazonaws.com";
+var database = envVars["CONNECTION_DB"] ?? "d5kderjk5i4e1t";
+var username = envVars["CONNECTION_USER"] ?? "aogaxjiizshxyv";
+var password = envVars["CONNECTION_PASS"] ?? "263d61c4a47803c2d39f7cd0b2d2c8a4fbbd9c657482c5fa3ba182dda664145d";
+
+var connectionString = $"Host={host};Database={database};User Id={username};Password={password};";
 builder.Services.AddDbContext<OptimalAccessibilityContext>(options => {
-    options.UseSqlite(connectionString);
+    options.UseNpgsql(connectionString);
 });
 
 builder.Services.AddTransient<IAuthRepo, AuthRepo>();
@@ -53,14 +59,13 @@ builder.Services.AddCors(b => b.AddPolicy("CORS_Policy", builder => {
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseCors("CORS_Policy");
 }
 
+app.UseCors("CORS_Policy");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

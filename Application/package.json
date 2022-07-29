@@ -1,7 +1,7 @@
 {
   "name": "optimal-accessibility.web.application",
   "version": "0.3.0",
-  "proxy": "https://localhost:7267",
+  "proxy": "http://backend:80",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.9.3",

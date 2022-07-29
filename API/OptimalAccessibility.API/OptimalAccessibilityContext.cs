@@ -18,7 +18,10 @@ namespace OptimalAccessibility.API
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Filename=OptimalAccessibilityDatabase.db");
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseNpgsql("Host=localhost;Database=Optimal-Accessibility");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

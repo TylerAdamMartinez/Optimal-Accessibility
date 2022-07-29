@@ -1,0 +1,27 @@
+version: '3.0'
+
+services:
+  backend:
+    build:
+      context: ./API 
+      dockerfile: Dockerfile
+    ports:
+      - 7267:80
+    networks:
+      - webnet
+
+  frontend:
+    build: 
+      context: ./Application
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - webnet
+    depends_on:
+      - backend
+
+networks:
+  webnet:

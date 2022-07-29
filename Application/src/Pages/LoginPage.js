@@ -26,7 +26,8 @@ function Login() {
     let errorFlag = false;
 
     const LoginBody = { euid, password };
-    fetch("https://localhost:7267/api/Auth/Login", {
+    //fetch("https://localhost:7267/api/Auth/Login", {
+    fetch("http://backend:80/api/Auth/Login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
