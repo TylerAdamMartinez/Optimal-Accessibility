@@ -16,7 +16,7 @@ function MyPostersSection(props) {
     <div id="MyPostersDiv">
       <div id="InnerMyPostersDiv">
         <h2>My Posters</h2>
-        <span>
+        <span className="PosterSpan">
           {props.myPosters.map((poster) => {
             return (
               <MyPoster

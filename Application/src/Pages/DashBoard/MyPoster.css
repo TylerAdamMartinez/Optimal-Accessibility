@@ -1,320 +1,341 @@
 #MyPoster {
-    background-color: #D0D0D0;
-    display: grid;
-    grid-template-rows: 7fr 2fr;
-    grid-template-columns: 1fr;
-    border-radius: 15px;
-    margin: 1em;
-    cursor: pointer;
-    transition: box-shadow .2s ease-in-out;
+  width: 200px;
+  background-color: #d0d0d0;
+  display: grid;
+  grid-template-rows: 7fr 2fr;
+  grid-template-columns: 1fr;
+  border-radius: 15px;
+  margin: 1em;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease-in-out;
 }
 
 #MyPoster:hover {
-    box-shadow: 2px 2px 6px rgb(90, 90, 90);
+  box-shadow: 2px 2px 6px rgb(90, 90, 90);
 }
 
 #PosterImage {
-    padding: 1em;
-    grid-row: 1 / 2;
-    grid-column: 1 / 2;
-    display: flex;
-    align-content: center;
-    justify-content: center;
+  padding: 1em;
+  grid-row: 1 / 2;
+  grid-column: 1 / 2;
+  display: flex;
+  align-content: center;
+  justify-content: center;
 }
 
 #PosterImage img {
-    pointer-events: none;
-    width: 10em;
-    height: 10em;
+  pointer-events: none;
+  width: 10em;
+  height: 10em;
 }
 
 #PosterNameSection {
-    background-color: #f6f6f6;
-    display: flex;
-    align-self: start;
-    justify-content: center;
-    padding: .2em;
+  background-color: #f6f6f6;
+  display: flex;
+  align-self: start;
+  justify-content: center;
+  padding: 0.2em;
+  overflow: hidden;
 }
 
 #PosterNameSection h3 {
-    margin-top: 0px;
-    margin-bottom: 0px;
+  overflow: hidden;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .popup-content {
-    position: fixed !important;
-    top: 3em !important;
-    left: 0 !important;
-    width: 100%;
-    height: 100%;
-    z-index: 900 !important;
-    align-self: center;
+  position: fixed !important;
+  top: 3em !important;
+  left: 0 !important;
+  width: 100%;
+  height: 100%;
+  z-index: 900 !important;
+  align-self: center;
 }
 
 @media screen and (min-width: 1500px) {
-    #PosterPopUpMenuContainerDiv {
-        grid-template-columns: auto 1250px auto !important;
-    }
+  #PosterPopUpMenuContainerDiv {
+    grid-template-columns: auto 1250px auto !important;
+  }
 }
 
 #PosterPopUpMenuContainerDiv {
-    display: grid;
-    grid-template-rows: 3em 1fr;
-    grid-template-columns: 1fr 8fr 1fr;
+  display: grid;
+  grid-template-rows: 3em 1fr;
+  grid-template-columns: 1fr 8fr 1fr;
 }
 
 #PosterPopUpMenuContainerDivLeftBuf {
-    grid-row: 1 / 3;
-    grid-column: 1 / 2;
+  grid-row: 1 / 3;
+  grid-column: 1 / 2;
 }
 
 #PosterPopUpMenuContainerDivCenterTopBuf {
-    grid-row: 1 / 2;
-    grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  grid-column: 2 / 3;
 }
 
 #PosterPopUpMenuContainerDivCenterBottomBuf {
-    grid-row: 3 / 4;
-    grid-column: 2 / 3;
+  grid-row: 3 / 4;
+  grid-column: 2 / 3;
 }
 
 #PosterPopUpMenuContainerDivRightBuf {
-    grid-row: 1 / 3;
-    grid-column: 3 / 4;
+  grid-row: 1 / 3;
+  grid-column: 3 / 4;
 }
 
 .PosterPopUpMenuDivContainer {
-    grid-row: 2 / 3;
-    grid-column: 2 / 3;
-    background: #f6f6f6;
-    border: 3px solid #333;
-    box-shadow: 4px 4px 10px rgb(90, 90, 90);
-    border-radius: 15px;
-    padding: 2em;
-    display: grid;
-    grid-template-rows: auto 1fr;
-    grid-template-columns: 1fr;
+  grid-row: 2 / 3;
+  grid-column: 2 / 3;
+  background: #f6f6f6;
+  border: 3px solid #333;
+  box-shadow: 4px 4px 10px rgb(90, 90, 90);
+  border-radius: 15px;
+  padding: 2em;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 1fr;
 }
 
 #closePosterPopupBtn {
-    grid-row: 1 / 2;
-    grid-column: 1 / 2;
-    justify-self: flex-end;
+  grid-row: 1 / 2;
+  grid-column: 1 / 2;
+  justify-self: flex-end;
 }
 
 #PosterPopUpMenuDiv {
-    grid-row: 2 / 3;
-    grid-column: 1 / 2;
-    height: fit-content;
-    max-height: 40em;
-    flex-direction: row;
-    display: flex;
-    justify-content: space-between;
+  grid-row: 2 / 3;
+  grid-column: 1 / 2;
+  height: fit-content;
+  max-height: 40em;
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
 }
 
 @media screen and (max-width: 1050px) {
-    #PosterPopUpMenuDiv {
-        display: grid !important;
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr 1fr;
-        justify-items: center;
-        overflow-y: scroll;
-    }
+  #PosterPopUpMenuDiv {
+    display: grid !important;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    justify-items: center;
+    overflow-y: scroll;
+  }
 }
 
 #PosterPopUpMenuDiv h3 {
-    font-size: 34px;
-    margin: 0px;
-    margin-bottom: 0px;
-    padding-bottom: 10px;
-    color: #333333;
-    border-bottom: 3px solid #333333;
-    user-select: none;
+  font-size: 34px;
+  margin: 0px;
+  margin-bottom: 0px;
+  padding-bottom: 10px;
+  color: #333333;
+  border-bottom: 3px solid #333333;
+  user-select: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 #PosterPopUpMenuPosterNameDiv button {
-    padding: .5em;
-    border: none;
-    background-color: #990100;
-    color: #f6f6f6;
-    font-size: 32px;
-    transition: background-color .75s ease-in-out;
+  padding: 0.5em;
+  border: none;
+  background-color: #990100;
+  color: #f6f6f6;
+  font-size: 32px;
+  transition: background-color 0.75s ease-in-out;
 }
 
 #PosterPopUpMenuPosterNameDiv button:hover {
-    background-color: #B90504;
+  background-color: #b90504;
 }
 
 #PosterPopUpMenuImgDiv {
-    display: flex;
-    justify-content: center;
-    margin-top: 1em;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 1em;
+  align-items: center;
+  justify-content: center;
+}
+
+.ScaleOnHover {
+  transition: transform 0.5s ease-in-out;
+  transition-delay: 0.5s;
+}
+
+.ScaleOnHover:hover {
+  transform: scale(1.7) translateX(25%);
+  box-shadow: 2px 2px 6px rgb(90, 90, 90);
 }
 
 #PosterPopUpMenuImgDiv img {
-    pointer-events: none;
-    max-width: 100%;
-    max-height: 16em;
+  pointer-events: none;
+  max-width: 100%;
+  max-height: 16em;
 }
 
 #PosterPopUpMenuBarGraphDiv {
-    margin-top: 1em;
-    width: 100%;  
+  margin-top: 1em;
+  width: 100%;
 }
 
 .PosterImgAndNameContainer {
-    width: 50%;
-    padding: 10px;
-    margin-right: 1em;
+  width: 50%;
+  padding: 10px;
+  margin-right: 1em;
 }
 
 .AccessibilityBarGraphScoreContainer {
-    width: 70%;
-    padding: 10px;
-    margin-left: 1em;
+  width: 70%;
+  padding: 10px;
+  margin-left: 1em;
 }
 
 .AccessibilityBarGraphScoreContainer h3 {
-    font-size: 34px;
+  font-size: 34px;
 }
 
 .PosterPopUpMenuIconContainer {
-    display: flex;
-    margin-top: 1.5em;
-    align-items: center;
-    justify-content: space-evenly;
+  display: flex;
+  margin-top: 1.5em;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 .PopupIcon {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .CloseIcon {
-    cursor: pointer;
-    margin-top: -30px;
-    margin-right: -30px;
-    padding: 0px;
+  cursor: pointer;
+  margin-top: -25px;
+  margin-right: -25px;
+  padding: 0px;
 }
 
 .CloseIcon:hover {
-    color: #990100;
+  color: #990100;
 }
 
 .PopupIcon:hover {
-    color: #990100;
+  color: #990100;
 }
 
 #editForm {
-    display: flex;
-    align-items: flex-start;
-    border-bottom: 3px solid #333;
-    background-color: white !important;
+  display: flex;
+  align-items: flex-start;
+  border-bottom: 3px solid #333;
+  background-color: white !important;
 }
 
 #editPosterNameInput {
-    width: 100%;
-    font-size: 34px;
-    font-weight: bold;
-    margin: 0px;
-    padding: 0px;
-    padding-bottom: 10px;
-    color: #333;
-    border: none;
+  width: 100%;
+  font-size: 34px;
+  font-weight: bold;
+  margin: 0px;
+  padding: 0px;
+  padding-bottom: 10px;
+  color: #333;
+  border: none;
 }
 
 #editPosterNameInput:focus {
-    border: none;
-    outline: none;
+  border: none;
+  outline: none;
 }
 
 #editPosterNameBtn {
-    font-size: 34px;
-    height: 100%;
-    background-color: #B90504 !important;
-    cursor: pointer;
-    color: #f6f6f6 !important;
-    border: none !important;
-    border-radius: 10px !important;
-    transition: box-shadow .2s ease-in-out;
+  font-size: 18px;
+  padding: 10px;
+  background-color: #b90504 !important;
+  cursor: pointer;
+  color: #f6f6f6 !important;
+  border: none !important;
+  border-radius: 10px !important;
+  justify-self: center;
+  align-self: center;
+  transition: box-shadow 0.2s ease-in-out;
 }
 
 #editPosterNameBtn:hover {
-    box-shadow: 2px 2px 6px rgb(90, 90, 90);
+  box-shadow: 2px 2px 6px rgb(90, 90, 90);
 }
 
 #editingPosterDataImage {
-    filter: grayscale(100%) brightness(50%);
+  filter: grayscale(100%) brightness(50%);
 }
 
 #editingPosterDataFrom {
-    z-index: 99999;
-    position: absolute;
-    display: grid;
-    gap: 1em;
-    width: 25%;
-    justify-items: center;
+  z-index: 99999;
+  position: absolute;
+  display: grid;
+  gap: 1em;
+  width: 25%;
+  justify-items: center;
 }
 
 #editingPosterDataFrom input {
-    font-size: 20pt;
-    color: #333;
-    background-color: #f6f6f6;
-    border: none;
-    border-bottom: 3pt solid #B90504;
-    border-radius: 3px;
+  font-size: 16pt;
+  color: #333;
+  background-color: #f6f6f6;
+  border: none;
+  border-bottom: 3pt solid #b90504;
+  border-radius: 3px;
 }
 
 #editingPosterDataFrom input[type="file"] {
-    width: 100%;
+  width: 100%;
 }
 
 #editingPosterDataFrom input {
-    font-size: 20pt;
-    color: #333;
-    background-color: #f6f6f6;
-    border: none;
-    border-bottom: 3pt solid #B90504;
-    border-radius: 3px;
+  font-size: 16pt;
+  color: #333;
+  background-color: #f6f6f6;
+  border: none;
+  border-bottom: 3pt solid #b90504;
+  border-radius: 3px;
 }
 
 #editingPosterDataFrom input::placeholder {
-    color: #333;
+  color: #333;
 }
 
 #editingPosterDataFrom input:focus-visible {
-    outline: none;
+  outline: none;
 }
 
 #editingPosterDataFrom input::file-selector-button {
-    background-color: #B90504 !important;
-    cursor: pointer;
-    color: #f6f6f6 !important;
-    border: none !important;
-    font-size: 16pt;
-    padding: .3em;
-    padding-left: .5em;
-    padding-right: .5em;
-    border-radius: 10px;
-    margin-bottom: 5px;
-    margin-right: 10px;
+  background-color: #b90504 !important;
+  cursor: pointer;
+  color: #f6f6f6 !important;
+  border: none !important;
+  font-size: 16pt;
+  padding: 0.3em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  border-radius: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 10px;
 }
 
 #editPosterDataBtn {
-    font-size: 34px;
-    height: 100%;
-    width: fit-content;
-    background-color: #B90504 !important;
-    cursor: pointer;
-    color: #f6f6f6 !important;
-    border: none !important;
-    border-radius: 10px !important;
-    transition: box-shadow .2s ease-in-out;
+  margin-top: 10px;
+  padding: 10px;
+  width: fit-content;
+  background-color: #b90504 !important;
+  cursor: pointer;
+  color: #f6f6f6 !important;
+  border: none !important;
+  border-radius: 10px !important;
+  transition: box-shadow 0.2s ease-in-out;
 }
 
 .PopUpBackground {
-    background-color: #33333387;
-    height: 100vh;
-    width: 100vw;
+  background-color: #33333387;
+  height: 100vh;
+  width: 100vw;
 }

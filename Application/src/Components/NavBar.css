@@ -1,5 +1,5 @@
 .NavBar {
-  background-color: #B90504;
+  background-color: #b90504;
   border-bottom: 3px solid #333;
   position: fixed;
   top: 0px;
@@ -19,7 +19,7 @@
   align-items: center;
   gap: 1rem;
   padding-left: 2rem;
-  padding-right: 2rem; 
+  padding-right: 2rem;
   cursor: pointer;
 }
 
@@ -61,19 +61,21 @@
   margin-block-end: 0px;
 }
 
-#NavItemsBox ul li{
+#NavItemsBox ul li {
   list-style-type: none;
   cursor: pointer;
   color: #f6f6f6;
 }
 
-#PopUpHelpMenuDivSection, #PopUpAccountpMenuDivSection {
+#PopUpHelpMenuDivSection,
+#PopUpAccountpMenuDivSection {
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: 3fr 1fr;
 }
 
-#PopUpHelpMenuDiv, #PopUpAccountMenuDiv {
+#PopUpHelpMenuDiv,
+#PopUpAccountMenuDiv {
   grid-row: 1 / 2;
   grid-column: 2 / 3;
   border-top: none !important;
@@ -85,19 +87,20 @@
   border-bottom-left-radius: 10px;
 }
 
-#PopUpHelpMenuDiv li, #PopUpAccountMenuDiv li {
+#PopUpHelpMenuDiv li,
+#PopUpAccountMenuDiv li {
   list-style-type: none;
-  padding: .25em;
+  padding: 0.25em;
   color: #f6f6f6;
   font-size: 32px;
   cursor: pointer;
 }
 
 #PopUpHelpMenuDivTextField {
-  background-color: #017F01;
-  margin-bottom: .5em;
+  background-color: #017f01;
+  margin-bottom: 0.5em;
   border-radius: 10px;
-  transition: box-shadow .2s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out;
 }
 
 #PopUpHelpMenuDivTextField:hover {
@@ -106,9 +109,9 @@
 
 #PopUpHelpMenuDivStructureField {
   background-color: #640665;
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
   border-radius: 10px;
-  transition: box-shadow .2s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out;
 }
 
 #PopUpHelpMenuDivStructureField:hover {
@@ -116,9 +119,9 @@
 }
 
 #PopUpHelpMenuDivColorField {
-  background-color: #DA364A;
+  background-color: #da364a;
   border-radius: 10px;
-  transition: box-shadow .2s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out;
 }
 
 #PopUpHelpMenuDivColorField:hover {
@@ -158,7 +161,7 @@
   color: #333;
   background-color: #f6f6f6;
   border: none;
-  border-bottom: 3pt solid #B90504;
+  border-bottom: 3pt solid #b90504;
   border-radius: 3px;
 }
 
@@ -171,14 +174,14 @@
 }
 
 #PopUpAddMenuForm input::file-selector-button {
-  background-color: #B90504 !important;
+  background-color: #b90504 !important;
   cursor: pointer;
   color: #f6f6f6 !important;
   border: none !important;
   font-size: 16pt;
-  padding: .3em;
-  padding-left: .5em;
-  padding-right: .5em;
+  padding: 0.3em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
   border-radius: 10px;
   margin-bottom: 5px;
   margin-right: 10px;
@@ -195,12 +198,12 @@
 }
 
 .PopUpAccountMenuDivbtn {
-  background-color: #B90504 !important;
+  background-color: #b90504 !important;
   cursor: pointer;
   color: #f6f6f6 !important;
   border: none !important;
   border-radius: 10px !important;
-  transition: box-shadow .2s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out;
 }
 
 .PopUpAccountMenuDivbtn:hover {

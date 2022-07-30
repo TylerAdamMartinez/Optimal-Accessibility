@@ -38,7 +38,7 @@ function MyPoster(props) {
 
     toast.info("Sent", {
       position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: 2000,
+      autoClose: 4000,
     });
     fetch(
       `https://localhost:7267/api/User/DeletePosterByUserId/${userId}/ByPosterName/${props.PosterName}`,
@@ -58,7 +58,7 @@ function MyPoster(props) {
         } else {
           toast.success("poster was successfully deleted", {
             position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: 2000,
+            autoClose: 4000,
           });
         }
       })
@@ -74,7 +74,7 @@ function MyPoster(props) {
         setIsProcessing(false);
         toast.error(`${err}`, {
           position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 2000,
+          autoClose: 4000,
         });
         console.error(err);
       });
@@ -91,7 +91,7 @@ function MyPoster(props) {
 
     toast.info("Sent", {
       position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: 2000,
+      autoClose: 4000,
     });
     fetch(
       `https://localhost:7267/api/User/UpdatePosterNameByUserId/${userId}/ByPosterName/${props.PosterName}?newPosterName=${editPosterName}`,
@@ -111,7 +111,7 @@ function MyPoster(props) {
         } else {
           toast.success("Poster name was successfully updated", {
             position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: 2000,
+            autoClose: 4000,
           });
         }
       })
@@ -126,7 +126,7 @@ function MyPoster(props) {
       .catch((err) => {
         toast.error(`${err}`, {
           position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 2000,
+          autoClose: 4000,
         });
         setIsProcessing(false);
         console.error(err);
@@ -163,12 +163,12 @@ function MyPoster(props) {
     let title = Math.random().toString();
     toast.info("Sent", {
       position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: 2000,
+      autoClose: 4000,
     });
     let accessibilityScore = await getAccessibilityScore(editPosterData);
     toast.info("Caculating Accessibility Score...", {
       position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: 2000,
+      autoClose: 4000,
     });
     ConvertImageToBase64(editPosterData)
       .then((data) => {
@@ -193,7 +193,7 @@ function MyPoster(props) {
             } else {
               toast.success("Successfully updated poster image", {
                 position: toast.POSITION.BOTTOM_RIGHT,
-                autoClose: 2000,
+                autoClose: 4000,
               });
             }
           })
@@ -209,7 +209,7 @@ function MyPoster(props) {
             setIsProcessing(false);
             toast.error(`${err}`, {
               position: toast.POSITION.BOTTOM_RIGHT,
-              autoClose: 2000,
+              autoClose: 4000,
             });
             console.error(err);
           });
@@ -218,7 +218,7 @@ function MyPoster(props) {
         setIsProcessing(false);
         toast.error(`${err}`, {
           position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 2000,
+          autoClose: 4000,
         });
         console.error(err);
       });
@@ -294,7 +294,7 @@ function MyPoster(props) {
                         readOnly={IsProcessing}
                         id="editPosterNameBtn"
                         type="submit"
-                        value={"submit"}
+                        value={"Submit"}
                       />
                     </form>
                   ) : (
@@ -330,12 +330,14 @@ function MyPoster(props) {
                       />
                     </>
                   ) : (
-                    <img
-                      ref={imgRef}
-                      onError={onImageError}
-                      src={`data:image/png;base64,${props.Data}`}
-                      alt={`Poster number ${props.Id}`}
-                    />
+                    <div className="ScaleOnHover">
+                      <img
+                        ref={imgRef}
+                        onError={onImageError}
+                        src={`data:image/png;base64,${props.Data}`}
+                        alt={`Poster number ${props.Id}`}
+                      />
+                    </div>
                   )}
                 </div>
                 <div className="PosterPopUpMenuIconContainer">
