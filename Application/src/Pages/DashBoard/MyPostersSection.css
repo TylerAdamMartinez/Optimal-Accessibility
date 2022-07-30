@@ -33,7 +33,7 @@
   margin: 10px;
 }
 
-#InnerMyPostersDiv span {
+.PosterSpan {
   display: flex;
   overflow-x: scroll !important;
 }

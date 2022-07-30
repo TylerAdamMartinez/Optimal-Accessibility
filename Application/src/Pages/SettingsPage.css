@@ -39,15 +39,13 @@
 
 #SettingsPageInfo p {
   display: flex;
-  margin-block-start: 1.375em;
-  margin-block-end: 1.375em;
 }
 
 span {
   display: flex;
   font-weight: 600;
   margin-right: 0.3em;
-  overflow-x: hidden !important;
+  overflow: hidden !important;
 }
 
 label {
