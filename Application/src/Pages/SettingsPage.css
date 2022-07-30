@@ -1,95 +1,95 @@
 #SettingsPageForm {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    padding: 2em;
-    margin-right: 1em;
-    margin-left: 1em;
-    gap: 1.575em;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  padding: 2em;
+  margin-right: 1em;
+  margin-left: 1em;
+  gap: 1.575em;
 }
 
-#SettingsPageForm input, #SettingsPageForm select {
-    font-size: 18pt;
-    color: #333;
-    background-color: #f6f6f6;
-    border: none;
-    border-bottom: 3pt solid #B90504;
-    border-radius: 4px;
+#SettingsPageForm input,
+#SettingsPageForm select {
+  font-size: 18pt;
+  color: #333;
+  background-color: #f6f6f6;
+  border: none;
+  border-bottom: 3pt solid #b90504;
+  border-radius: 4px;
 }
 
-#SettingsPageForm input::placeholder, 
+#SettingsPageForm input::placeholder,
 #SettingsPageForm select::placeholder {
-    color: #333;
+  color: #333;
 }
 
 #SettingsPageForm input:focus-visible,
 #SettingsPageForm select:focus-visible {
-    outline: none;
+  outline: none;
 }
 
 .LoginBtnsSection input {
-    font-size: 18pt;
+  font-size: 18pt;
 }
 
 #SettingsPageInfo {
-    padding: 1em;
-    font-size: 18pt;
+  padding: 1em;
+  font-size: 18pt;
 }
 
 #SettingsPageInfo p {
-    display: flex;
-    margin-block-start: 1.375em;
-    margin-block-end: 1.375em;
+  display: flex;
+  margin-block-start: 1.375em;
+  margin-block-end: 1.375em;
 }
 
 span {
-    display: flex;
-    font-weight: 600;
-    margin-right: 0.3em;
-    overflow-x: hidden !important;
+  display: flex;
+  font-weight: 600;
+  margin-right: 0.3em;
+  overflow-x: hidden !important;
 }
 
 label {
-    font-size: 18pt;
-    font-weight: 600;
-    margin-right: 0.3em;
-    overflow-x: hidden !important;
+  font-size: 18pt;
+  font-weight: 600;
+  margin-right: 0.3em;
+  overflow-x: hidden !important;
 }
 
 .IconContainer {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-    height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 .IconHover:hover {
-    cursor: pointer;
-    color: #B90504;
+  cursor: pointer;
+  color: #b90504;
 }
 
-
 #SettingsPageOnEditInfo {
-    font-size: 18pt;
-    margin-left: 2em;
+  font-size: 18pt;
+  margin-left: 2em;
 }
 
 #SettingsPageOnEditInfo p {
-    display: flex;
-    margin-block-start: 1em;
-    margin-block-end: -.15em;
+  display: flex;
+  margin-block-start: 1em;
+  margin-block-end: -0.15em;
 }
 
 .SettingsPageEditItem {
-    display: flex;
+  display: flex;
 }
 
 .SettingsPageEditItem label {
-    flex: inherit;
+  flex: inherit;
 }
 
-.SettingsPageEditItem input, 
+.SettingsPageEditItem input,
 .SettingsPageEditItem select {
-    flex: auto;
+  flex: auto;
 }

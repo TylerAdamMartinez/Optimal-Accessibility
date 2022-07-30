@@ -35,8 +35,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "lint": "prettier -c \"src/**/*.js\" && eslint \"src/**/*.js\"",
-    "format": "prettier --write \"src/**/*.js\"",
+    "lint": "prettier -c \"src/**/*.js\" && prettier -c \"src/**/*.css\" && eslint \"src/**/*.js\"",
+    "format": "prettier --write \"src/**/*.js\" && prettier --write \"src/**/*.css\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
