@@ -20,7 +20,13 @@ function Settings() {
   const [Classfication, SetClassfication] = useState("Classfication");
 
   const GenderArray = ["Other", "Male", "Female"];
-  const ClassficationArray = ["Unclassified", "Freshman", "Sophomore", "Junior", "Senior"];
+  const ClassficationArray = [
+    "Unclassified",
+    "Freshman",
+    "Sophomore",
+    "Junior",
+    "Senior",
+  ];
 
   useEffect(() => {
     GetUserData();
@@ -53,7 +59,9 @@ function Settings() {
         }
 
         SetEUID(responseJSON.euid);
-        SetEmail(responseJSON.email === null ? "No Email Provided" : responseJSON.email);
+        SetEmail(
+          responseJSON.email === null ? "No Email Provided" : responseJSON.email
+        );
         SetFirstName(responseJSON.firstName);
         SetLastName(responseJSON.lastName);
         SetMiddleInitial(
@@ -61,7 +69,9 @@ function Settings() {
             ? "No middle initial Provided"
             : responseJSON.middleInitial
         );
-        SetBirthday(responseJSON.birthday === null ? "2022-06-13" : responseJSON.birthday);
+        SetBirthday(
+          responseJSON.birthday === null ? "2022-06-13" : responseJSON.birthday
+        );
         SetGender(GenderArray[responseJSON.gender]);
         SetClassfication(ClassficationArray[responseJSON.classfication]);
       })
@@ -325,7 +335,11 @@ function Settings() {
                     className="PopUpAccountMenuDivbtn"
                     onClick={resetSettingsHandler}
                   />
-                  <input type="submit" value="Save" className="PopUpAccountMenuDivbtn" />
+                  <input
+                    type="submit"
+                    value="Save"
+                    className="PopUpAccountMenuDivbtn"
+                  />
                 </div>
               </form>
               <div className="IconContainer">

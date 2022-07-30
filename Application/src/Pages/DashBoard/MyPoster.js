@@ -330,15 +330,13 @@ function MyPoster(props) {
                       />
                     </>
                   ) : (
-                    <div className="BgBehindImg">
-                      <div className="ScaleOnHover">
-                        <img
-                          ref={imgRef}
-                          onError={onImageError}
-                          src={`data:image/png;base64,${props.Data}`}
-                          alt={`Poster number ${props.Id}`}
-                        />
-                      </div>
+                    <div className="ScaleOnHover">
+                      <img
+                        ref={imgRef}
+                        onError={onImageError}
+                        src={`data:image/png;base64,${props.Data}`}
+                        alt={`Poster number ${props.Id}`}
+                      />
                     </div>
                   )}
                 </div>
