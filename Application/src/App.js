@@ -6,6 +6,7 @@ import NotFound404ErrorPage from "./Pages/NotFound404ErrorPage";
 import PrivateRoutes from "./Components/PrivateRoutes";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SettingsPage from "./Pages/SettingsPage";
+import GuestDashboard from "./Pages/DashBoard/GuestDashboard";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegistrationPage />} />
+        <Route path="/guest" element={<GuestDashboard />} />
         <Route element={<PrivateRoutes />}>
           <Route path="/dashboard" element={<DashBoard />} />
           <Route path="/settings" element={<SettingsPage />} />
