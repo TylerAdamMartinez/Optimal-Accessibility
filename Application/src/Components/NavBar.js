@@ -12,6 +12,7 @@ import Cookies from "universal-cookie";
 import { getImageGrid } from "../Utils/Structure";
 import ConvertImageToBase64 from "../Utils/ConvertImageToBase64";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 
 function NavBar(props) {
@@ -74,9 +75,7 @@ If the color rating for your poster is low, the following list could help you fi
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 4000,
       });
-      let posterGrades = await getImageGrid(
-        "data:image/png;base64," + poster
-      ).then((score) => {
+      let posterGrades = await getImageGrid("data:image/png;base64," + poster).then((score) => {
         let posterGrade = {
           textRating: Math.round(score.textGrade),
           structureRating: Math.round(score.structureGrade),
@@ -229,143 +228,140 @@ If the color rating for your poster is low, the following list could help you fi
     cookies.remove("jwt");
   }
 
+  const navigate = useNavigate();
+
   return (
     <div className="NavBar">
       <span></span>
       <Link to="/dashboard">
         <div id="LogoBox">
-          <img
-            id="LogoImg"
-            alt="Optimal Accessibility Logo"
-            src={OptimalAccessibilityLogo}
-          />
+          <img id="LogoImg" alt="Optimal Accessibility Logo" src={OptimalAccessibilityLogo} />
           <h1>Optimal Accessibility</h1>
         </div>
       </Link>
-      <span
-        id="ExitSpot"
-        onMouseOver={MouseOverExitSpotHandler}
-        onMouseLeave={MouseLeaveExitSpotHandler}
-      >
-        <p></p>
-      </span>
-      <div id="NavItemsBox">
-        <ul>
-          <li>
-            <Popup trigger={<HelpIcon fontSize="large" />}>
-              <div className="PopUpBackground">
-                <div id="PopUpHelpMenuDivSection">
-                  <ul id="PopUpHelpMenuDiv">
-                    <Popup
-                      trigger={<li id="PopUpHelpMenuDivTextField">Text</li>}
-                    >
-                      <div className="PopUpBackground">
-                        <HelpPage
-                          PageName="Text"
-                          PageContent={textHelpInfo}
-                          Color={"#017F01"}
-                        />
-                      </div>
-                    </Popup>
-                    <Popup
-                      trigger={
-                        <li id="PopUpHelpMenuDivStructureField">Structure</li>
-                      }
-                    >
-                      <div className="PopUpBackground">
-                        <HelpPage
-                          PageName="Structure"
-                          PageContent={structureHelpInfo}
-                          Color={"#640665"}
-                        />
-                      </div>
-                    </Popup>
-                    <Popup
-                      trigger={<li id="PopUpHelpMenuDivColorField">Color</li>}
-                    >
-                      <div className="PopUpBackground">
-                        <HelpPage
-                          PageName="Color"
-                          PageContent={colorHelpInfo}
-                          Color={"#DA364A"}
-                        />
-                      </div>
-                    </Popup>
-                  </ul>
-                </div>
-              </div>
-            </Popup>
-          </li>
-          <li>
-            <Popup
-              trigger={
-                <AddIcon
-                  onClick={() => {
-                    setLoadingState("Submit");
-                  }}
-                  fontSize="large"
-                />
-              }
-            >
-              <div className="PopUpBackground">
-                <div id="PopUpAddMenuDivSection">
-                  <div id="PopUpAddMenuDiv">
-                    <h2>New Poster</h2>
-                    <form onSubmit={handleSubmit} id="PopUpAddMenuForm">
-                      <input
-                        readOnly={IsProcessing}
-                        placeholder="Name"
-                        type="text"
-                        value={name}
-                        onChange={handleNameChange}
-                      />
-                      <input
-                        disabled={IsProcessing}
-                        readOnly={IsProcessing}
-                        type="File"
-                        accept=".png, .jpg"
-                        onChange={handleFileChange}
-                      />
-                      <input
-                        readOnly={IsProcessing}
-                        type="submit"
-                        value={loadingState}
-                        className="PopUpAccountMenuDivbtn"
-                      />
-                    </form>
+      {!props.IsGuestMode ? (
+        <>
+          <span
+            id="ExitSpot"
+            onMouseOver={MouseOverExitSpotHandler}
+            onMouseLeave={MouseLeaveExitSpotHandler}
+          >
+            <p></p>
+          </span>
+          <div id="NavItemsBox">
+            <ul>
+              <li>
+                <Popup trigger={<HelpIcon fontSize="large" />}>
+                  <div className="PopUpBackground">
+                    <div id="PopUpHelpMenuDivSection">
+                      <ul id="PopUpHelpMenuDiv">
+                        <Popup trigger={<li id="PopUpHelpMenuDivTextField">Text</li>}>
+                          <div className="PopUpBackground">
+                            <HelpPage
+                              PageName="Text"
+                              PageContent={textHelpInfo}
+                              Color={"#017F01"}
+                            />
+                          </div>
+                        </Popup>
+                        <Popup trigger={<li id="PopUpHelpMenuDivStructureField">Structure</li>}>
+                          <div className="PopUpBackground">
+                            <HelpPage
+                              PageName="Structure"
+                              PageContent={structureHelpInfo}
+                              Color={"#640665"}
+                            />
+                          </div>
+                        </Popup>
+                        <Popup trigger={<li id="PopUpHelpMenuDivColorField">Color</li>}>
+                          <div className="PopUpBackground">
+                            <HelpPage
+                              PageName="Color"
+                              PageContent={colorHelpInfo}
+                              Color={"#DA364A"}
+                            />
+                          </div>
+                        </Popup>
+                      </ul>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </Popup>
-          </li>
-          <li>
-            <PictureAsPdf onClick={generatePDF} fontSize="large" />
-          </li>
-          <li>
-            <Popup trigger={<AccountCircleIcon fontSize="large" />}>
-              <div className="PopUpBackground">
-                <div id="PopUpAccountpMenuDivSection">
-                  <ul id="PopUpAccountMenuDiv">
-                    <Link to="/settings">
-                      <li
-                        className="PopUpAccountMenuDivbtn"
-                        style={{ marginBottom: 10 }}
-                      >
-                        Settings
-                      </li>
-                    </Link>
-                    <Link to="/" onClick={handleLogout}>
-                      <li className="PopUpAccountMenuDivbtn">Logout</li>
-                    </Link>
-                  </ul>
-                </div>
-              </div>
-            </Popup>
-          </li>
-        </ul>
-      </div>
-      <span></span>
-      <ToastContainer autoClose={1000} limit={3} />
+                </Popup>
+              </li>
+              <li>
+                <Popup
+                  trigger={
+                    <AddIcon
+                      onClick={() => {
+                        setLoadingState("Submit");
+                      }}
+                      fontSize="large"
+                    />
+                  }
+                >
+                  <div className="PopUpBackground">
+                    <div id="PopUpAddMenuDivSection">
+                      <div id="PopUpAddMenuDiv">
+                        <h2>New Poster</h2>
+                        <form onSubmit={handleSubmit} id="PopUpAddMenuForm">
+                          <input
+                            readOnly={IsProcessing}
+                            placeholder="Name"
+                            type="text"
+                            value={name}
+                            onChange={handleNameChange}
+                          />
+                          <input
+                            disabled={IsProcessing}
+                            readOnly={IsProcessing}
+                            type="File"
+                            accept=".png, .jpg"
+                            onChange={handleFileChange}
+                          />
+                          <input
+                            readOnly={IsProcessing}
+                            type="submit"
+                            value={loadingState}
+                            className="PopUpAccountMenuDivbtn"
+                          />
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </Popup>
+              </li>
+              <li>
+                <PictureAsPdf onClick={generatePDF} fontSize="large" />
+              </li>
+              <li>
+                <Popup trigger={<AccountCircleIcon fontSize="large" />}>
+                  <div className="PopUpBackground">
+                    <div id="PopUpAccountsMenuDivSection">
+                      <ul id="PopUpAccountMenuDiv">
+                        <Link to="/settings">
+                          <li className="PopUpAccountMenuDivbtn" style={{ marginBottom: 10 }}>
+                            Settings
+                          </li>
+                        </Link>
+                        <Link to="/" onClick={handleLogout}>
+                          <li className="PopUpAccountMenuDivbtn">Logout</li>
+                        </Link>
+                      </ul>
+                    </div>
+                  </div>
+                </Popup>
+              </li>
+            </ul>
+          </div>
+          <ToastContainer autoClose={1000} limit={3} />
+        </>
+      ) : (
+        <div className="GuestModeTextContainer">
+          <p className="GuestModeText">You are in guest mode</p>
+          <button className="CreateAccountButton" onClick={() => navigate("/register")}>
+            Create an Account
+          </button>
+        </div>
+      )}
     </div>
   );
 }

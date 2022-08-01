@@ -1,9 +1,10 @@
 import React from "react";
+import NavBar from "../../Components/NavBar";
 
 const GuestDashboard = () => {
   return (
     <div>
-      <h1>Guest</h1>
+      <NavBar IsGuestMode={true} />
     </div>
   );
 };
