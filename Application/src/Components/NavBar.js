@@ -332,7 +332,7 @@ If the color rating for your poster is low, the following list could help you fi
                             disabled={IsProcessing}
                             readOnly={IsProcessing}
                             type="File"
-                            accept=".png, .jpg"
+                            accept=".png, .jpg, .jpeg"
                             onChange={handleFileChange}
                           />
                           <input
