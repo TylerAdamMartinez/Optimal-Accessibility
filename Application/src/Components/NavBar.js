@@ -75,7 +75,9 @@ If the color rating for your poster is low, the following list could help you fi
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 4000,
       });
-      let posterGrades = await getImageGrid("data:image/png;base64," + poster).then((score) => {
+      let posterGrades = await getImageGrid(
+        "data:image/png;base64," + poster
+      ).then((score) => {
         let posterGrade = {
           textRating: Math.round(score.textGrade),
           structureRating: Math.round(score.structureGrade),
@@ -235,7 +237,11 @@ If the color rating for your poster is low, the following list could help you fi
       <span></span>
       <Link to="/dashboard">
         <div id="LogoBox">
-          <img id="LogoImg" alt="Optimal Accessibility Logo" src={OptimalAccessibilityLogo} />
+          <img
+            id="LogoImg"
+            alt="Optimal Accessibility Logo"
+            src={OptimalAccessibilityLogo}
+          />
           <h1>Optimal Accessibility</h1>
         </div>
       </Link>
@@ -255,7 +261,9 @@ If the color rating for your poster is low, the following list could help you fi
                   <div className="PopUpBackground">
                     <div id="PopUpHelpMenuDivSection">
                       <ul id="PopUpHelpMenuDiv">
-                        <Popup trigger={<li id="PopUpHelpMenuDivTextField">Text</li>}>
+                        <Popup
+                          trigger={<li id="PopUpHelpMenuDivTextField">Text</li>}
+                        >
                           <div className="PopUpBackground">
                             <HelpPage
                               PageName="Text"
@@ -264,7 +272,13 @@ If the color rating for your poster is low, the following list could help you fi
                             />
                           </div>
                         </Popup>
-                        <Popup trigger={<li id="PopUpHelpMenuDivStructureField">Structure</li>}>
+                        <Popup
+                          trigger={
+                            <li id="PopUpHelpMenuDivStructureField">
+                              Structure
+                            </li>
+                          }
+                        >
                           <div className="PopUpBackground">
                             <HelpPage
                               PageName="Structure"
@@ -273,7 +287,11 @@ If the color rating for your poster is low, the following list could help you fi
                             />
                           </div>
                         </Popup>
-                        <Popup trigger={<li id="PopUpHelpMenuDivColorField">Color</li>}>
+                        <Popup
+                          trigger={
+                            <li id="PopUpHelpMenuDivColorField">Color</li>
+                          }
+                        >
                           <div className="PopUpBackground">
                             <HelpPage
                               PageName="Color"
@@ -338,7 +356,10 @@ If the color rating for your poster is low, the following list could help you fi
                     <div id="PopUpAccountsMenuDivSection">
                       <ul id="PopUpAccountMenuDiv">
                         <Link to="/settings">
-                          <li className="PopUpAccountMenuDivbtn" style={{ marginBottom: 10 }}>
+                          <li
+                            className="PopUpAccountMenuDivbtn"
+                            style={{ marginBottom: 10 }}
+                          >
                             Settings
                           </li>
                         </Link>
@@ -357,7 +378,10 @@ If the color rating for your poster is low, the following list could help you fi
       ) : (
         <div className="GuestModeTextContainer">
           <p className="GuestModeText">You are in guest mode</p>
-          <button className="CreateAccountButton" onClick={() => navigate("/register")}>
+          <button
+            className="CreateAccountButton"
+            onClick={() => navigate("/register")}
+          >
             Create an Account
           </button>
         </div>
