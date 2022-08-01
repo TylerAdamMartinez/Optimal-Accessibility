@@ -1,5 +1,5 @@
 import "./GuestDashboard.css";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import MagicDropZone from "react-magic-dropzone";
 import { ToastContainer, toast } from "react-toastify";
 import NavBar from "../../Components/NavBar";
@@ -9,38 +9,40 @@ import ConvertImageToBase64 from "../../Utils/ConvertImageToBase64";
 import { getImageGrid } from "../../Utils/Structure";
 
 const GuestDashboard = () => {
-  const [file, setFile] = useState(null);
-  let posterGrade = {};
+  const [filePreview, setFilePreview] = useState(null);
+  const [posterGrade, setPosterGrade] = useState({
+    textRating: 5,
+    structureRating: 5,
+    colorRating: 5,
+  });
 
   async function getAccessibilityScore(poster) {
     toast.info("Uploading image...", {
       position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: 1000,
+      autoClose: 4000,
     });
     poster = await ConvertImageToBase64(poster);
     toast.info("Calculating accessibility score...", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 4000,
     });
-    let posterGrades = await getImageGrid(
-      "data:image/png;base64," + poster
-    ).then((score) => {
-      posterGrade = {
+    await getImageGrid("data:image/png;base64," + poster).then((score) => {
+      setPosterGrade({
         textRating: Math.round(score.textGrade),
         structureRating: Math.round(score.structureGrade),
         colorRating: Math.round(score.colorGrade),
-      };
+      });
     });
     toast.success("Done!", {
       position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: 1000,
+      autoClose: 4000,
     });
   }
 
   const fileDrop = (accepted, rejected, links) => {
     if (accepted.length && !rejected.length) {
-      setFile(accepted[0].preview);
-      getAccessibilityScore(file);
+      setFilePreview(accepted[0].preview);
+      getAccessibilityScore(accepted[0]);
     } else {
       toast.error("Invalid image type...", {
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -62,10 +64,10 @@ const GuestDashboard = () => {
             accept=".jpg, .png, .jpeg"
             onDrop={fileDrop}
           >
-            {file === null ? (
+            {filePreview === null ? (
               "Drop your poster here"
             ) : (
-              <img className="PosterImg" src={file} alt="User Upload" />
+              <img className="PosterImg" src={filePreview} alt="User Upload" />
             )}
           </MagicDropZone>
         </div>
