@@ -116,6 +116,9 @@ function Login() {
               Sign Up
             </button>
           </div>
+          <div className="GuestLinkContainer">
+            <a href="/guest">Continue as Guest</a>
+          </div>
         </form>
       </div>
       <ToastContainer autoClose={1000} limit={3} />
