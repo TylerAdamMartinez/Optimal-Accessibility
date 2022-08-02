@@ -39,7 +39,6 @@ const GuestDashboard = () => {
         });
       })
       .catch(() => {
-        let endTime = Date.now();
         setCalculating(false);
         toast.error("Something went wrong...", {
           position: toast.POSITION.BOTTOM_RIGHT,
