@@ -60,7 +60,7 @@ const GuestDashboard = () => {
       setFilePreview(accepted[0].preview);
       getAccessibilityScore(accepted[0]);
     } else {
-      toast.error("Invalid image type...", {
+      toast.error("Something went wrong...", {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 4000,
       });

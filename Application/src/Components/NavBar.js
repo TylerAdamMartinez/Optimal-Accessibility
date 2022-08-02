@@ -13,6 +13,7 @@ import { getImageGrid } from "../Utils/Structure";
 import ConvertImageToBase64 from "../Utils/ConvertImageToBase64";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import MagicDropZone from "react-magic-dropzone";
 import "react-toastify/dist/ReactToastify.css";
 
 function NavBar(props) {
@@ -132,6 +133,7 @@ If the color rating for your poster is low, the following list could help you fi
             setIsProcessing(false);
             props.addPosterCallback(name);
             setLoadingState("Submit");
+            SetPosterFileData("");
           })
           .catch((err) => {
             setIsProcessing(false);
@@ -219,10 +221,16 @@ If the color rating for your poster is low, the following list could help you fi
     SetPosterName(event.target.value);
   }
 
-  function handleFileChange(event) {
-    let file = event.target.files[0];
-    SetPosterFileData(file);
-  }
+  const handleFileChange = (accepted, rejected, links) => {
+    if (accepted.length && !rejected.length) {
+      SetPosterFileData(accepted[0]);
+    } else {
+      toast.error("Something went wrong...", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 4000,
+      });
+    }
+  };
 
   function handleLogout() {
     localStorage.clear();
@@ -328,13 +336,15 @@ If the color rating for your poster is low, the following list could help you fi
                             value={name}
                             onChange={handleNameChange}
                           />
-                          <input
-                            disabled={IsProcessing}
-                            readOnly={IsProcessing}
-                            type="File"
-                            accept=".png, .jpg, .jpeg"
-                            onChange={handleFileChange}
-                          />
+                          <MagicDropZone
+                            className="DragAndDropSection"
+                            accept=".jpg, .png, .jpeg"
+                            onDrop={handleFileChange}
+                          >
+                            {FileData === ""
+                              ? "Drop your poster here"
+                              : "✅ Poster received!"}
+                          </MagicDropZone>
                           <input
                             readOnly={IsProcessing}
                             type="submit"

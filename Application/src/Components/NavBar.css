@@ -151,9 +151,9 @@
 #PopUpAddMenuForm {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  padding: 3em;
-  gap: 2.5em;
+  grid-template-rows: 1fr 2fr 1fr;
+  padding: 1em;
+  gap: 2em;
 }
 
 #PopUpAddMenuForm input {
@@ -171,20 +171,6 @@
 
 #PopUpAddMenuForm input:focus-visible {
   outline: none;
-}
-
-#PopUpAddMenuForm input::file-selector-button {
-  background-color: #b90504 !important;
-  cursor: pointer;
-  color: #f6f6f6 !important;
-  border: none !important;
-  font-size: 16pt;
-  padding: 0.3em;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
-  border-radius: 10px;
-  margin-bottom: 5px;
-  margin-right: 10px;
 }
 
 #PopUpAddMenuDiv h2 {
@@ -249,4 +235,24 @@
 
 .CreateAccountButton:hover {
   box-shadow: 0px 0px 10px rgb(255, 255, 255);
+}
+
+.DragAndDropSection {
+  cursor: copy;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  background-color: #e1e1e1;
+  border-radius: 15px;
+  /* padding: 1em; */
+  border: 1px dashed #a2a2a2;
+  transition: 0.3s all ease-in-out;
+  overflow: hidden;
+}
+
+.DragAndDropSection:hover {
+  background-color: #33333387;
+  border: 1px dashed #b90504;
+  content-visibility: inherit;
 }
