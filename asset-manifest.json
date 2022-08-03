@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Optimal-Accessibility/static/css/main.04c40598.css",
+    "main.js": "/Optimal-Accessibility/static/js/main.72262247.js",
+    "static/media/missing_image.jpg": "/Optimal-Accessibility/static/media/missing_image.a2909c4c811fec2a9eec.jpg",
+    "static/media/Optimal-Accessibility-Logo.png": "/Optimal-Accessibility/static/media/Optimal-Accessibility-Logo.00865e15c7252e2527a5.png",
+    "index.html": "/Optimal-Accessibility/index.html",
+    "main.04c40598.css.map": "/Optimal-Accessibility/static/css/main.04c40598.css.map",
+    "main.72262247.js.map": "/Optimal-Accessibility/static/js/main.72262247.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.04c40598.css",
+    "static/js/main.72262247.js"
+  ]
+}
