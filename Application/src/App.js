@@ -1,6 +1,5 @@
 import "./App.css";
 import LoginPage from "./Pages/Home/LoginPage";
-import RegistrationPage from "./Pages/Home/RegistrationPage";
 import DashBoard from "./Pages/DashBoard/DashBoard.js";
 import NotFound404ErrorPage from "./Pages/NotFound404ErrorPage/NotFound404ErrorPage";
 import PrivateRoutes from "./Components/PrivateRoutes";
@@ -14,7 +13,6 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegistrationPage />} />
         <Route path="/guest" element={<GuestDashboard />} />
         <Route element={<PrivateRoutes />}>
           <Route path="/dashboard" element={<DashBoard />} />
