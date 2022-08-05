@@ -391,6 +391,47 @@ If the color rating for your poster is low, the following list could help you fi
           <button className="CreateAccountButton" onClick={() => navigate("/")}>
             Create an Account
           </button>
+          <Popup trigger={<HelpIcon className="HelpIcon" fontSize="large" />}>
+            <div className="PopUpBackground">
+              <div id="PopUpHelpMenuDivSection">
+                <ul id="PopUpHelpMenuDiv">
+                  <Popup trigger={<li id="PopUpHelpMenuDivTextField">Text</li>}>
+                    <div className="PopUpBackground">
+                      <HelpPage
+                        PageName="Text"
+                        PageContent={textHelpInfo}
+                        Color={"#017F01"}
+                      />
+                    </div>
+                  </Popup>
+                  <Popup
+                    trigger={
+                      <li id="PopUpHelpMenuDivStructureField">Structure</li>
+                    }
+                  >
+                    <div className="PopUpBackground">
+                      <HelpPage
+                        PageName="Structure"
+                        PageContent={structureHelpInfo}
+                        Color={"#640665"}
+                      />
+                    </div>
+                  </Popup>
+                  <Popup
+                    trigger={<li id="PopUpHelpMenuDivColorField">Color</li>}
+                  >
+                    <div className="PopUpBackground">
+                      <HelpPage
+                        PageName="Color"
+                        PageContent={colorHelpInfo}
+                        Color={"#DA364A"}
+                      />
+                    </div>
+                  </Popup>
+                </ul>
+              </div>
+            </div>
+          </Popup>
         </div>
       )}
     </div>
