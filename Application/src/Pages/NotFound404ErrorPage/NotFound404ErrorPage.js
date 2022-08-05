@@ -1,6 +1,6 @@
 import "./NotFound404ErrorPage.css";
 import { useLocation, useNavigate } from "react-router-dom";
-import Logo from "./../Images/Optimal-Accessibility-Logo.png";
+import Logo from "./../../Images/Optimal-Accessibility-Logo.png";
 import { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
 
