@@ -7,6 +7,71 @@
   width: 100vw;
 }
 
+#LoginPageDiv #Waves {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  max-height: 80%;
+  z-index: 0;
+}
+
+#Optimal-Ducky {
+  animation: DuckAnimation 19s ease-in-out infinite;
+}
+
+#TopWave {
+  animation: WaveAnimation 20s ease-in-out infinite;
+}
+
+#MiddleTopWave {
+  animation: WaveAnimation 19s ease-in-out infinite;
+}
+
+#MiddleBottomWave {
+  animation: WaveAnimation 18s ease-in-out infinite;
+}
+
+#BottomWave {
+  animation: WaveAnimation 17s ease-in-out infinite;
+}
+
+@keyframes WaveAnimation {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.02);
+  }
+  50% {
+    transform: scale(1);
+  }
+  80% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes DuckAnimation {
+  0% {
+    transform: translate(-1em, 1em) rotate(0deg);
+  }
+
+  30% {
+    transform: translate(1em, 7em) rotate(5deg);
+  }
+  50% {
+    transform: translate(-1em, 1em) rotate(0deg);
+  }
+  80% {
+    transform: translate(1em, 7em) rotate(-2.5deg);
+  }
+  100% {
+    transform: translate(-1em, 1em) rotate(0deg);
+  }
+}
+
 @media screen and (min-width: 1500px) {
   #LoginPageDiv {
     grid-template-columns: auto 500px auto;
@@ -60,6 +125,7 @@
   border-radius: 10px;
   margin-top: 1em;
   box-shadow: 4px 4px 10px rgb(90, 90, 90);
+  z-index: 1;
 }
 
 #LoginPageSignInFormDiv h2 {
