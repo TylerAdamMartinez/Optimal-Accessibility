@@ -216,8 +216,30 @@
 }
 
 .GuestLinkContainer {
-  display: flex;
-  width: 100%;
+  display: grid;
+  justify-items: center;
   justify-content: center;
+  width: 100%;
   align-items: center;
+}
+
+.GuestLinkContainer a {
+  color: #333;
+}
+
+#SignInWithGooglebtn {
+  background-color: #fff;
+  display: flex;
+  gap: 0.5em;
+  padding: 0.5em;
+  align-items: center;
+  cursor: pointer;
+  color: #333 !important;
+  border: 0.25em solid #333 !important;
+  border-radius: 10px !important;
+  transition: box-shadow 0.2s eas;
+}
+
+#SignInWithGooglebtn:hover {
+  box-shadow: 2px 2px 4px rgb(90, 90, 90);
 }
