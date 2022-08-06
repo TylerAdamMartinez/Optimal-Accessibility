@@ -6,6 +6,14 @@ import Logo from "./../../Images/Optimal-Accessibility-Logo.png";
 import Cookies from "universal-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInAnonymously,
+} from "firebase/auth";
 //import LoginPageBackground from "../../Components/LoginPageBackground";
 
 function Login() {
@@ -17,60 +25,40 @@ function Login() {
 
   useEffect(() => {
     let cookies = new Cookies();
-    if (cookies.get("jwt") != null && localStorage.getItem("userId") != null) {
+    if (
+      cookies.get("refreshToken") != null &&
+      localStorage.getItem("uid") != null
+    ) {
       navigate("/dashboard");
     }
   }, [navigate]);
 
   function handleLoginSubmit(event) {
     event.preventDefault();
-    const id = toast.loading("Please wait...", {
+    toast.info("Login Request Sent", {
       position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 4000,
     });
-    let errorFlag = false;
-
-    const LoginBody = { email, password };
-    fetch("https://localhost:7267/api/Auth/Login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        accept: "application/json",
-      },
-      body: JSON.stringify(LoginBody),
-    })
-      .then((responce) => {
-        if (!responce.ok) {
-          errorFlag = true;
-        }
-        return responce.json();
-      })
-      .then((responseJSON) => {
-        if (errorFlag) {
-          throw new Error(`${responseJSON}`);
-        }
+    const authentication = getAuth();
+    signInWithEmailAndPassword(authentication, email, password)
+      .then((response) => {
         let cookies = new Cookies();
-        cookies.set("jwt", responseJSON.jwt, {
+        cookies.set("refreshToken", response._tokenResponse.refreshToken, {
           sameSite: "strict",
           path: "/",
           expires: new Date(Date.now() + 12096e5),
         });
-        localStorage.setItem("userId", responseJSON.userId);
-        toast.update(id, {
-          render: "Successfully login!",
-          type: "success",
-          isLoading: false,
+        localStorage.setItem("uid", response.user.uid);
+        toast.success("Successfully login!", {
           position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 2000,
+          autoClose: 4000,
         });
         navigate(`/dashboard`);
       })
       .catch((err) => {
-        toast.update(id, {
-          render: `${err}`,
-          type: "error",
-          isLoading: false,
+        toast.error(`${err}`, {
           position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 2000,
+          autoClose: 4000,
         });
         console.error(err);
       });
@@ -78,46 +66,30 @@ function Login() {
 
   function handleSignUpSubmit(event) {
     event.preventDefault();
-    const id = toast.loading("Please wait...", {
+    toast.info("Registeration Request Sent", {
       position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 4000,
     });
-    let errorFlag = false;
-
-    const RegisterBody = { email, password };
-    fetch("https://localhost:7267/api/Auth/RegisterNewUser", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        accept: "application/json",
-      },
-      body: JSON.stringify(RegisterBody),
-    })
-      .then((responce) => {
-        if (!responce.ok) {
-          errorFlag = true;
-        }
-        return responce.json();
-      })
-      .then((responseJSON) => {
-        if (errorFlag) {
-          throw new Error(`${responseJSON}`);
-        }
-        toast.update(id, {
-          render: "Successfully Registerd!",
-          type: "success",
-          isLoading: false,
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 2000,
+    const authentication = getAuth();
+    createUserWithEmailAndPassword(authentication, email, password)
+      .then((response) => {
+        let cookies = new Cookies();
+        cookies.set("refreshToken", response._tokenResponse.refreshToken, {
+          sameSite: "strict",
+          path: "/",
+          expires: new Date(Date.now() + 12096e5),
         });
-        navigate("/");
+        localStorage.setItem("uid", response.user.uid);
+        toast.success("Successfully Registered!", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 4000,
+        });
+        navigate(`/dashboard`);
       })
       .catch((err) => {
-        toast.update(id, {
-          render: `${err}`,
-          type: "error",
-          isLoading: false,
+        toast.error(`${err}`, {
           position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 2000,
+          autoClose: 4000,
         });
         console.error(err);
       });
@@ -125,6 +97,64 @@ function Login() {
 
   function handleLoginWithGoogleSubmit(event) {
     event.preventDefault();
+    const authentication = getAuth();
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(authentication, provider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        let cookies = new Cookies();
+        cookies.set("refreshToken", credential.refreshToken, {
+          sameSite: "strict",
+          path: "/",
+          expires: new Date(Date.now() + 12096e5),
+        });
+        localStorage.setItem("uid", result.user.uid);
+        toast.success("Successfully Signed In with Google!", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 4000,
+        });
+        navigate(`/dashboard`);
+      })
+      .catch((err) => {
+        const errorCode = err.code;
+        const errorMessage = err.message;
+        const email = err.customData.email;
+        const uid = err.customData.uid;
+        const credential = GoogleAuthProvider.credentialFromError(err);
+        toast.error(`${err.message}`, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 4000,
+        });
+        console.error(errorMessage);
+        console.error(errorCode);
+        console.error(email);
+        console.error(credential.refreshToken);
+        console.error(uid);
+      });
+  }
+
+  function handleGuestModeSubmit(event) {
+    event.preventDefault();
+    toast.info("Anonymous sign in request sent", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 4000,
+    });
+    const authentication = getAuth();
+    signInAnonymously(authentication)
+      .then(() => {
+        toast.success("Successfully Signed in Anonymously!", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 4000,
+        });
+        navigate(`/guest`);
+      })
+      .catch((err) => {
+        toast.error("Anonymously Sign In Failed", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 4000,
+        });
+        console.error(err);
+      });
   }
 
   function handleEmailChange(event) {
@@ -137,6 +167,22 @@ function Login() {
 
   function handleConfirmPasswordChange(event) {
     setConfirmPassword(event.target.value);
+  }
+
+  function validateConfirmPassword(event) {
+    if (password === "") {
+      return;
+    } else if (password === confirmPassword) {
+      toast.info("passwords match", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 4000,
+      });
+    } else {
+      toast.error("passwords do not match", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 4000,
+      });
+    }
   }
 
   function LinkToRegister(event) {
@@ -170,7 +216,7 @@ function Login() {
           <form onSubmit={handleSignUpSubmit} id="SignInForm">
             <input
               placeholder="Email"
-              type="text"
+              type="email"
               value={email}
               onChange={handleEmailChange}
             />
@@ -179,12 +225,14 @@ function Login() {
               type="password"
               value={password}
               onChange={handlePasswordChange}
+              onBlur={validateConfirmPassword}
             />
             <input
               placeholder="Confirm Password"
               type="password"
               value={confirmPassword}
               onChange={handleConfirmPasswordChange}
+              onBlur={validateConfirmPassword}
             />
             <div id="LoginBtnsSection">
               <input
@@ -205,7 +253,9 @@ function Login() {
                 Sign in with Google
               </button>
               <p>or</p>
-              <a href="/guest">Continue as Guest</a>
+              <p className="GuestModeLink" onClick={handleGuestModeSubmit}>
+                Continue as Guest
+              </p>
             </div>
           </form>
         </div>
@@ -248,7 +298,9 @@ function Login() {
                 Sign in with Google
               </button>
               <p>or</p>
-              <a href="/guest">Continue as Guest</a>
+              <p className="GuestModeLink" onClick={handleGuestModeSubmit}>
+                Continue as Guest
+              </p>
             </div>
           </form>
         </div>

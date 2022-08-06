@@ -271,8 +271,9 @@
   align-items: center;
 }
 
-.GuestLinkContainer a {
+.GuestLinkContainer .GuestModeLink {
   color: #333;
+  cursor: pointer;
   padding: 0.3em;
   padding-left: 0.6em;
   padding-right: 0.6em;
@@ -281,7 +282,7 @@
   transition: 0.2s box-shadow ease-in-out;
 }
 
-.GuestLinkContainer a:hover {
+.GuestLinkContainer .GuestModeLink:hover {
   box-shadow: 0px 0px 8px #b90504;
 }
 
