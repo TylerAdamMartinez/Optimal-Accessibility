@@ -1,6 +1,6 @@
 import "./NotFound404ErrorPage.css";
 import { useLocation, useNavigate } from "react-router-dom";
-import Logo from "./../Images/Optimal-Accessibility-Logo.png";
+import Logo from "./../../Images/Optimal-Accessibility-Logo.png";
 import { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
 
@@ -25,7 +25,7 @@ function NoMatch() {
         <img src={Logo} alt="logo" />
         <h1>Optimal Accessibility</h1>
       </div>
-      <div id="LoginPageSignInFormDiv">
+      <div id="NotFound404Div">
         <h2>404 Not Found</h2>
         <div id="Content404">
           <h3>

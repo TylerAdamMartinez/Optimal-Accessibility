@@ -388,10 +388,7 @@ If the color rating for your poster is low, the following list could help you fi
       ) : (
         <div className="GuestModeTextContainer">
           <p className="GuestModeText">You are in guest mode</p>
-          <button
-            className="CreateAccountButton"
-            onClick={() => navigate("/register")}
-          >
+          <button className="CreateAccountButton" onClick={() => navigate("/")}>
             Create an Account
           </button>
         </div>

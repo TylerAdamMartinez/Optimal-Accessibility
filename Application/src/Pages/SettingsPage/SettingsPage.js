@@ -1,4 +1,4 @@
-import NavBar from "../Components/NavBar";
+import NavBar from "../../Components/NavBar";
 import "./SettingsPage.css";
 import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
