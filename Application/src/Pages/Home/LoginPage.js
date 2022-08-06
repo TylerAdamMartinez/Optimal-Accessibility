@@ -6,7 +6,14 @@ import Logo from "./../../Images/Optimal-Accessibility-Logo.png";
 import Cookies from "universal-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously } from 'firebase/auth';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInAnonymously,
+} from "firebase/auth";
 //import LoginPageBackground from "../../Components/LoginPageBackground";
 
 function Login() {
@@ -18,7 +25,10 @@ function Login() {
 
   useEffect(() => {
     let cookies = new Cookies();
-    if (cookies.get("refreshToken") != null && localStorage.getItem("uid") != null) {
+    if (
+      cookies.get("refreshToken") != null &&
+      localStorage.getItem("uid") != null
+    ) {
       navigate("/dashboard");
     }
   }, [navigate]);
@@ -29,8 +39,8 @@ function Login() {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 4000,
     });
-      const authentication = getAuth();
-      signInWithEmailAndPassword(authentication, email, password)
+    const authentication = getAuth();
+    signInWithEmailAndPassword(authentication, email, password)
       .then((response) => {
         let cookies = new Cookies();
         cookies.set("refreshToken", response._tokenResponse.refreshToken, {
@@ -38,8 +48,7 @@ function Login() {
           path: "/",
           expires: new Date(Date.now() + 12096e5),
         });
-        console.log("response", response);
-        localStorage.setItem('uid', response.user.uid)
+        localStorage.setItem("uid", response.user.uid);
         toast.success("Successfully login!", {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: 4000,
@@ -63,21 +72,20 @@ function Login() {
     });
     const authentication = getAuth();
     createUserWithEmailAndPassword(authentication, email, password)
-    .then((response) => {
-      let cookies = new Cookies();
-      cookies.set("refreshToken", response._tokenResponse.refreshToken, {
-        sameSite: "strict",
-        path: "/",
-        expires: new Date(Date.now() + 12096e5),
-      });
-      console.log("response", response);
-      localStorage.setItem('uid', response.user.uid)
-      toast.success("Successfully Registered!", {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 4000,
-      });
-      navigate(`/dashboard`);
-    })
+      .then((response) => {
+        let cookies = new Cookies();
+        cookies.set("refreshToken", response._tokenResponse.refreshToken, {
+          sameSite: "strict",
+          path: "/",
+          expires: new Date(Date.now() + 12096e5),
+        });
+        localStorage.setItem("uid", response.user.uid);
+        toast.success("Successfully Registered!", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 4000,
+        });
+        navigate(`/dashboard`);
+      })
       .catch((err) => {
         toast.error(`${err}`, {
           position: toast.POSITION.BOTTOM_RIGHT,
@@ -89,6 +97,40 @@ function Login() {
 
   function handleLoginWithGoogleSubmit(event) {
     event.preventDefault();
+    const authentication = getAuth();
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(authentication, provider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        let cookies = new Cookies();
+        cookies.set("refreshToken", credential.refreshToken, {
+          sameSite: "strict",
+          path: "/",
+          expires: new Date(Date.now() + 12096e5),
+        });
+        localStorage.setItem("uid", result.user.uid);
+        toast.success("Successfully Signed In with Google!", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 4000,
+        });
+        navigate(`/dashboard`);
+      })
+      .catch((err) => {
+        const errorCode = err.code;
+        const errorMessage = err.message;
+        const email = err.customData.email;
+        const uid = err.customData.uid;
+        const credential = GoogleAuthProvider.credentialFromError(err);
+        toast.error(`${err.message}`, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 4000,
+        });
+        console.error(errorMessage);
+        console.error(errorCode);
+        console.error(email);
+        console.error(credential.refreshToken);
+        console.error(uid);
+      });
   }
 
   function handleGuestModeSubmit(event) {
@@ -99,13 +141,13 @@ function Login() {
     });
     const authentication = getAuth();
     signInAnonymously(authentication)
-    .then(() => {
-      toast.success("Successfully Signed in Anonymously!", {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 4000,
-      });
-      navigate(`/guest`);
-    })
+      .then(() => {
+        toast.success("Successfully Signed in Anonymously!", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 4000,
+        });
+        navigate(`/guest`);
+      })
       .catch((err) => {
         toast.error("Anonymously Sign In Failed", {
           position: toast.POSITION.BOTTOM_RIGHT,
@@ -128,16 +170,14 @@ function Login() {
   }
 
   function validateConfirmPassword(event) {
-    if(password === "") {
+    if (password === "") {
       return;
-    }
-    else if(password === confirmPassword) {
+    } else if (password === confirmPassword) {
       toast.info("passwords match", {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 4000,
       });
-    }
-    else {
+    } else {
       toast.error("passwords do not match", {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 4000,
@@ -173,7 +213,7 @@ function Login() {
       {showRegisterScreen ? (
         <div id="RegistrationPageSignInFormDiv">
           <h2>REGISTER</h2>
-          <form onSubmit={handleSignUpSubmit}  id="SignInForm">
+          <form onSubmit={handleSignUpSubmit} id="SignInForm">
             <input
               placeholder="Email"
               type="email"
@@ -213,7 +253,9 @@ function Login() {
                 Sign in with Google
               </button>
               <p>or</p>
-              <p className="GuestModeLink" onClick={handleGuestModeSubmit}>Continue as Guest</p>
+              <p className="GuestModeLink" onClick={handleGuestModeSubmit}>
+                Continue as Guest
+              </p>
             </div>
           </form>
         </div>
@@ -256,7 +298,9 @@ function Login() {
                 Sign in with Google
               </button>
               <p>or</p>
-              <p className="GuestModeLink" onClick={handleGuestModeSubmit}>Continue as Guest</p>
+              <p className="GuestModeLink" onClick={handleGuestModeSubmit}>
+                Continue as Guest
+              </p>
             </div>
           </form>
         </div>
