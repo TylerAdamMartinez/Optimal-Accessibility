@@ -158,9 +158,10 @@ function Login() {
       </div>
       <div id="heroSection">
         <p>
-          We believe the web should be accessible by anyone. Optimal
-          Accessibility is a <strong>free</strong>, <strong>open-source</strong>{" "}
-          web image accessibility tool.
+          We believe that more than just the web should be accessible. Optimal
+          Accessibility is a <strong>free</strong>,{" "}
+          <strong>open-source </strong>
+          tool to check image/poster accessibility.
         </p>
       </div>
       {showRegisterScreen ? (
@@ -192,7 +193,7 @@ function Login() {
                 className="PopUpAccountMenuDivbtn"
               />
               <button className="PopUpAccountMenuDivbtn" onClick={LinkToLogin}>
-                Login
+                Go login
               </button>
             </div>
             <div className="GuestLinkContainer">
@@ -235,7 +236,7 @@ function Login() {
                 className="PopUpAccountMenuDivbtn"
                 onClick={LinkToRegister}
               >
-                Sign Up
+                Go Sign Up
               </button>
             </div>
             <div className="GuestLinkContainer">
