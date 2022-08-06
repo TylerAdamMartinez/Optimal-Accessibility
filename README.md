@@ -36,12 +36,15 @@ We believe online and offline accessibility matters, so we created the Optimal A
 * For dependency and general info checkout <a href="https://github.com/TylerAdamMartinez/Optimal-Accessibility/tree/main/API#readme">README</a>
 
 
-### How to run the project
-1. Go to the project's API directory
-2. Run the terminal command: `dotnet run`
-3. Open another terminal instance then
-4. Go to the project's Application directory
-5. Run the terminal command: `npm run`
+### How to run the project in development
+1. Go to the project's Application directory
+2. Run the terminal command: `npm run`
+
+### How to run the project in pre-production
+1. Go to the project's Application directory
+2. Run `docker build -t <username>/<branch-name> .`
+3. Run `docker run -p 80:80 <username>/<branch-name>`
+
 
 ---
 
