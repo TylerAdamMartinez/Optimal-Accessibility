@@ -6,13 +6,11 @@ import Logo from "./../../Images/Optimal-Accessibility-Logo.png";
 import Cookies from "universal-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import LoginPageBackground from "../../Components/LoginPageBackground";
+//import LoginPageBackground from "../../Components/LoginPageBackground";
 
 function Login() {
-  const [showLoginScreen, setShowLoginScreen] = useState(true);
+  const [showRegisterScreen, setShowRegisterScreen] = useState(true);
   const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
@@ -85,7 +83,7 @@ function Login() {
     });
     let errorFlag = false;
 
-    const RegisterBody = { email, firstName, lastName, password };
+    const RegisterBody = { email, password };
     fetch("https://localhost:7267/api/Auth/RegisterNewUser", {
       method: "POST",
       headers: {
@@ -125,6 +123,10 @@ function Login() {
       });
   }
 
+  function handleLoginWithGoogleSubmit(event) {
+    event.preventDefault();
+  }
+
   function handleEmailChange(event) {
     setEmail(event.target.value);
   }
@@ -133,26 +135,18 @@ function Login() {
     setPassword(event.target.value);
   }
 
-  function handleFirstNameChange(event) {
-    setFirstName(event.target.value);
-  }
-
-  function handleLastNameChange(event) {
-    setLastName(event.target.value);
-  }
-
   function handleConfirmPasswordChange(event) {
     setConfirmPassword(event.target.value);
   }
 
   function LinkToRegister(event) {
     event.preventDefault();
-    setShowLoginScreen(false);
+    setShowRegisterScreen(true);
   }
 
   function LinkToLogin(event) {
     event.preventDefault();
-    setShowLoginScreen(true);
+    setShowRegisterScreen(false);
   }
 
   return (
@@ -162,7 +156,59 @@ function Login() {
         <img src={Logo} alt="logo" />
         <h1>Optimal Accessibility</h1>
       </div>
-      {showLoginScreen ? (
+      <div id="heroSection">
+        <p>
+          We believe the web should be accessible by anyone. Optimal
+          Accessibility is a <strong>free</strong>, <strong>open-source</strong>{" "}
+          web image accessibility tool.
+        </p>
+      </div>
+      {showRegisterScreen ? (
+        <div id="RegistrationPageSignInFormDiv">
+          <h2>REGISTER</h2>
+          <form onSubmit={handleSignUpSubmit} id="SignInForm">
+            <input
+              placeholder="Email"
+              type="text"
+              value={email}
+              onChange={handleEmailChange}
+            />
+            <input
+              placeholder="Password"
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+            />
+            <input
+              placeholder="Confirm Password"
+              type="password"
+              value={confirmPassword}
+              onChange={handleConfirmPasswordChange}
+            />
+            <div id="LoginBtnsSection">
+              <input
+                type="submit"
+                value="Register"
+                className="PopUpAccountMenuDivbtn"
+              />
+              <button className="PopUpAccountMenuDivbtn" onClick={LinkToLogin}>
+                Login
+              </button>
+            </div>
+            <div className="GuestLinkContainer">
+              <button
+                id="SignInWithGooglebtn"
+                onClick={handleLoginWithGoogleSubmit}
+              >
+                <img src={Google_G_Logo} alt="Google G Icon" />
+                Sign in with Google
+              </button>
+              <p>or</p>
+              <a href="/guest">Continue as Guest</a>
+            </div>
+          </form>
+        </div>
+      ) : (
         <div id="LoginPageSignInFormDiv">
           <h2>LOGIN</h2>
           <form onSubmit={handleLoginSubmit} id="SignInForm">
@@ -193,61 +239,10 @@ function Login() {
               </button>
             </div>
             <div className="GuestLinkContainer">
-              <button id="SignInWithGooglebtn">
-                <img src={Google_G_Logo} alt="Google G Icon" />
-                Sign in with Google
-              </button>
-              <p>or</p>
-              <a href="/guest">Continue as Guest</a>
-            </div>
-          </form>
-        </div>
-      ) : (
-        <div id="RegistrationPageSignInFormDiv">
-          <h2>REGISTER</h2>
-          <form onSubmit={handleSignUpSubmit} id="SignInForm">
-            <input
-              placeholder="Email"
-              type="text"
-              value={email}
-              onChange={handleEmailChange}
-            />
-            <input
-              placeholder="First Name"
-              type="text"
-              value={firstName}
-              onChange={handleFirstNameChange}
-            />
-            <input
-              placeholder="Last Name"
-              type="text"
-              value={lastName}
-              onChange={handleLastNameChange}
-            />
-            <input
-              placeholder="Password"
-              type="password"
-              value={password}
-              onChange={handlePasswordChange}
-            />
-            <input
-              placeholder="Confirm Password"
-              type="password"
-              value={confirmPassword}
-              onChange={handleConfirmPasswordChange}
-            />
-            <div id="LoginBtnsSection">
-              <input
-                type="submit"
-                value="Register"
-                className="PopUpAccountMenuDivbtn"
-              />
-              <button className="PopUpAccountMenuDivbtn" onClick={LinkToLogin}>
-                Back to Login
-              </button>
-            </div>
-            <div className="GuestLinkContainer">
-              <button id="SignInWithGooglebtn">
+              <button
+                id="SignInWithGooglebtn"
+                onClick={handleLoginWithGoogleSubmit}
+              >
                 <img src={Google_G_Logo} alt="Google G Icon" />
                 Sign in with Google
               </button>
