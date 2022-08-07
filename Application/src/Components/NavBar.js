@@ -15,6 +15,8 @@ import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import MagicDropZone from "react-magic-dropzone";
 import "react-toastify/dist/ReactToastify.css";
+import { db } from "../FirebaseConfig";
+import { ref, child, get, set } from "firebase/database";
 
 function NavBar(props) {
   let textHelpInfo = `The text rating is mainly based on the readability of the text. If the text cannot be easily read by the computer, then it probably can't be easily read by a person. The size of the text, as well as the color contrast with its surroundings, are the largest factors.
@@ -60,9 +62,22 @@ If the color rating for your poster is low, the following list could help you fi
 
   async function handleSubmit(event) {
     event.preventDefault();
+    let cached_posters = JSON.parse(sessionStorage.getItem("cached-posters"));
+    const posterNameSet = new Set(
+      cached_posters.map((element) => {
+        return element.name;
+      })
+    );
+
+    if (posterNameSet.has(name)) {
+      toast.error("Failed to add new posters because the name is taken", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 4000,
+      });
+      return;
+    }
+
     setIsProcessing(true);
-    let errorFlag = false;
-    let title = Math.random().toString();
 
     async function getAccessibilityScore(poster) {
       setLoadingState("Uploading image...");
@@ -99,126 +114,208 @@ If the color rating for your poster is low, the following list could help you fi
     setLoadingState("Sending Poster...");
     ConvertImageToBase64(FileData)
       .then((data) => {
-        const addPosterBody = { name, title, data, accessibilityScore };
-        let userId = localStorage.getItem("userId");
-        let cookies = new Cookies();
-        let Jwt = cookies.get("jwt");
+        const addPosterBody = { name, data, accessibilityScore };
+        let uid = localStorage.getItem("uid");
 
         setLoadingState("Sent");
-        fetch(`https://localhost:7267/api/User/AddPosterByUserId/${userId}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            accept: "application/json",
-            Authorization: `bearer ${Jwt}`,
-          },
-          body: JSON.stringify(addPosterBody),
-        })
-          .then((responce) => {
-            if (!responce.ok) {
-              errorFlag = true;
+        const dbRef = ref(db);
+        get(child(dbRef, `Posters/${uid}`))
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              let postersSnap = snapshot.val().posters;
+              let posterSanpConcat = postersSnap.concat([addPosterBody]);
+              set(ref(db, "Posters/" + uid), {
+                posters: posterSanpConcat,
+              })
+                .then(() => {
+                  toast.success("Successfully added new poster!", {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: 4000,
+                  });
+                  setIsProcessing(false);
+                  setLoadingState("Submit");
+                  SetPosterFileData("");
+
+                  let OverallAccessibilityRating = {
+                    textRating: 0,
+                    structureRating: 0,
+                    colorRating: 0,
+                  };
+                  posterSanpConcat.forEach((element) => {
+                    OverallAccessibilityRating.textRating +=
+                      element.accessibilityScore.textRating;
+                    OverallAccessibilityRating.structureRating +=
+                      element.accessibilityScore.structureRating;
+                    OverallAccessibilityRating.colorRating +=
+                      element.accessibilityScore.colorRating;
+                  });
+
+                  OverallAccessibilityRating.textRating =
+                    OverallAccessibilityRating.textRating /
+                    posterSanpConcat.length;
+                  OverallAccessibilityRating.structureRating =
+                    OverallAccessibilityRating.structureRating /
+                    posterSanpConcat.length;
+                  OverallAccessibilityRating.colorRating =
+                    OverallAccessibilityRating.colorRating /
+                    posterSanpConcat.length;
+
+                  set(ref(db, "OverallAccessibilityRating/" + uid), {
+                    textRating: OverallAccessibilityRating.textRating,
+                    structureRating: OverallAccessibilityRating.structureRating,
+                    colorRating: OverallAccessibilityRating.colorRating,
+                  })
+                    .then(() => {
+                      props.addPosterCallback(name);
+                    })
+                    .catch(() => {
+                      toast.error(
+                        "Failed to calculate new OverallAccessibilityRating",
+                        {
+                          position: toast.POSITION.BOTTOM_RIGHT,
+                          autoClose: 4000,
+                        }
+                      );
+                    });
+                })
+                .catch((err) => {
+                  setIsProcessing(false);
+                  toast.error("Failed to add new poster", {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: 4000,
+                  });
+                  console.error(err);
+                });
             } else {
-              toast.success("New poster was successfully added!", {
-                position: toast.POSITION.BOTTOM_RIGHT,
-                autoClose: 4000,
-              });
+              set(ref(db, "Posters/" + uid), {
+                posters: [
+                  {
+                    name: "string",
+                    data: "",
+                    accessibilityScore: {
+                      textRating: 5,
+                      structureRating: 5,
+                      colorRating: 5,
+                    },
+                  },
+                ],
+              })
+                .then(() => {
+                  toast.info("Successfully initiated Posters", {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: 4000,
+                  });
+                  setIsProcessing(false);
+                  props.addPosterCallback(name);
+                  setLoadingState("Submit");
+                  SetPosterFileData("");
+                })
+                .catch(() => {
+                  setIsProcessing(false);
+                  setLoadingState("Submit");
+                  SetPosterFileData("");
+                  toast.error("Failed to initiate Posters", {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: 4000,
+                  });
+                });
             }
-            setLoadingState("Sent");
-            return responce.json();
           })
-          .then((responseJSON) => {
-            if (errorFlag) {
-              throw new Error(`${responseJSON}`);
-            }
+          .catch((error) => {
             setIsProcessing(false);
-            props.addPosterCallback(name);
             setLoadingState("Submit");
             SetPosterFileData("");
-          })
-          .catch((err) => {
-            setIsProcessing(false);
-            toast.error(`${err}`, {
-              position: toast.POSITION.BOTTOM_RIGHT,
-              autoClose: 4000,
-            });
-            console.error(err);
+            console.error(error);
           });
       })
-      .catch((Error) => {
-        toast.error(`${Error}`, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 4000,
-        });
-        console.error(Error);
+      .catch((err) => {
+        setIsProcessing(false);
+        setLoadingState("Submit");
+        SetPosterFileData("");
+        console.error(err);
       });
   }
 
   function generatePDF() {
-    let errorFlag = false;
-    let userId = localStorage.getItem("userId");
-    let cookies = new Cookies();
-    let Jwt = cookies.get("jwt");
+    // let errorFlag = false;
+    // let userId = localStorage.getItem("uid");
 
-    function formatDate() {
-      let d = new Date();
-      let month = (d.getMonth() + 1).toString();
-      let day = d.getDate().toString();
-      let year = d.getFullYear();
-      if (month.length < 2) {
-        month = "0" + month;
-      }
-      if (day.length < 2) {
-        day = "0" + day;
-      }
-      return [month, day, year].join("-");
-    }
+    // function formatDate() {
+    //   let d = new Date();
+    //   let month = (d.getMonth() + 1).toString();
+    //   let day = d.getDate().toString();
+    //   let year = d.getFullYear();
+    //   if (month.length < 2) {
+    //     month = "0" + month;
+    //   }
+    //   if (day.length < 2) {
+    //     day = "0" + day;
+    //   }
+    //   return [month, day, year].join("-");
+    // }
 
     toast.info("Generating PDF Report...", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 2000,
     });
-    fetch(`https://localhost:7267/api/User/GenerateReportByUserId/${userId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        accept: "application/pdf",
-        Authorization: `bearer ${Jwt}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          errorFlag = true;
-        }
-        return response.blob();
-      })
-      .then((blob) => {
-        if (errorFlag) {
-          throw new Error(`${blob}`);
-        }
-        toast.success("Successfully generated PDF report!", {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 2000,
-        });
-        let today = formatDate();
-        var url = window.URL.createObjectURL(blob);
-        var a = document.createElement("a");
-        a.href = url;
-        a.download = `Optimal-Accessibility-Report-${userId}-${today}.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-      })
-      .catch((err) => {
-        toast.error(`${err}`, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 2000,
-        });
-        console.error(err);
-      });
+    // fetch(`https://localhost:7267/api/User/GenerateReportByUserId/${userId}`, {
+    //   method: "GET",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     accept: "application/pdf",
+    //     Authorization: `bearer ${Jwt}`,
+    //   },
+    // })
+    //   .then((response) => {
+    //     if (!response.ok) {
+    //       errorFlag = true;
+    //     }
+    //     return response.blob();
+    //   })
+    //   .then((blob) => {
+    //     if (errorFlag) {
+    //       throw new Error(`${blob}`);
+    //     }
+    //     toast.success("Successfully generated PDF report!", {
+    //       position: toast.POSITION.BOTTOM_RIGHT,
+    //       autoClose: 2000,
+    //     });
+    //     let today = formatDate();
+    //     var url = window.URL.createObjectURL(blob);
+    //     var a = document.createElement("a");
+    //     a.href = url;
+    //     a.download = `Optimal-Accessibility-Report-${userId}-${today}.pdf`;
+    //     document.body.appendChild(a);
+    //     a.click();
+    //     a.remove();
+    //   })
+    //   .catch((err) => {
+    //     toast.error(`${err}`, {
+    //       position: toast.POSITION.BOTTOM_RIGHT,
+    //       autoClose: 2000,
+    //     });
+    //     console.error(err);
+    //   });
   }
 
   function handleNameChange(event) {
     SetPosterName(event.target.value);
+  }
+
+  function validateName() {
+    let posters = JSON.parse(sessionStorage.getItem("cached-posters"));
+    const posterNameSet = new Set(
+      posters.map((element) => {
+        return element.name;
+      })
+    );
+
+    if (posterNameSet.has(name)) {
+      toast.error("Poster name is already taken", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 4000,
+      });
+    }
   }
 
   const handleFileChange = (accepted, rejected, links) => {
@@ -235,7 +332,7 @@ If the color rating for your poster is low, the following list could help you fi
   function handleLogout() {
     localStorage.clear();
     let cookies = new Cookies();
-    cookies.remove("jwt");
+    cookies.remove("refreshToken");
   }
 
   const navigate = useNavigate();
@@ -335,6 +432,7 @@ If the color rating for your poster is low, the following list could help you fi
                             type="text"
                             value={name}
                             onChange={handleNameChange}
+                            onBlur={validateName}
                           />
                           <MagicDropZone
                             className="DragAndDropSection"

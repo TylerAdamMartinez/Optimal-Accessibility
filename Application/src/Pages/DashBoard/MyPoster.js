@@ -12,6 +12,8 @@ import ConvertImageToBase64 from "../../Utils/ConvertImageToBase64";
 import { getImageGrid } from "../../Utils/Structure";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { db } from "../../FirebaseConfig";
+import { ref, set } from "firebase/database";
 
 function MyPoster(props) {
   const imgRef = useRef();
@@ -31,52 +33,80 @@ function MyPoster(props) {
 
   function DeletePoster() {
     setIsProcessing(true);
-    let errorFlag = false;
-    let userId = localStorage.getItem("userId");
-    let cookies = new Cookies();
-    let Jwt = cookies.get("jwt");
+    let uid = localStorage.getItem("uid");
+
+    let cached_posters = JSON.parse(sessionStorage.getItem("cached-posters"));
+    const posterNames = cached_posters.map((element) => {
+      return element.name;
+    });
+    const index = posterNames.indexOf(props.PosterName);
+
+    if (index > -1) {
+      cached_posters.splice(index, 1);
+    } else {
+      toast.error("Failed to find poster", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 4000,
+      });
+      return;
+    }
 
     toast.info("Sent", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 4000,
     });
-    fetch(
-      `https://localhost:7267/api/User/DeletePosterByUserId/${userId}/ByPosterName/${props.PosterName}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          Authorization: `bearer ${Jwt}`,
-        },
-      }
-    )
-      .then((responce) => {
-        if (!responce.ok) {
-          errorFlag = true;
-          return responce.json();
-        } else {
-          toast.success("poster was successfully deleted", {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: 4000,
-          });
-        }
-      })
-      .then((responseJSON) => {
-        if (errorFlag) {
-          throw new Error(`${responseJSON}`);
-        }
 
-        setIsProcessing(false);
-        props.editPosterCallback(Math.random());
-      })
-      .catch((err) => {
-        setIsProcessing(false);
-        toast.error(`${err}`, {
+    set(ref(db, "Posters/" + uid), {
+      posters: cached_posters,
+    })
+      .then(() => {
+        toast.success("Successfully deleted poster", {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: 4000,
         });
-        console.error(err);
+        setIsProcessing(false);
+        let OverallAccessibilityRating = {
+          textRating: 0,
+          structureRating: 0,
+          colorRating: 0,
+        };
+        cached_posters.forEach((element) => {
+          OverallAccessibilityRating.textRating +=
+            element.accessibilityScore.textRating;
+          OverallAccessibilityRating.structureRating +=
+            element.accessibilityScore.structureRating;
+          OverallAccessibilityRating.colorRating +=
+            element.accessibilityScore.colorRating;
+        });
+
+        OverallAccessibilityRating.textRating =
+          OverallAccessibilityRating.textRating / cached_posters.length;
+        OverallAccessibilityRating.structureRating =
+          OverallAccessibilityRating.structureRating / cached_posters.length;
+        OverallAccessibilityRating.colorRating =
+          OverallAccessibilityRating.colorRating / cached_posters.length;
+
+        set(ref(db, "OverallAccessibilityRating/" + uid), {
+          textRating: OverallAccessibilityRating.textRating,
+          structureRating: OverallAccessibilityRating.structureRating,
+          colorRating: OverallAccessibilityRating.colorRating,
+        })
+          .then(() => {
+            props.editPosterCallback(Math.random());
+          })
+          .catch(() => {
+            toast.error("Failed to calculate new OverallAccessibilityRating", {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: 4000,
+            });
+          });
+      })
+      .catch(() => {
+        setIsProcessing(false);
+        toast.error("Failed to delete poster", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 4000,
+        });
       });
   }
 
@@ -84,53 +114,65 @@ function MyPoster(props) {
     setIsEditing(false);
     setIsProcessing(true);
     event.preventDefault();
-    let errorFlag = false;
-    let userId = localStorage.getItem("userId");
-    let cookies = new Cookies();
-    let Jwt = cookies.get("jwt");
+    let uid = localStorage.getItem("uid");
+
+    let cached_posters = JSON.parse(sessionStorage.getItem("cached-posters"));
+    const posterNameSet = new Set(
+      cached_posters.map((element) => {
+        return element.name;
+      })
+    );
+
+    if (posterNameSet.has(editPosterName)) {
+      toast.error("Failed to update poster because the name is taken", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 4000,
+      });
+      return;
+    }
 
     toast.info("Sent", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 4000,
     });
-    fetch(
-      `https://localhost:7267/api/User/UpdatePosterNameByUserId/${userId}/ByPosterName/${props.PosterName}?newPosterName=${editPosterName}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          Authorization: `bearer ${Jwt}`,
-        },
-      }
-    )
-      .then((responce) => {
-        if (!responce.ok) {
-          errorFlag = true;
-          return responce.json();
-        } else {
-          toast.success("Poster name was successfully updated", {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: 4000,
-          });
-        }
-      })
-      .then((responseJSON) => {
-        if (errorFlag) {
-          throw new Error(`${responseJSON}`);
-        }
+    // fetch(
+    //   `https://localhost:7267/api/User/UpdatePosterNameByUserId/${userId}/ByPosterName/${props.PosterName}?newPosterName=${editPosterName}`,
+    //   {
+    //     method: "PUT",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       accept: "application/json",
+    //       Authorization: `bearer ${Jwt}`,
+    //     },
+    //   }
+    // )
+    //   .then((responce) => {
+    //     if (!responce.ok) {
+    //       errorFlag = true;
+    //       return responce.json();
+    //     } else {
+    //       toast.success("Poster name was successfully updated", {
+    //         position: toast.POSITION.BOTTOM_RIGHT,
+    //         autoClose: 4000,
+    //       });
+    //     }
+    //   })
+    //   .then((responseJSON) => {
+    //     if (errorFlag) {
+    //       throw new Error(`${responseJSON}`);
+    //     }
 
-        setIsProcessing(false);
-        props.editPosterCallback(editPosterName);
-      })
-      .catch((err) => {
-        toast.error(`${err}`, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 4000,
-        });
-        setIsProcessing(false);
-        console.error(err);
-      });
+    //     setIsProcessing(false);
+    //     props.editPosterCallback(editPosterName);
+    //   })
+    //   .catch((err) => {
+    //     toast.error(`${err}`, {
+    //       position: toast.POSITION.BOTTOM_RIGHT,
+    //       autoClose: 4000,
+    //     });
+    //     setIsProcessing(false);
+    //     console.error(err);
+    //   });
   }
 
   async function UpdatePosterData(event) {
@@ -233,6 +275,22 @@ function MyPoster(props) {
     setEditPosterData(file);
   }
 
+  function validateEditPosterName() {
+    let cached_posters = JSON.parse(sessionStorage.getItem("cached-posters"));
+    const posterNameSet = new Set(
+      cached_posters.map((element) => {
+        return element.name;
+      })
+    );
+
+    if (posterNameSet.has(editPosterName)) {
+      toast.error("Poster name is already taken", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 4000,
+      });
+    }
+  }
+
   function DeleteForeverHandler() {
     let userAnswer = window.confirm(
       `Are you sure you would like to delete poster: '${props.PosterName}' forever?`
@@ -289,6 +347,7 @@ function MyPoster(props) {
                         type="text"
                         value={editPosterName}
                         onChange={editPosterNameHandler}
+                        onBlur={validateEditPosterName}
                       />
                       <input
                         readOnly={IsProcessing}
