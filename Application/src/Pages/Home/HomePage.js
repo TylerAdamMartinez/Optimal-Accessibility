@@ -18,6 +18,7 @@ import {
 
 function HomePage() {
   const [homePageMode, setHomePageMode] = useState("hero");
+  const [mobileMenu, setMobileMenu] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -198,6 +199,7 @@ function HomePage() {
 
   function LinkToHero(event) {
     event.preventDefault();
+    setMobileMenu(false);
     setHomePageMode("hero");
   }
 
@@ -209,6 +211,29 @@ function HomePage() {
   function LinkToLogin(event) {
     event.preventDefault();
     setHomePageMode("login");
+  }
+
+  function mobileMenuHandler(state) {
+    if (state) {
+      return (
+        <div id="mobileMenuDiv">
+          <ul>
+            <li
+              onClick={() => {
+                setMobileMenu(!mobileMenu);
+                setHomePageMode("login");
+              }}
+            >
+              Login
+            </li>
+            <li onClick={handleLoginWithGoogleSubmit}>Login with Google</li>
+            <li onClick={handleGuestModeSubmit}>Continue as Guest</li>
+          </ul>
+        </div>
+      );
+    } else {
+      return <></>;
+    }
   }
 
   function HomePageModeHandler(state) {
@@ -310,6 +335,8 @@ function HomePage() {
           </form>
         </div>
       );
+    } else if (state === "mobileMenu") {
+      return <></>;
     }
   }
 
@@ -321,7 +348,18 @@ function HomePage() {
           <h1>Optimal Accessibility</h1>
         </div>
         <div id="OptionsBanner">
-          <Menu fontSize="large" className="MenuActivity" />
+          <Menu
+            fontSize="large"
+            className="MenuActivity"
+            onClick={() => {
+              if (!mobileMenu) {
+                setHomePageMode("mobileMenu");
+              } else {
+                setHomePageMode("hero");
+              }
+              setMobileMenu(!mobileMenu);
+            }}
+          />
           <button
             className="PopUpAccountMenuDivbtn ButtonActivity"
             onClick={LinkToLogin}
@@ -337,6 +375,7 @@ function HomePage() {
           </p>
         </div>
       </div>
+      {mobileMenuHandler(mobileMenu)}
       {HomePageModeHandler(homePageMode)}
       <ToastContainer autoClose={4000} limit={3} />
     </div>
