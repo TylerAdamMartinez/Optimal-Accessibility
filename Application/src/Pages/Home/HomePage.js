@@ -1,4 +1,4 @@
-import "./LoginPage.css";
+import "./HomePage.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Google_G_Logo from "../../Images/Google__G__Logo.svg";
@@ -6,6 +6,7 @@ import Logo from "./../../Images/Optimal-Accessibility-Logo.png";
 import Cookies from "universal-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Menu from "@mui/icons-material/Menu";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -14,10 +15,10 @@ import {
   createUserWithEmailAndPassword,
   signInAnonymously,
 } from "firebase/auth";
-//import LoginPageBackground from "../../Components/LoginPageBackground";
 
-function Login() {
-  const [showRegisterScreen, setShowRegisterScreen] = useState(true);
+function HomePage() {
+  const [homePageMode, setHomePageMode] = useState("hero");
+  const [mobileMenu, setMobileMenu] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -169,7 +170,18 @@ function Login() {
     setConfirmPassword(event.target.value);
   }
 
-  function validateConfirmPassword(event) {
+  function validateEmail() {
+    let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if (!email.match(regex)) {
+      toast.error("invalid email format", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 4000,
+      });
+    }
+  }
+
+  function validateConfirmPassword() {
     if (password === "") {
       return;
     } else if (password === confirmPassword) {
@@ -185,40 +197,72 @@ function Login() {
     }
   }
 
-  function LinkToRegister(event) {
+  function LinkToHero(event) {
     event.preventDefault();
-    setShowRegisterScreen(true);
+    setMobileMenu(false);
+    setHomePageMode("hero");
+  }
+
+  function LinkToSignUp(event) {
+    event.preventDefault();
+    setHomePageMode("signup");
   }
 
   function LinkToLogin(event) {
     event.preventDefault();
-    setShowRegisterScreen(false);
+    setHomePageMode("login");
   }
 
-  return (
-    <div id="LoginPageDiv">
-      {/* <LoginPageBackground /> */}
-      <div id="LoginLogoBanner">
-        <img src={Logo} alt="logo" />
-        <h1>Optimal Accessibility</h1>
-      </div>
-      <div id="heroSection">
-        <p>
-          We believe that more than just the web should be accessible. Optimal
-          Accessibility is a <strong>free</strong>,{" "}
-          <strong>open-source </strong>
-          tool to check image/poster accessibility.
-        </p>
-      </div>
-      {showRegisterScreen ? (
+  function mobileMenuHandler(state) {
+    if (state) {
+      return (
+        <div id="mobileMenuDiv">
+          <ul>
+            <li
+              onClick={() => {
+                setMobileMenu(!mobileMenu);
+                setHomePageMode("login");
+              }}
+            >
+              Login
+            </li>
+            <li onClick={handleLoginWithGoogleSubmit}>Login with Google</li>
+            <li onClick={handleGuestModeSubmit}>Continue as Guest</li>
+          </ul>
+        </div>
+      );
+    } else {
+      return <></>;
+    }
+  }
+
+  function HomePageModeHandler(state) {
+    if (state === "hero") {
+      return (
+        <div id="heroSection">
+          <h1>Optimal Accessibility</h1>
+          <p>
+            We believe that more than just the web should be accessible. Optimal
+            Accessibility is a <strong>free</strong>,{" "}
+            <strong>open-source </strong>
+            tool to check image/poster accessibility.
+          </p>
+          <button className="PopUpAccountMenuDivbtn" onClick={LinkToSignUp}>
+            Sign Up
+          </button>
+        </div>
+      );
+    } else if (state === "signup") {
+      return (
         <div id="RegistrationPageSignInFormDiv">
-          <h2>REGISTER</h2>
+          <h2>SIGN UP</h2>
           <form onSubmit={handleSignUpSubmit} id="SignInForm">
             <input
               placeholder="Email"
               type="email"
               value={email}
               onChange={handleEmailChange}
+              onBlur={validateEmail}
             />
             <input
               placeholder="Password"
@@ -237,29 +281,22 @@ function Login() {
             <div id="LoginBtnsSection">
               <input
                 type="submit"
-                value="Register"
+                value="Sign Up"
                 className="PopUpAccountMenuDivbtn"
               />
-              <button className="PopUpAccountMenuDivbtn" onClick={LinkToLogin}>
-                Go login
-              </button>
-            </div>
-            <div className="GuestLinkContainer">
               <button
                 id="SignInWithGooglebtn"
                 onClick={handleLoginWithGoogleSubmit}
               >
                 <img src={Google_G_Logo} alt="Google G Icon" />
-                Sign in with Google
+                Sign Up with Google
               </button>
-              <p>or</p>
-              <p className="GuestModeLink" onClick={handleGuestModeSubmit}>
-                Continue as Guest
-              </p>
             </div>
           </form>
         </div>
-      ) : (
+      );
+    } else if (state === "login") {
+      return (
         <div id="LoginPageSignInFormDiv">
           <h2>LOGIN</h2>
           <form onSubmit={handleLoginSubmit} id="SignInForm">
@@ -282,10 +319,7 @@ function Login() {
                 value="Login"
                 className="PopUpAccountMenuDivbtn"
               />
-              <button
-                className="PopUpAccountMenuDivbtn"
-                onClick={LinkToRegister}
-              >
+              <button className="PopUpAccountMenuDivbtn" onClick={LinkToSignUp}>
                 Go Sign Up
               </button>
             </div>
@@ -295,19 +329,57 @@ function Login() {
                 onClick={handleLoginWithGoogleSubmit}
               >
                 <img src={Google_G_Logo} alt="Google G Icon" />
-                Sign in with Google
+                Login with Google
               </button>
-              <p>or</p>
-              <p className="GuestModeLink" onClick={handleGuestModeSubmit}>
-                Continue as Guest
-              </p>
             </div>
           </form>
         </div>
-      )}
-      <ToastContainer autoClose={1000} limit={3} />
+      );
+    } else if (state === "mobileMenu") {
+      return <></>;
+    }
+  }
+
+  return (
+    <div id="LoginPageDiv">
+      <div id="HomeBanner">
+        <div id="LogoBanner" onClick={LinkToHero}>
+          <img src={Logo} alt="logo" />
+          <h1>Optimal Accessibility</h1>
+        </div>
+        <div id="OptionsBanner">
+          <Menu
+            fontSize="large"
+            className="MenuActivity"
+            onClick={() => {
+              if (!mobileMenu) {
+                setHomePageMode("mobileMenu");
+              } else {
+                setHomePageMode("hero");
+              }
+              setMobileMenu(!mobileMenu);
+            }}
+          />
+          <button
+            className="PopUpAccountMenuDivbtn ButtonActivity"
+            onClick={LinkToLogin}
+          >
+            Login
+          </button>
+          <p
+            id="GuestModeLink"
+            className="ButtonActivity"
+            onClick={handleGuestModeSubmit}
+          >
+            Continue as Guest
+          </p>
+        </div>
+      </div>
+      {mobileMenuHandler(mobileMenu)}
+      {HomePageModeHandler(homePageMode)}
+      <ToastContainer autoClose={4000} limit={3} />
     </div>
   );
 }
 
-export default Login;
+export default HomePage;
