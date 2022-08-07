@@ -169,7 +169,18 @@ function HomePage() {
     setConfirmPassword(event.target.value);
   }
 
-  function validateConfirmPassword(event) {
+  function validateEmail() {
+    let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if (!email.match(regex)) {
+      toast.error("invalid email format", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 4000,
+      });
+    }
+  }
+
+  function validateConfirmPassword() {
     if (password === "") {
       return;
     } else if (password === confirmPassword) {
@@ -226,6 +237,7 @@ function HomePage() {
               type="email"
               value={email}
               onChange={handleEmailChange}
+              onBlur={validateEmail}
             />
             <input
               placeholder="Password"
