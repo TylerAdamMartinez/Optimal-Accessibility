@@ -313,3 +313,23 @@
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
+
+.spinning_loader {
+  font-size: 32px;
+  animation: rotation 1s infinite linear;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinning_loader_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

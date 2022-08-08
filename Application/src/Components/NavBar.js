@@ -4,6 +4,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CloseRounded from "@mui/icons-material/CloseRounded";
 import HelpIcon from "@mui/icons-material/Help";
 import PictureAsPdf from "@mui/icons-material/PictureAsPdf";
+import LoopIcon from "@mui/icons-material/Loop";
 import Popup from "reactjs-popup";
 import OptimalAccessibilityLogo from "../Images/Optimal-Accessibility-Logo.png";
 import HelpPage from "./HelpPage";
@@ -78,13 +79,13 @@ If the color rating for your poster is low, the following list could help you fi
       setLoadingState("Uploading image...");
       toast.info("Uploading image...", {
         position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 4000,
+        autoClose: 2000,
       });
       poster = await ConvertImageToBase64(poster);
       setLoadingState("Calculating accessibility score...");
       toast.info("Calculating accessibility score...", {
         position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 4000,
+        autoClose: 2000,
       });
       let posterGrades = await getImageGrid(
         "data:image/png;base64," + poster
@@ -103,7 +104,7 @@ If the color rating for your poster is low, the following list could help you fi
 
     toast.info("sent", {
       position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: 4000,
+      autoClose: 2000,
     });
     let accessibilityScore = await getAccessibilityScore(FileData);
     setLoadingState("Sending Poster...");
@@ -131,6 +132,7 @@ If the color rating for your poster is low, the following list could help you fi
                   setLoadingState("Submit");
                   SetPosterName("");
                   SetPosterFileData("");
+                  setIsOpenAddPosterMenu(false);
 
                   let OverallAccessibilityRating = {
                     textRating: 0,
@@ -239,7 +241,7 @@ If the color rating for your poster is low, the following list could help you fi
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 2000,
     });
-    
+
     createPDF(GlobalPosters);
   }
 
@@ -425,15 +427,24 @@ If the color rating for your poster is low, the following list could help you fi
                             onChange={handleNameChange}
                             onBlur={validateName}
                           />
-                          <MagicDropZone
-                            className="DragAndDropSection"
-                            accept=".jpg, .png, .jpeg"
-                            onDrop={handleFileChange}
-                          >
-                            {FileData === ""
-                              ? "Drop your poster here"
-                              : "✅ Poster received!"}
-                          </MagicDropZone>
+                          {IsProcessing ? (
+                            <div className="spinning_loader_wrapper">
+                              <LoopIcon
+                                fontSize="large"
+                                className="spinning_loader"
+                              />
+                            </div>
+                          ) : (
+                            <MagicDropZone
+                              className="DragAndDropSection"
+                              accept=".jpg, .png, .jpeg"
+                              onDrop={handleFileChange}
+                            >
+                              {FileData === ""
+                                ? "Drop your poster here"
+                                : "✅ Poster received!"}
+                            </MagicDropZone>
+                          )}
                           <input
                             readOnly={IsProcessing}
                             type="submit"
