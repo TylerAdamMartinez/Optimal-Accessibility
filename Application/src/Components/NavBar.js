@@ -57,7 +57,9 @@ If the color rating for your poster is low, the following list could help you fi
     close_popup_menu_element.textContent = "";
   }
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenHelpPages, setIsOpenHelpPages] = useState(false);
+  const [isOpenAddPosterMenu, setIsOpenAddPosterMenu] = useState(false);
+  const [isOpenSettings, setIsOpenSettings] = useState(false);
   const [name, SetPosterName] = useState("");
   const [FileData, SetPosterFileData] = useState("");
   const [loadingState, setLoadingState] = useState("submit");
@@ -332,12 +334,32 @@ If the color rating for your poster is low, the following list could help you fi
     cookies.remove("refreshToken");
   }
 
-  function handlePopupOpen() {
-    setIsOpen(true);
+  function handlePopupHelpPagesOpen() {
+    setIsOpenHelpPages(true);
   }
 
-  function handlePopupClose() {
-    setIsOpen(false);
+  function handlePopupHelpPagesClose() {
+    setIsOpenHelpPages(false);
+  }
+
+  function handlePopupAddPosterMenuOpen() {
+    setIsOpenAddPosterMenu(true);
+  }
+
+  function handlePopupAddPosterMenuClose(event) {
+    setIsOpenAddPosterMenu(false);
+  }
+
+  function handlePopupSettingsOpen() {
+    setIsOpenSettings(true);
+  }
+
+  function handlePopupSettingsClose(event) {
+    setIsOpenSettings(false);
+  }
+
+  function stopPropagation(event) {
+    event.stopPropagation();
   }
 
   const navigate = useNavigate();
@@ -374,10 +396,12 @@ If the color rating for your poster is low, the following list could help you fi
                       <span className="tooltiptext">Help pages</span>
                     </div>
                   }
+                  open={isOpenHelpPages}
+                  onOpen={handlePopupHelpPagesOpen}
                 >
-                  <div className="PopUpBackground">
-                    <div id="PopUpHelpMenuDivSection">
-                      <ul id="PopUpHelpMenuDiv">
+                  <div className="PopUpBackground" >
+                    <div id="PopUpHelpMenuDivSection"onClick={handlePopupHelpPagesClose}>
+                      <ul id="PopUpHelpMenuDiv" onClick={stopPropagation}>
                         <Popup
                           trigger={<li id="PopUpHelpMenuDivTextField">Text</li>}
                         >
@@ -435,18 +459,18 @@ If the color rating for your poster is low, the following list could help you fi
                       <span className="tooltiptext">Add a new poster</span>
                     </div>
                   }
-                  open={isOpen}
-                  onOpen={handlePopupOpen}
+                  open={isOpenAddPosterMenu}
+                  onOpen={handlePopupAddPosterMenuOpen}
                 >
-                  <div className="PopUpBackground">
+                  <div className="PopUpBackground" onClick={handlePopupAddPosterMenuClose}>
                     <div id="PopUpAddMenuDivSection">
-                      <div id="PopUpAddMenuDiv">
+                      <div id="PopUpAddMenuDiv" onClick={stopPropagation}>
                         <div id="PopUpAddMenuHeaderDiv">
                           <h2>New Poster</h2>
                           <CloseRounded
                             id="PopUpAddMenuHeadeCloseBtn"
                             fontSize="large"
-                            onClick={handlePopupClose}
+                            onClick={handlePopupAddPosterMenuClose}
                           />
                         </div>
                         <form onSubmit={handleSubmit} id="PopUpAddMenuForm">
@@ -495,10 +519,12 @@ If the color rating for your poster is low, the following list could help you fi
                       </span>
                     </div>
                   }
+                  open={isOpenSettings}
+                  onOpen={handlePopupSettingsOpen}
                 >
-                  <div className="PopUpBackground">
+                  <div className="PopUpBackground" onClick={handlePopupSettingsClose}>
                     <div id="PopUpAccountsMenuDivSection">
-                      <ul id="PopUpAccountMenuDiv">
+                      <ul id="PopUpAccountMenuDiv" onClick={stopPropagation}>
                         <Link to="/settings">
                           <li
                             className="PopUpAccountMenuDivbtn"

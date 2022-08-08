@@ -350,6 +350,10 @@ function MyPoster(props) {
     setIsOpen(false);
   }
 
+  function stopPropagation(event) {
+    event.stopPropagation();
+  }
+
   return (
     <Popup
       trigger={
@@ -371,9 +375,9 @@ function MyPoster(props) {
       open={isOpen}
       onOpen={handlePopupOpen}
     >
-      <div className="PopUpBackground">
+      <div className="PopUpBackground" onClick={handlePopupClose}>
         <div id="PosterPopUpMenuContainerDiv">
-          <div className="PosterPopUpMenuDivContainer">
+          <div className="PosterPopUpMenuDivContainer" onClick={stopPropagation}>
             <CloseRounded
               id="closePosterPopupBtn"
               className="CloseIcon"
