@@ -7,7 +7,6 @@ import AccessibilityBarGraphData from "../../Components/AccessibilityBarGraphDat
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseRounded from "@mui/icons-material/CloseRounded";
-import Cookies from "universal-cookie";
 import ConvertImageToBase64 from "../../Utils/ConvertImageToBase64";
 import { getImageGrid } from "../../Utils/Structure";
 import { ToastContainer, toast } from "react-toastify";
@@ -92,9 +91,11 @@ function MyPoster(props) {
           colorRating: OverallAccessibilityRating.colorRating,
         })
           .then(() => {
+            setIsProcessing(false);
             props.editPosterCallback(Math.random());
           })
           .catch(() => {
+            setIsProcessing(false);
             toast.error("Failed to calculate new OverallAccessibilityRating", {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: 4000,
@@ -131,58 +132,55 @@ function MyPoster(props) {
       return;
     }
 
+    const posterNames = cached_posters.map((element) => {
+      return element.name;
+    });
+    const index = posterNames.indexOf(props.PosterName);
+
+    if (index > -1) {
+      cached_posters[index] = {
+        name: editPosterName,
+        data: cached_posters[index].data,
+        accessibilityScore: cached_posters[index].accessibilityScore,
+      };
+    } else {
+      toast.error("Failed to find poster", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 4000,
+      });
+      return;
+    }
+
     toast.info("Sent", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 4000,
     });
-    // fetch(
-    //   `https://localhost:7267/api/User/UpdatePosterNameByUserId/${userId}/ByPosterName/${props.PosterName}?newPosterName=${editPosterName}`,
-    //   {
-    //     method: "PUT",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       accept: "application/json",
-    //       Authorization: `bearer ${Jwt}`,
-    //     },
-    //   }
-    // )
-    //   .then((responce) => {
-    //     if (!responce.ok) {
-    //       errorFlag = true;
-    //       return responce.json();
-    //     } else {
-    //       toast.success("Poster name was successfully updated", {
-    //         position: toast.POSITION.BOTTOM_RIGHT,
-    //         autoClose: 4000,
-    //       });
-    //     }
-    //   })
-    //   .then((responseJSON) => {
-    //     if (errorFlag) {
-    //       throw new Error(`${responseJSON}`);
-    //     }
 
-    //     setIsProcessing(false);
-    //     props.editPosterCallback(editPosterName);
-    //   })
-    //   .catch((err) => {
-    //     toast.error(`${err}`, {
-    //       position: toast.POSITION.BOTTOM_RIGHT,
-    //       autoClose: 4000,
-    //     });
-    //     setIsProcessing(false);
-    //     console.error(err);
-    //   });
+    set(ref(db, "Posters/" + uid), {
+      posters: cached_posters,
+    })
+      .then(() => {
+        toast.success("Poster's name was successfully updated", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 4000,
+        });
+        setIsProcessing(false);
+        props.editPosterCallback(editPosterName);
+      })
+      .catch(() => {
+        setIsProcessing(false);
+        toast.error("Failed to update poster's name", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 4000,
+        });
+      });
   }
 
   async function UpdatePosterData(event) {
     setIsEditing(false);
     setIsProcessing(true);
     event.preventDefault();
-    let errorFlag = false;
-    let userId = localStorage.getItem("userId");
-    let cookies = new Cookies();
-    let Jwt = cookies.get("jwt");
+    let uid = localStorage.getItem("uid");
 
     async function getAccessibilityScore(poster) {
       poster = await ConvertImageToBase64(poster);
@@ -201,8 +199,6 @@ function MyPoster(props) {
       return posterGrades;
     }
 
-    let name = props.PosterName;
-    let title = Math.random().toString();
     toast.info("Sent", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 4000,
@@ -214,47 +210,81 @@ function MyPoster(props) {
     });
     ConvertImageToBase64(editPosterData)
       .then((data) => {
-        const addPosterBody = { name, title, data, accessibilityScore };
+        const newPosterBody = { data, accessibilityScore };
+        let cached_posters = JSON.parse(
+          sessionStorage.getItem("cached-posters")
+        );
+        const posterNames = cached_posters.map((element) => {
+          return element.name;
+        });
 
-        fetch(
-          `https://localhost:7267/api/User/UpdatePosterDataByUserId/${userId}/ByPosterName/${name}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              accept: "application/json",
-              Authorization: `bearer ${Jwt}`,
-            },
-            body: JSON.stringify(addPosterBody),
-          }
-        )
-          .then((responce) => {
-            if (!responce.ok) {
-              errorFlag = true;
-              return responce.json();
-            } else {
-              toast.success("Successfully updated poster image", {
-                position: toast.POSITION.BOTTOM_RIGHT,
-                autoClose: 4000,
-              });
-            }
-          })
-          .then((responseJSON) => {
-            if (errorFlag) {
-              throw new Error(`${responseJSON}`);
-            }
+        const index = posterNames.indexOf(props.PosterName);
 
-            setIsProcessing(false);
-            props.editPosterCallback(editPosterData);
-          })
-          .catch((err) => {
-            setIsProcessing(false);
-            toast.error(`${err}`, {
-              position: toast.POSITION.BOTTOM_RIGHT,
-              autoClose: 4000,
-            });
-            console.error(err);
+        console.log("old posters", cached_posters);
+        if (index > -1) {
+          cached_posters[index] = {
+            name: cached_posters[index].name,
+            data: newPosterBody.data,
+            accessibilityScore: newPosterBody.accessibilityScore,
+          };
+          console.log("new posters", cached_posters);
+        } else {
+          toast.error("Failed to find poster", {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 4000,
           });
+          return;
+        }
+
+        set(ref(db, "Posters/" + uid), {
+          posters: cached_posters,
+        }).then(() => {
+          toast.success("Successfully update poster's image!", {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 4000,
+          });
+          setIsProcessing(false);
+
+          let OverallAccessibilityRating = {
+            textRating: 0,
+            structureRating: 0,
+            colorRating: 0,
+          };
+
+          cached_posters.forEach((element) => {
+            OverallAccessibilityRating.textRating +=
+              element.accessibilityScore.textRating;
+            OverallAccessibilityRating.structureRating +=
+              element.accessibilityScore.structureRating;
+            OverallAccessibilityRating.colorRating +=
+              element.accessibilityScore.colorRating;
+          });
+
+          OverallAccessibilityRating.textRating =
+            OverallAccessibilityRating.textRating / cached_posters.length;
+          OverallAccessibilityRating.structureRating =
+            OverallAccessibilityRating.structureRating / cached_posters.length;
+          OverallAccessibilityRating.colorRating =
+            OverallAccessibilityRating.colorRating / cached_posters.length;
+
+          set(ref(db, "OverallAccessibilityRating/" + uid), {
+            textRating: OverallAccessibilityRating.textRating,
+            structureRating: OverallAccessibilityRating.structureRating,
+            colorRating: OverallAccessibilityRating.colorRating,
+          })
+            .then(() => {
+              props.editPosterCallback(Math.random());
+            })
+            .catch(() => {
+              toast.error(
+                "Failed to calculate new OverallAccessibilityRating",
+                {
+                  position: toast.POSITION.BOTTOM_RIGHT,
+                  autoClose: 4000,
+                }
+              );
+            });
+        });
       })
       .catch((err) => {
         setIsProcessing(false);
