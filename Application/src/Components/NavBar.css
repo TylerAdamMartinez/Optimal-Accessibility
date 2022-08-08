@@ -173,6 +173,20 @@
   outline: none;
 }
 
+#PopUpAddMenuHeaderDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#PopUpAddMenuHeaderDiv h2 {
+  flex-grow: 2;
+}
+
+#PopUpAddMenuHeaderDiv #PopUpAddMenuHeadeCloseBtn {
+  align-self: flex-start;
+}
+
 #PopUpAddMenuDiv h2 {
   font-size: 34px;
   margin-top: 0px;

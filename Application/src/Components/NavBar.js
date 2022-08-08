@@ -1,6 +1,7 @@
 import "./NavBar.css";
 import AddIcon from "@mui/icons-material/Add";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import CloseRounded from "@mui/icons-material/CloseRounded";
 import HelpIcon from "@mui/icons-material/Help";
 import PictureAsPdf from "@mui/icons-material/PictureAsPdf";
 import Popup from "reactjs-popup";
@@ -55,6 +56,7 @@ If the color rating for your poster is low, the following list could help you fi
     close_popup_menu_element.textContent = "";
   }
 
+  const [isOpen, setIsOpen] = useState(false);
   const [name, SetPosterName] = useState("");
   const [FileData, SetPosterFileData] = useState("");
   const [loadingState, setLoadingState] = useState("submit");
@@ -335,6 +337,14 @@ If the color rating for your poster is low, the following list could help you fi
     cookies.remove("refreshToken");
   }
 
+  function handlePopupOpen() {
+    setIsOpen(true);
+  }
+
+  function handlePopupClose() {
+    setIsOpen(false);
+  }
+
   const navigate = useNavigate();
 
   return (
@@ -420,11 +430,20 @@ If the color rating for your poster is low, the following list could help you fi
                       fontSize="large"
                     />
                   }
+                  open={isOpen}
+                  onOpen={handlePopupOpen}
                 >
                   <div className="PopUpBackground">
                     <div id="PopUpAddMenuDivSection">
                       <div id="PopUpAddMenuDiv">
-                        <h2>New Poster</h2>
+                        <div id="PopUpAddMenuHeaderDiv">
+                          <h2>New Poster</h2>
+                          <CloseRounded
+                            id="PopUpAddMenuHeadeCloseBtn"
+                            fontSize="large"
+                            onClick={handlePopupClose}
+                          />
+                        </div>
                         <form onSubmit={handleSubmit} id="PopUpAddMenuForm">
                           <input
                             readOnly={IsProcessing}

@@ -26,10 +26,6 @@ function MyPoster(props) {
   let [editPosterData, setEditPosterData] = useState(props.Data);
   const [IsProcessing, setIsProcessing] = useState(false);
 
-  function closeModel() {
-    setIsOpen(false);
-  }
-
   function DeletePoster() {
     setIsProcessing(true);
     let uid = localStorage.getItem("uid");
@@ -333,6 +329,14 @@ function MyPoster(props) {
 
   let BarGraphData = new AccessibilityBarGraphData(props.AccessibilityRating);
 
+  function handlePopupOpen() {
+    setIsOpen(true);
+  }
+
+  function handlePopupClose() {
+    setIsOpen(false);
+  }
+
   return (
     <Popup
       trigger={
@@ -352,7 +356,7 @@ function MyPoster(props) {
         </div>
       }
       open={isOpen}
-      onClose={closeModel}
+      onOpen={handlePopupOpen}
     >
       <div className="PopUpBackground">
         <div id="PosterPopUpMenuContainerDiv">
@@ -361,9 +365,7 @@ function MyPoster(props) {
               id="closePosterPopupBtn"
               className="CloseIcon"
               fontSize="large"
-              onClick={() => {
-                setIsOpen(!isOpen);
-              }}
+              onClick={handlePopupClose}
             />
             <div id="PosterPopUpMenuDiv">
               <div className="PosterImgAndNameContainer">
@@ -383,7 +385,7 @@ function MyPoster(props) {
                         readOnly={IsProcessing}
                         id="editPosterNameBtn"
                         type="submit"
-                        value={"Submit"}
+                        value={"Enter"}
                       />
                     </form>
                   ) : (
@@ -406,7 +408,7 @@ function MyPoster(props) {
                             readOnly={IsProcessing}
                             id="editPosterDataBtn"
                             type="submit"
-                            value={"Submit"}
+                            value={"Enter"}
                           />
                         </form>
                       </div>
