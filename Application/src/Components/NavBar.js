@@ -18,6 +18,7 @@ import MagicDropZone from "react-magic-dropzone";
 import "react-toastify/dist/ReactToastify.css";
 import { db } from "../FirebaseConfig";
 import { ref, child, get, set } from "firebase/database";
+import createPDF from "../Utils/CreatePDF";
 
 function NavBar(props) {
   let textHelpInfo = `The text rating is mainly based on the readability of the text. If the text cannot be easily read by the computer, then it probably can't be easily read by a person. The size of the text, as well as the color contrast with its surroundings, are the largest factors.
@@ -239,27 +240,21 @@ If the color rating for your poster is low, the following list could help you fi
   }
 
   function generatePDF() {
-    // let errorFlag = false;
-    // let userId = localStorage.getItem("uid");
-
-    // function formatDate() {
-    //   let d = new Date();
-    //   let month = (d.getMonth() + 1).toString();
-    //   let day = d.getDate().toString();
-    //   let year = d.getFullYear();
-    //   if (month.length < 2) {
-    //     month = "0" + month;
-    //   }
-    //   if (day.length < 2) {
-    //     day = "0" + day;
-    //   }
-    //   return [month, day, year].join("-");
-    // }
+    let userId = localStorage.getItem("uid");
 
     toast.info("Generating PDF Report...", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 2000,
     });
+
+    const dbRef = ref(db);
+    get(child(dbRef, `Posters/${userId}`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        let posters = snapshot.val().posters;
+        createPDF(posters);
+      }
+    });
+
     // fetch(`https://localhost:7267/api/User/GenerateReportByUserId/${userId}`, {
     //   method: "GET",
     //   headers: {
