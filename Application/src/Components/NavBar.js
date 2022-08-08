@@ -356,8 +356,7 @@ If the color rating for your poster is low, the following list could help you fi
 
   return (
     <div className="NavBar">
-      <span></span>
-      <Link to="/dashboard">
+      <Link to="/dashboard" id="LogoBoxLink">
         <div id="LogoBox">
           <img
             id="LogoImg"
