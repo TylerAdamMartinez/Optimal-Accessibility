@@ -377,7 +377,10 @@ function MyPoster(props) {
     >
       <div className="PopUpBackground" onClick={handlePopupClose}>
         <div id="PosterPopUpMenuContainerDiv">
-          <div className="PosterPopUpMenuDivContainer" onClick={stopPropagation}>
+          <div
+            className="PosterPopUpMenuDivContainer"
+            onClick={stopPropagation}
+          >
             <CloseRounded
               id="closePosterPopupBtn"
               className="CloseIcon"

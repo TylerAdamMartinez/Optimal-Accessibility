@@ -47,16 +47,6 @@ If the color rating for your poster is low, the following list could help you fi
 - Different colors that are in close proximity may have low contrast
 `;
 
-  function MouseOverExitSpotHandler() {
-    let close_popup_menu_element = document.querySelector("#ExitSpot p");
-    close_popup_menu_element.textContent = "close popup";
-  }
-
-  function MouseLeaveExitSpotHandler() {
-    let close_popup_menu_element = document.querySelector("#ExitSpot p");
-    close_popup_menu_element.textContent = "";
-  }
-
   const [isOpenHelpPages, setIsOpenHelpPages] = useState(false);
   const [isOpenAddPosterMenu, setIsOpenAddPosterMenu] = useState(false);
   const [isOpenSettings, setIsOpenSettings] = useState(false);
@@ -379,13 +369,6 @@ If the color rating for your poster is low, the following list could help you fi
       </Link>
       {!props.IsGuestMode ? (
         <>
-          <span
-            id="ExitSpot"
-            onMouseOver={MouseOverExitSpotHandler}
-            onMouseLeave={MouseLeaveExitSpotHandler}
-          >
-            <p></p>
-          </span>
           <div id="NavItemsBox">
             <ul>
               <li>
@@ -399,8 +382,11 @@ If the color rating for your poster is low, the following list could help you fi
                   open={isOpenHelpPages}
                   onOpen={handlePopupHelpPagesOpen}
                 >
-                  <div className="PopUpBackground" >
-                    <div id="PopUpHelpMenuDivSection"onClick={handlePopupHelpPagesClose}>
+                  <div className="PopUpBackground">
+                    <div
+                      id="PopUpHelpMenuDivSection"
+                      onClick={handlePopupHelpPagesClose}
+                    >
                       <ul id="PopUpHelpMenuDiv" onClick={stopPropagation}>
                         <Popup
                           trigger={<li id="PopUpHelpMenuDivTextField">Text</li>}
@@ -462,7 +448,10 @@ If the color rating for your poster is low, the following list could help you fi
                   open={isOpenAddPosterMenu}
                   onOpen={handlePopupAddPosterMenuOpen}
                 >
-                  <div className="PopUpBackground" onClick={handlePopupAddPosterMenuClose}>
+                  <div
+                    className="PopUpBackground"
+                    onClick={handlePopupAddPosterMenuClose}
+                  >
                     <div id="PopUpAddMenuDivSection">
                       <div id="PopUpAddMenuDiv" onClick={stopPropagation}>
                         <div id="PopUpAddMenuHeaderDiv">
@@ -522,7 +511,10 @@ If the color rating for your poster is low, the following list could help you fi
                   open={isOpenSettings}
                   onOpen={handlePopupSettingsOpen}
                 >
-                  <div className="PopUpBackground" onClick={handlePopupSettingsClose}>
+                  <div
+                    className="PopUpBackground"
+                    onClick={handlePopupSettingsClose}
+                  >
                     <div id="PopUpAccountsMenuDivSection">
                       <ul id="PopUpAccountMenuDiv" onClick={stopPropagation}>
                         <Link to="/settings">
