@@ -21,7 +21,7 @@
     "dotenv": "^16.0.1",
     "firebase": "^9.9.2",
     "image-js": "^0.34.1",
-    "pdfjs": "^2.4.7",
+    "jspdf": "^2.5.1",
     "react": "^18.2.0",
     "react-chartjs-2": "^4.2.0",
     "react-dom": "^18.2.0",
