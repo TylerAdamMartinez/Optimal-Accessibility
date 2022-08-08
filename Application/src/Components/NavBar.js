@@ -19,6 +19,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { db } from "../FirebaseConfig";
 import { ref, child, get, set } from "firebase/database";
 import createPDF from "../Utils/CreatePDF";
+import { GlobalPosters } from "../Pages/DashBoard/DashBoard";
 
 function NavBar(props) {
   let textHelpInfo = `The text rating is mainly based on the readability of the text. If the text cannot be easily read by the computer, then it probably can't be easily read by a person. The size of the text, as well as the color contrast with its surroundings, are the largest factors.
@@ -57,9 +58,8 @@ If the color rating for your poster is low, the following list could help you fi
 
   async function handleSubmit(event) {
     event.preventDefault();
-    let cached_posters = JSON.parse(sessionStorage.getItem("cached-posters"));
     const posterNameSet = new Set(
-      cached_posters.map((element) => {
+      GlobalPosters.map((element) => {
         return element.name;
       })
     );
@@ -129,6 +129,7 @@ If the color rating for your poster is low, the following list could help you fi
                   });
                   setIsProcessing(false);
                   setLoadingState("Submit");
+                  SetPosterName("");
                   SetPosterFileData("");
 
                   let OverallAccessibilityRating = {
@@ -185,7 +186,7 @@ If the color rating for your poster is low, the following list could help you fi
               set(ref(db, "Posters/" + uid), {
                 posters: [
                   {
-                    name: "string",
+                    name: "Example Poster",
                     data: "",
                     accessibilityScore: {
                       textRating: 5,
@@ -203,12 +204,14 @@ If the color rating for your poster is low, the following list could help you fi
                   setIsProcessing(false);
                   props.addPosterCallback(name);
                   setLoadingState("Submit");
+                  SetPosterName("");
                   SetPosterFileData("");
                 })
                 .catch(() => {
                   setIsProcessing(false);
                   setLoadingState("Submit");
                   SetPosterFileData("");
+                  SetPosterName("");
                   toast.error("Failed to initiate Posters", {
                     position: toast.POSITION.BOTTOM_RIGHT,
                     autoClose: 4000,
@@ -232,59 +235,12 @@ If the color rating for your poster is low, the following list could help you fi
   }
 
   function generatePDF() {
-    let userId = localStorage.getItem("uid");
-
     toast.info("Generating PDF Report...", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 2000,
     });
-
-    const dbRef = ref(db);
-    get(child(dbRef, `Posters/${userId}`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        let posters = snapshot.val().posters;
-        createPDF(posters);
-      }
-    });
-
-    // fetch(`https://localhost:7267/api/User/GenerateReportByUserId/${userId}`, {
-    //   method: "GET",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     accept: "application/pdf",
-    //     Authorization: `bearer ${Jwt}`,
-    //   },
-    // })
-    //   .then((response) => {
-    //     if (!response.ok) {
-    //       errorFlag = true;
-    //     }
-    //     return response.blob();
-    //   })
-    //   .then((blob) => {
-    //     if (errorFlag) {
-    //       throw new Error(`${blob}`);
-    //     }
-    //     toast.success("Successfully generated PDF report!", {
-    //       position: toast.POSITION.BOTTOM_RIGHT,
-    //       autoClose: 2000,
-    //     });
-    //     let today = formatDate();
-    //     var url = window.URL.createObjectURL(blob);
-    //     var a = document.createElement("a");
-    //     a.href = url;
-    //     a.download = `Optimal-Accessibility-Report-${userId}-${today}.pdf`;
-    //     document.body.appendChild(a);
-    //     a.click();
-    //     a.remove();
-    //   })
-    //   .catch((err) => {
-    //     toast.error(`${err}`, {
-    //       position: toast.POSITION.BOTTOM_RIGHT,
-    //       autoClose: 2000,
-    //     });
-    //     console.error(err);
-    //   });
+    
+    createPDF(GlobalPosters);
   }
 
   function handleNameChange(event) {
@@ -292,9 +248,8 @@ If the color rating for your poster is low, the following list could help you fi
   }
 
   function validateName() {
-    let posters = JSON.parse(sessionStorage.getItem("cached-posters"));
     const posterNameSet = new Set(
-      posters.map((element) => {
+      GlobalPosters.map((element) => {
         return element.name;
       })
     );
@@ -534,7 +489,7 @@ If the color rating for your poster is low, the following list could help you fi
               </li>
             </ul>
           </div>
-          <ToastContainer autoClose={1000} limit={3} />
+          <ToastContainer autoClose={1000} limit={1} />
         </>
       ) : (
         <div className="GuestModeTextContainer">
