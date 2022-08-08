@@ -12,6 +12,9 @@
 }
 
 #HomeBanner {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
   background: #f6f6f6;
   grid-row: 1 / 2;
   grid-column: 1 / 5;
