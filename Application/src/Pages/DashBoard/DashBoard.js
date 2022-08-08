@@ -8,6 +8,8 @@ import AccessibilityBarGraphData from "../../Components/AccessibilityBarGraphDat
 import { db } from "../../FirebaseConfig";
 import { ref, child, get, set } from "firebase/database";
 
+export var GlobalPosters;
+
 function DashBoard() {
   const [NewPosterAdded, SetNewPosterAdded] = useState("");
   const [OldPosterEdited, SetOldPosterEdited] = useState("");
@@ -37,12 +39,13 @@ function DashBoard() {
         if (snapshot.exists()) {
           let posters = snapshot.val().posters;
           SetPosters(posters);
-          sessionStorage.setItem("cached-posters", JSON.stringify(posters));
+          GlobalPosters = posters;
+          sessionStorage.setItem("cached-posters", true);
         } else {
           set(ref(db, "Posters/" + uid), {
             posters: [
               {
-                name: "string",
+                name: "example poster",
                 data: "",
                 accessibilityScore: {
                   textRating: 5,

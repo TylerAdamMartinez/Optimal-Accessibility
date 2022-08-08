@@ -2,7 +2,7 @@ import "./MyPoster.css";
 import DefaultImage from "../../Images/missing_image.jpg";
 import Popup from "reactjs-popup";
 import BarGraph from "../../Components/BarGraph";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import AccessibilityBarGraphData from "../../Components/AccessibilityBarGraphData";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
@@ -13,6 +13,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { db } from "../../FirebaseConfig";
 import { ref, set } from "firebase/database";
+import { GlobalPosters } from "../../Pages/DashBoard/DashBoard";
 
 function MyPoster(props) {
   const imgRef = useRef();
@@ -30,14 +31,13 @@ function MyPoster(props) {
     setIsProcessing(true);
     let uid = localStorage.getItem("uid");
 
-    let cached_posters = JSON.parse(sessionStorage.getItem("cached-posters"));
-    const posterNames = cached_posters.map((element) => {
+    const posterNames = GlobalPosters.map((element) => {
       return element.name;
     });
     const index = posterNames.indexOf(props.PosterName);
 
     if (index > -1) {
-      cached_posters.splice(index, 1);
+      GlobalPosters.splice(index, 1);
     } else {
       toast.error("Failed to find poster", {
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -52,7 +52,7 @@ function MyPoster(props) {
     });
 
     set(ref(db, "Posters/" + uid), {
-      posters: cached_posters,
+      posters: GlobalPosters,
     })
       .then(() => {
         toast.success("Successfully deleted poster", {
@@ -65,7 +65,7 @@ function MyPoster(props) {
           structureRating: 0,
           colorRating: 0,
         };
-        cached_posters.forEach((element) => {
+        GlobalPosters.forEach((element) => {
           OverallAccessibilityRating.textRating +=
             element.accessibilityScore.textRating;
           OverallAccessibilityRating.structureRating +=
@@ -75,11 +75,11 @@ function MyPoster(props) {
         });
 
         OverallAccessibilityRating.textRating =
-          OverallAccessibilityRating.textRating / cached_posters.length;
+          OverallAccessibilityRating.textRating / GlobalPosters.length;
         OverallAccessibilityRating.structureRating =
-          OverallAccessibilityRating.structureRating / cached_posters.length;
+          OverallAccessibilityRating.structureRating / GlobalPosters.length;
         OverallAccessibilityRating.colorRating =
-          OverallAccessibilityRating.colorRating / cached_posters.length;
+          OverallAccessibilityRating.colorRating / GlobalPosters.length;
 
         set(ref(db, "OverallAccessibilityRating/" + uid), {
           textRating: OverallAccessibilityRating.textRating,
@@ -113,9 +113,8 @@ function MyPoster(props) {
     event.preventDefault();
     let uid = localStorage.getItem("uid");
 
-    let cached_posters = JSON.parse(sessionStorage.getItem("cached-posters"));
     const posterNameSet = new Set(
-      cached_posters.map((element) => {
+      GlobalPosters.map((element) => {
         return element.name;
       })
     );
@@ -128,16 +127,16 @@ function MyPoster(props) {
       return;
     }
 
-    const posterNames = cached_posters.map((element) => {
+    const posterNames = GlobalPosters.map((element) => {
       return element.name;
     });
     const index = posterNames.indexOf(props.PosterName);
 
     if (index > -1) {
-      cached_posters[index] = {
+      GlobalPosters[index] = {
         name: editPosterName,
-        data: cached_posters[index].data,
-        accessibilityScore: cached_posters[index].accessibilityScore,
+        data: GlobalPosters[index].data,
+        accessibilityScore: GlobalPosters[index].accessibilityScore,
       };
     } else {
       toast.error("Failed to find poster", {
@@ -153,7 +152,7 @@ function MyPoster(props) {
     });
 
     set(ref(db, "Posters/" + uid), {
-      posters: cached_posters,
+      posters: GlobalPosters,
     })
       .then(() => {
         toast.success("Poster's name was successfully updated", {
@@ -205,26 +204,23 @@ function MyPoster(props) {
       autoClose: 4000,
     });
 
-    const convertImagePromise = ConvertImageToBase64(editPosterData)
+    ConvertImageToBase64(editPosterData)
       .then((data) => {
         const newPosterBody = { data, accessibilityScore };
-        let cached_posters = JSON.parse(
-          sessionStorage.getItem("cached-posters")
-        );
-        const posterNames = cached_posters.map((element) => {
+        const posterNames = GlobalPosters.map((element) => {
           return element.name;
         });
 
         const index = posterNames.indexOf(props.PosterName);
 
-        console.log("old posters", cached_posters);
+        console.log("old posters", GlobalPosters);
         if (index > -1) {
-          cached_posters[index] = {
-            name: cached_posters[index].name,
+          GlobalPosters[index] = {
+            name: GlobalPosters[index].name,
             data: newPosterBody.data,
             accessibilityScore: newPosterBody.accessibilityScore,
           };
-          console.log("new posters", cached_posters);
+          console.log("new posters", GlobalPosters);
         } else {
           toast.error("Failed to find poster", {
             position: toast.POSITION.BOTTOM_RIGHT,
@@ -234,7 +230,7 @@ function MyPoster(props) {
         }
 
         set(ref(db, "Posters/" + uid), {
-          posters: cached_posters,
+          posters: GlobalPosters,
         }).then(() => {
           toast.success("Successfully update poster's image!", {
             position: toast.POSITION.BOTTOM_RIGHT,
@@ -248,7 +244,7 @@ function MyPoster(props) {
             colorRating: 0,
           };
 
-          cached_posters.forEach((element) => {
+          GlobalPosters.forEach((element) => {
             OverallAccessibilityRating.textRating +=
               element.accessibilityScore.textRating;
             OverallAccessibilityRating.structureRating +=
@@ -258,11 +254,11 @@ function MyPoster(props) {
           });
 
           OverallAccessibilityRating.textRating =
-            OverallAccessibilityRating.textRating / cached_posters.length;
+            OverallAccessibilityRating.textRating / GlobalPosters.length;
           OverallAccessibilityRating.structureRating =
-            OverallAccessibilityRating.structureRating / cached_posters.length;
+            OverallAccessibilityRating.structureRating / GlobalPosters.length;
           OverallAccessibilityRating.colorRating =
-            OverallAccessibilityRating.colorRating / cached_posters.length;
+            OverallAccessibilityRating.colorRating / GlobalPosters.length;
 
           set(ref(db, "OverallAccessibilityRating/" + uid), {
             textRating: OverallAccessibilityRating.textRating,
@@ -291,18 +287,6 @@ function MyPoster(props) {
         });
         console.error(err);
       });
-
-    toast.promise(
-      convertImagePromise,
-      {
-        pending: "converting image ...",
-        success: "Success!",
-        error: "Failed!",
-      },
-      {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      }
-    );
   }
 
   function editPosterNameHandler(event) {
@@ -315,9 +299,9 @@ function MyPoster(props) {
   }
 
   function validateEditPosterName() {
-    let cached_posters = JSON.parse(sessionStorage.getItem("cached-posters"));
+    let GlobalPosters = JSON.parse(sessionStorage.getItem("cached-posters"));
     const posterNameSet = new Set(
-      cached_posters.map((element) => {
+      GlobalPosters.map((element) => {
         return element.name;
       })
     );
@@ -369,7 +353,7 @@ function MyPoster(props) {
           <div id="PosterNameSection">
             <h3>{props.PosterName}</h3>
           </div>
-          <ToastContainer autoClose={1000} limit={3} />
+          <ToastContainer autoClose={1000} limit={1} />
         </div>
       }
       open={isOpen}
