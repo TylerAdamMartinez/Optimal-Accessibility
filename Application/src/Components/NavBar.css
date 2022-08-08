@@ -10,11 +10,16 @@
   grid-template-rows: 1fr;
 }
 
+#LogoBoxLink {
+  grid-row: 1 / 2;
+  grid-column: 2 / 3;
+}
+
 #LogoBox {
   display: flex;
   background-color: #f6f6f6;
   left: 3rem;
-  height: fit-content;
+  height: 100%;
   align-self: center;
   align-items: center;
   gap: 1rem;
@@ -35,6 +40,16 @@
   color: #333;
 }
 
+@media screen and (max-width: 1150px) {
+  #LogoBox img {
+    height: 2em;
+  }
+
+  #LogoBox h1 {
+    font-size: 0.75em;
+  }
+}
+
 #ExitSpot {
   display: flex;
   justify-content: center;
@@ -49,6 +64,8 @@
 
 #NavItemsBox {
   align-self: center;
+  grid-row: 1 / 2;
+  grid-column: 4 / 5;
 }
 
 #NavItemsBox ul {
