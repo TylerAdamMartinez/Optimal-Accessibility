@@ -14,11 +14,45 @@ const createPDF = (posters) => {
     }
     return [month, day, year].join("-");
   };
+  let today = formatDate();
 
   const doc = new jsPDF();
-  doc.text("Test", 10, 10);
-  doc.save("test.pdf");
-  console.log(posters);
+  doc.setFont("helvetica", "bold");
+  // centered header
+  doc.text(
+    "Optimal Accessibility Poster Rating Report",
+    100,
+    20,
+    null,
+    null,
+    "center"
+  );
+  doc.setFont("helvetica", "normal");
+  // report date
+  doc.text(today, 100, 30, null, null, "center");
+  // loop through each poster and show data
+  let posY = 50;
+  posters.forEach((poster) => {
+    doc.text(`Poster name: "${poster.name}"`, 20, posY);
+    doc.text(
+      `- Text Rating: ${poster.accessibilityScore.textRating}`,
+      30,
+      posY + 10
+    );
+    doc.text(
+      `- Structure Rating: ${poster.accessibilityScore.structureRating}`,
+      30,
+      posY + 20
+    );
+    doc.text(
+      `- Color Rating: ${poster.accessibilityScore.colorRating}`,
+      30,
+      posY + 30
+    );
+    posY += 50;
+  });
+
+  doc.save(`Optimal-Accessibility-Report-${today}.pdf`);
 };
 
 export default createPDF;
