@@ -372,7 +372,14 @@ If the color rating for your poster is low, the following list could help you fi
           <div id="NavItemsBox">
             <ul>
               <li>
-                <Popup trigger={<HelpIcon fontSize="large" />}>
+                <Popup
+                  trigger={
+                    <div className="tooltip">
+                      <HelpIcon fontSize="large" />
+                      <span className="tooltiptext">Help pages</span>
+                    </div>
+                  }
+                >
                   <div className="PopUpBackground">
                     <div id="PopUpHelpMenuDivSection">
                       <ul id="PopUpHelpMenuDiv">
@@ -423,12 +430,15 @@ If the color rating for your poster is low, the following list could help you fi
               <li>
                 <Popup
                   trigger={
-                    <AddIcon
-                      onClick={() => {
-                        setLoadingState("Submit");
-                      }}
-                      fontSize="large"
-                    />
+                    <div className="tooltip">
+                      <AddIcon
+                        onClick={() => {
+                          setLoadingState("Submit");
+                        }}
+                        fontSize="large"
+                      />
+                      <span className="tooltiptext">Add a new poster</span>
+                    </div>
                   }
                   open={isOpen}
                   onOpen={handlePopupOpen}
@@ -475,10 +485,22 @@ If the color rating for your poster is low, the following list could help you fi
                 </Popup>
               </li>
               <li>
-                <PictureAsPdf onClick={generatePDF} fontSize="large" />
+                <div className="tooltip">
+                  <PictureAsPdf onClick={generatePDF} fontSize="large" />
+                  <span className="tooltiptext">Generate a new PDF report</span>
+                </div>
               </li>
               <li>
-                <Popup trigger={<AccountCircleIcon fontSize="large" />}>
+                <Popup
+                  trigger={
+                    <div className="tooltip">
+                      <AccountCircleIcon fontSize="large" />
+                      <span className="tooltiptext">
+                        Account Settings and Logout
+                      </span>
+                    </div>
+                  }
+                >
                   <div className="PopUpBackground">
                     <div id="PopUpAccountsMenuDivSection">
                       <ul id="PopUpAccountMenuDiv">
