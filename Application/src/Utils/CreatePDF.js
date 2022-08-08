@@ -33,6 +33,12 @@ const createPDF = (posters) => {
   // loop through each poster and show data
   let posY = 50;
   posters.forEach((poster) => {
+    // add another page if needed
+    if (posY > 250) {
+      doc.addPage();
+      posY = 20;
+    }
+
     doc.text(`Poster name: "${poster.name}"`, 20, posY);
     doc.text(
       `- Text Rating: ${poster.accessibilityScore.textRating}`,
