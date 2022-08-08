@@ -91,3 +91,21 @@ label {
 .SettingsPageEditItem select {
   flex: auto;
 }
+
+#SettingsPageHeaderDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#SettingsPageHeaderDiv h2 {
+  flex-grow: 2;
+}
+
+#SettingsPageHeaderDiv #SettingsPageHeaderReturnBtn {
+  align-self: flex-start;
+}
+
+#SettingsPageHeaderDiv #SettingsPageHeaderReturnBtn:hover {
+  color: #990100;
+}

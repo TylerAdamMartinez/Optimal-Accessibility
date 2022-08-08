@@ -19,12 +19,12 @@ function DashBoard() {
 
   const [Posters, SetPosters] = useState([
     {
-      name: "string",
+      name: "example poster",
       data: "",
       accessibilityScore: {
-        textRating: 55,
-        structureRating: 55,
-        colorRating: 55,
+        textRating: 5,
+        structureRating: 5,
+        colorRating: 5,
       },
     },
   ]);

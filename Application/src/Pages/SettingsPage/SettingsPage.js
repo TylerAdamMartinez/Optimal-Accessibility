@@ -1,95 +1,77 @@
 import NavBar from "../../Components/NavBar";
 import "./SettingsPage.css";
 import { useEffect, useState } from "react";
-import Cookies from "universal-cookie";
 import EditIcon from "@mui/icons-material/Edit";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import Cookies from "universal-cookie";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 function Settings() {
   const navigate = useNavigate();
   const [IsEditing, SetIsEditing] = useState(false);
-  const [euid, SetEUID] = useState("EUID");
   const [Email, SetEmail] = useState("Email");
   const [FirstName, SetFirstName] = useState("Frist Name");
   const [LastName, SetLastName] = useState("Last Name");
-  const [MiddleInitial, SetMiddleInitial] = useState("Middle Intitial");
   const [Birthday, SetBirthday] = useState("Birthday");
-  const [Gender, SetGender] = useState("Gender");
-  const [Classfication, SetClassfication] = useState("Classfication");
-
-  const GenderArray = ["Other", "Male", "Female"];
-  const ClassficationArray = [
-    "Unclassified",
-    "Freshman",
-    "Sophomore",
-    "Junior",
-    "Senior",
-  ];
 
   useEffect(() => {
     GetUserData();
   }, []);
 
   function GetUserData() {
-    let errorFlag = false;
-    let userId = localStorage.getItem("userId");
-    let cookies = new Cookies();
-    let Jwt = cookies.get("jwt");
+    let uid = localStorage.getItem("uid");
 
-    fetch(`https://localhost:7267/api/Auth/GetUserById/${userId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        accept: "application/json",
-        Authorization: `bearer ${Jwt}`,
-      },
-    })
-      .then((responce) => {
-        if (!responce.ok) {
-          errorFlag = true;
-        }
+    // fetch(`https://localhost:7267/api/Auth/GetUserById/${userId}`, {
+    //   method: "GET",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     accept: "application/json",
+    //     Authorization: `bearer ${Jwt}`,
+    //   },
+    // })
+    //   .then((responce) => {
+    //     if (!responce.ok) {
+    //       errorFlag = true;
+    //     }
 
-        return responce.json();
-      })
-      .then((responseJSON) => {
-        if (errorFlag) {
-          throw new Error(`${responseJSON}`);
-        }
+    //     return responce.json();
+    //   })
+    //   .then((responseJSON) => {
+    //     if (errorFlag) {
+    //       throw new Error(`${responseJSON}`);
+    //     }
 
-        SetEUID(responseJSON.euid);
-        SetEmail(
-          responseJSON.email === null ? "No Email Provided" : responseJSON.email
-        );
-        SetFirstName(responseJSON.firstName);
-        SetLastName(responseJSON.lastName);
-        SetMiddleInitial(
-          responseJSON.middleInitial === null
-            ? "No middle initial Provided"
-            : responseJSON.middleInitial
-        );
-        SetBirthday(
-          responseJSON.birthday === null ? "2022-06-13" : responseJSON.birthday
-        );
-        SetGender(GenderArray[responseJSON.gender]);
-        SetClassfication(ClassficationArray[responseJSON.classfication]);
-      })
-      .catch((err) => {
-        toast.error(`${err}`, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 2000,
-        });
-        console.error(err);
-      });
+    //     SetEUID(responseJSON.euid);
+    //     SetEmail(
+    //       responseJSON.email === null ? "No Email Provided" : responseJSON.email
+    //     );
+    //     SetFirstName(responseJSON.firstName);
+    //     SetLastName(responseJSON.lastName);
+    //     SetMiddleInitial(
+    //       responseJSON.middleInitial === null
+    //         ? "No middle initial Provided"
+    //         : responseJSON.middleInitial
+    //     );
+    //     SetBirthday(
+    //       responseJSON.birthday === null ? "2022-06-13" : responseJSON.birthday
+    //     );
+    //     SetGender(GenderArray[responseJSON.gender]);
+    //     SetClassfication(ClassficationArray[responseJSON.classfication]);
+    //   })
+    //   .catch((err) => {
+    //     toast.error(`${err}`, {
+    //       position: toast.POSITION.BOTTOM_RIGHT,
+    //       autoClose: 2000,
+    //     });
+    //     console.error(err);
+    //   });
   }
 
   function handleSubmit(event) {
     event.preventDefault();
-    let errorFlag = false;
     let userId = localStorage.getItem("userId");
-    let cookies = new Cookies();
-    let Jwt = cookies.get("jwt");
 
     toast.info("sent", {
       position: toast.POSITION.BOTTOM_RIGHT,
@@ -99,56 +81,46 @@ function Settings() {
     const firstName = FirstName;
     const lastName = LastName;
     const email = Email;
-    const middleInitial = MiddleInitial;
     const birthday = Birthday;
-    const gender = GenderArray.findIndex((element) => {
-      return element === Gender;
-    });
-    const classfication = ClassficationArray.findIndex((element) => {
-      return element === Classfication;
-    });
 
     const updateUserBody = {
       firstName,
       lastName,
       email,
-      middleInitial,
       birthday,
-      gender,
-      classfication,
     };
-    fetch(`https://localhost:7267/api/Auth/UpdateUserById/${userId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        accept: "application/json",
-        Authorization: `bearer ${Jwt}`,
-      },
-      body: JSON.stringify(updateUserBody),
-    })
-      .then((responce) => {
-        if (!responce.ok) {
-          errorFlag = true;
-        } else {
-          toast.success("User was successfully updated!", {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: 2000,
-          });
-        }
-        return responce.json();
-      })
-      .then((responseJSON) => {
-        if (errorFlag) {
-          throw new Error(`${responseJSON}`);
-        }
-      })
-      .catch((err) => {
-        toast.error(`${err}`, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 2000,
-        });
-        console.error(err);
-      });
+    // fetch(`https://localhost:7267/api/Auth/UpdateUserById/${userId}`, {
+    //   method: "PUT",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     accept: "application/json",
+    //     Authorization: `bearer ${Jwt}`,
+    //   },
+    //   body: JSON.stringify(updateUserBody),
+    // })
+    //   .then((responce) => {
+    //     if (!responce.ok) {
+    //       errorFlag = true;
+    //     } else {
+    //       toast.success("User was successfully updated!", {
+    //         position: toast.POSITION.BOTTOM_RIGHT,
+    //         autoClose: 2000,
+    //       });
+    //     }
+    //     return responce.json();
+    //   })
+    //   .then((responseJSON) => {
+    //     if (errorFlag) {
+    //       throw new Error(`${responseJSON}`);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     toast.error(`${err}`, {
+    //       position: toast.POSITION.BOTTOM_RIGHT,
+    //       autoClose: 2000,
+    //     });
+    //     console.error(err);
+    //   });
   }
 
   function handleEmailChange(event) {
@@ -162,20 +134,9 @@ function Settings() {
   function handleLastNameChange(event) {
     SetLastName(event.target.value);
   }
-  function handleMiddleInitialChange(event) {
-    SetMiddleInitial(event.target.value);
-  }
 
   function handleBirthdayChange(event) {
     SetBirthday(event.target.value);
-  }
-
-  function handleGenderChange(event) {
-    SetGender(event.target.value);
-  }
-
-  function handleClassficationChange(event) {
-    SetClassfication(event.target.value);
   }
 
   function resetSettingsHandler(event) {
@@ -189,52 +150,55 @@ function Settings() {
     );
 
     if (ans) {
-      let errorFlag = false;
-      let userId = localStorage.getItem("userId");
+      let uid = localStorage.getItem("userId");
       let cookies = new Cookies();
-      let Jwt = cookies.get("jwt");
 
       toast.info("sent", {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 2000,
       });
 
-      fetch(`https://localhost:7267/api/Auth/DeleteUserById/${userId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          Authorization: `bearer ${Jwt}`,
-        },
-      })
-        .then((responce) => {
-          if (!responce.ok) {
-            errorFlag = true;
-          } else {
-            toast.success("User was successfully deleted!", {
-              position: toast.POSITION.BOTTOM_RIGHT,
-              autoClose: 2000,
-            });
-          }
-          return responce.json();
-        })
-        .then((responseJSON) => {
-          if (errorFlag) {
-            throw new Error(`${responseJSON}`);
-          }
-        })
-        .catch((err) => {
-          toast.error(`${err}`, {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: 2000,
-          });
-          console.error(err);
-        });
+      // fetch(`https://localhost:7267/api/Auth/DeleteUserById/${userId}`, {
+      //   method: "DELETE",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     accept: "application/json",
+      //     Authorization: `bearer ${Jwt}`,
+      //   },
+      // })
+      //   .then((responce) => {
+      //     if (!responce.ok) {
+      //       errorFlag = true;
+      //     } else {
+      //       toast.success("User was successfully deleted!", {
+      //         position: toast.POSITION.BOTTOM_RIGHT,
+      //         autoClose: 2000,
+      //       });
+      //     }
+      //     return responce.json();
+      //   })
+      //   .then((responseJSON) => {
+      //     if (errorFlag) {
+      //       throw new Error(`${responseJSON}`);
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     toast.error(`${err}`, {
+      //       position: toast.POSITION.BOTTOM_RIGHT,
+      //       autoClose: 2000,
+      //     });
+      //     console.error(err);
+      //   });
 
       localStorage.clear();
-      cookies.remove("jwt");
+      sessionStorage.clear();
+      cookies.remove("refreshToken");
       navigate("/");
     }
+  }
+
+  function linkToDashboard() {
+    navigate("/dashboard");
   }
 
   return (
@@ -242,15 +206,19 @@ function Settings() {
       <NavBar />
       <div id="MyPostersDiv">
         <div id="InnerMyPostersDiv">
-          <h2>Settings</h2>
+          <div id="SettingsPageHeaderDiv">
+            <h2>Settings</h2>
+            <div className="tooltip">
+              <ArrowBackIcon
+                fontSize="large"
+                onClick={linkToDashboard}
+                id="SettingsPageHeaderReturnBtn"
+              />
+              <span className="tooltiptext">return back to dashboard</span>
+            </div>
+          </div>
           {IsEditing ? (
             <>
-              <div id="SettingsPageOnEditInfo">
-                <p>
-                  <span>EUID:</span>
-                  {euid}
-                </p>
-              </div>
               <form onSubmit={handleSubmit} id="SettingsPageForm">
                 <div className="SettingsPageEditItem">
                   <label>Email: </label>
@@ -280,15 +248,6 @@ function Settings() {
                   />
                 </div>
                 <div className="SettingsPageEditItem">
-                  <label>Middle Initial: </label>
-                  <input
-                    placeholder={MiddleInitial}
-                    type="text"
-                    value={MiddleInitial}
-                    onChange={handleMiddleInitialChange}
-                  />
-                </div>
-                <div className="SettingsPageEditItem">
                   <label>Birthday: </label>
                   <input
                     placeholder={Birthday}
@@ -296,38 +255,6 @@ function Settings() {
                     value={Birthday}
                     onChange={handleBirthdayChange}
                   />
-                </div>
-                <div className="SettingsPageEditItem">
-                  <label>Gender: </label>
-                  <select
-                    defaultValue={GenderArray.findIndex((element) => {
-                      return element === Gender;
-                    })}
-                    name="GenderSelector"
-                    id="GenderSelector"
-                    onChange={handleGenderChange}
-                  >
-                    <option value={0}>Other</option>
-                    <option value={1}>Male</option>
-                    <option value={2}>Female</option>
-                  </select>
-                </div>
-                <div className="SettingsPageEditItem">
-                  <label>Classfication: </label>
-                  <select
-                    defaultValue={ClassficationArray.findIndex((element) => {
-                      return element === Classfication;
-                    })}
-                    name="ClassficationSelector"
-                    id="ClassficationSelector"
-                    onChange={handleClassficationChange}
-                  >
-                    <option value={0}>Unclassified</option>
-                    <option value={1}>Freshman</option>
-                    <option value={2}>Sophomore</option>
-                    <option value={3}>Junior</option>
-                    <option value={4}>Senior</option>
-                  </select>
                 </div>
                 <div id="LoginBtnsSection">
                   <input
@@ -343,27 +270,29 @@ function Settings() {
                 </div>
               </form>
               <div className="IconContainer">
-                <EditIcon
-                  className="IconHover"
-                  fontSize="large"
-                  onClick={() => {
-                    SetIsEditing(!IsEditing);
-                  }}
-                />
-                <PersonRemoveIcon
-                  className="IconHover"
-                  fontSize="large"
-                  onClick={deleteProfileHandler}
-                />
+                <div className="tooltip">
+                  <EditIcon
+                    className="IconHover"
+                    fontSize="large"
+                    onClick={() => {
+                      SetIsEditing(!IsEditing);
+                    }}
+                  />
+                  <span className="tooltiptext">Close Editing</span>
+                </div>
+                <div className="tooltip">
+                  <PersonRemoveIcon
+                    className="IconHover"
+                    fontSize="large"
+                    onClick={deleteProfileHandler}
+                  />
+                  <span className="tooltiptext">Delete Account</span>
+                </div>
               </div>
             </>
           ) : (
             <>
               <div id="SettingsPageInfo">
-                <p>
-                  <span>EUID:</span>
-                  {euid}
-                </p>
                 <p>
                   <span>Email:</span>
                   {Email}
@@ -377,35 +306,29 @@ function Settings() {
                   {LastName}
                 </p>
                 <p>
-                  <span>Middle Initial:</span>
-                  {MiddleInitial}
-                </p>
-                <p>
                   <span>Birthday:</span>
                   {Birthday}
                 </p>
-                <p>
-                  <span>Gender:</span>
-                  {Gender}
-                </p>
-                <p>
-                  <span>Classification:</span>
-                  {Classfication}
-                </p>
               </div>
               <div className="IconContainer">
-                <EditIcon
-                  className="IconHover"
-                  fontSize="large"
-                  onClick={() => {
-                    SetIsEditing(!IsEditing);
-                  }}
-                />
-                <PersonRemoveIcon
-                  className="IconHover"
-                  fontSize="large"
-                  onClick={deleteProfileHandler}
-                />
+                <div className="tooltip">
+                  <EditIcon
+                    className="IconHover"
+                    fontSize="large"
+                    onClick={() => {
+                      SetIsEditing(!IsEditing);
+                    }}
+                  />
+                  <span className="tooltiptext">Edit profile</span>
+                </div>
+                <div className="tooltip">
+                  <PersonRemoveIcon
+                    className="IconHover"
+                    fontSize="large"
+                    onClick={deleteProfileHandler}
+                  />
+                  <span className="tooltiptext">Delete Account</span>
+                </div>
               </div>
             </>
           )}

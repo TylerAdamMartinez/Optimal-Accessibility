@@ -204,7 +204,8 @@ function MyPoster(props) {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 4000,
     });
-    ConvertImageToBase64(editPosterData)
+
+    const convertImagePromise = ConvertImageToBase64(editPosterData)
       .then((data) => {
         const newPosterBody = { data, accessibilityScore };
         let cached_posters = JSON.parse(
@@ -290,6 +291,18 @@ function MyPoster(props) {
         });
         console.error(err);
       });
+
+    toast.promise(
+      convertImagePromise,
+      {
+        pending: "converting image ...",
+        success: "Success!",
+        error: "Failed!",
+      },
+      {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      }
+    );
   }
 
   function editPosterNameHandler(event) {
@@ -432,18 +445,24 @@ function MyPoster(props) {
                   )}
                 </div>
                 <div className="PosterPopUpMenuIconContainer">
-                  <DeleteForeverIcon
-                    className="PopupIcon"
-                    fontSize="large"
-                    onClick={DeleteForeverHandler}
-                  />
-                  <EditIcon
-                    className="PopupIcon"
-                    fontSize="large"
-                    onClick={() => {
-                      setIsEditing(!isEditing);
-                    }}
-                  />
+                  <div className="tooltip">
+                    <DeleteForeverIcon
+                      className="PopupIcon"
+                      fontSize="large"
+                      onClick={DeleteForeverHandler}
+                    />
+                    <span className="tooltiptext">Delete poster</span>
+                  </div>
+                  <div className="tooltip">
+                    <EditIcon
+                      className="PopupIcon"
+                      fontSize="large"
+                      onClick={() => {
+                        setIsEditing(!isEditing);
+                      }}
+                    />
+                    <span className="tooltiptext">Edit poster</span>
+                  </div>
                 </div>
               </div>
               <div className="AccessibilityBarGraphScoreContainer">
