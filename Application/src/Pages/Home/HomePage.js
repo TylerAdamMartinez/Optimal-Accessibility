@@ -2,6 +2,7 @@ import "./HomePage.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Google_G_Logo from "../../Images/Google__G__Logo.svg";
+import GIF from "../../Images/HomePage_gif.gif";
 import Logo from "./../../Images/Optimal-Accessibility-Logo.png";
 import Cookies from "universal-cookie";
 import { ToastContainer, toast } from "react-toastify";
@@ -240,16 +241,23 @@ function HomePage() {
     if (state === "hero") {
       return (
         <div id="heroSection">
-          <h1>Optimal Accessibility</h1>
-          <p>
-            We believe that more than just the web should be accessible. Optimal
-            Accessibility is a <strong>free</strong>,{" "}
-            <strong>open-source </strong>
-            tool to check image/poster accessibility.
-          </p>
-          <button className="PopUpAccountMenuDivbtn" onClick={LinkToSignUp}>
-            Sign Up
-          </button>
+          <div id="heroSectionCall_to_Action">
+            <h1>Optimal Accessibility</h1>
+            <p>
+              We believe that more than just the web should be accessible.
+              Optimal Accessibility is a <strong>free</strong>,{" "}
+              <strong>open-source </strong>
+              tool to check image/poster accessibility.
+            </p>
+            <button className="PopUpAccountMenuDivbtn" onClick={LinkToSignUp}>
+              Sign Up
+            </button>
+          </div>
+          <img
+            id="heroSectionVisualFocus"
+            src={GIF}
+            alt={"product demostration"}
+          />
         </div>
       );
     } else if (state === "signup") {

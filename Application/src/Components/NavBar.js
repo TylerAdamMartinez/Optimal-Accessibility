@@ -313,20 +313,56 @@ If the color rating for your poster is low, the following list could help you fi
 
   return (
     <div className="NavBar">
-      <Link to="/dashboard" id="LogoBoxLink">
-        <div id="LogoBox">
-          <img
-            id="LogoImg"
-            alt="Optimal Accessibility Logo"
-            src={OptimalAccessibilityLogo}
-          />
-          <h1>Optimal Accessibility</h1>
-        </div>
-      </Link>
       {!props.IsGuestMode ? (
         <>
           <div id="NavItemsBox">
             <ul>
+              <li>
+                <Link to="/dashboard" id="LogoBoxLink">
+                  <div id="LogoBox">
+                    <img
+                      id="LogoImg"
+                      alt="Optimal Accessibility Logo"
+                      src={OptimalAccessibilityLogo}
+                    />
+                  </div>
+                </Link>
+              </li>
+              <li>
+                <Popup
+                  trigger={
+                    <div className="tooltip">
+                      <AccountCircleIcon fontSize="large" />
+                      <span className="tooltiptext">
+                        Account Settings and Logout
+                      </span>
+                    </div>
+                  }
+                  open={isOpenSettings}
+                  onOpen={handlePopupSettingsOpen}
+                >
+                  <div
+                    className="PopUpBackground"
+                    onClick={handlePopupSettingsClose}
+                  >
+                    <div id="PopUpAccountsMenuDivSection">
+                      <ul id="PopUpAccountMenuDiv" onClick={stopPropagation}>
+                        <Link to="/settings">
+                          <li
+                            className="PopUpAccountMenuDivbtn"
+                            style={{ marginBottom: 10 }}
+                          >
+                            Settings
+                          </li>
+                        </Link>
+                        <Link to="/" onClick={handleLogout}>
+                          <li className="PopUpAccountMenuDivbtn">Logout</li>
+                        </Link>
+                      </ul>
+                    </div>
+                  </div>
+                </Popup>
+              </li>
               <li>
                 <Popup
                   trigger={
@@ -462,41 +498,6 @@ If the color rating for your poster is low, the following list could help you fi
                   <PictureAsPdf onClick={generatePDF} fontSize="large" />
                   <span className="tooltiptext">Generate a new PDF report</span>
                 </div>
-              </li>
-              <li>
-                <Popup
-                  trigger={
-                    <div className="tooltip">
-                      <AccountCircleIcon fontSize="large" />
-                      <span className="tooltiptext">
-                        Account Settings and Logout
-                      </span>
-                    </div>
-                  }
-                  open={isOpenSettings}
-                  onOpen={handlePopupSettingsOpen}
-                >
-                  <div
-                    className="PopUpBackground"
-                    onClick={handlePopupSettingsClose}
-                  >
-                    <div id="PopUpAccountsMenuDivSection">
-                      <ul id="PopUpAccountMenuDiv" onClick={stopPropagation}>
-                        <Link to="/settings">
-                          <li
-                            className="PopUpAccountMenuDivbtn"
-                            style={{ marginBottom: 10 }}
-                          >
-                            Settings
-                          </li>
-                        </Link>
-                        <Link to="/" onClick={handleLogout}>
-                          <li className="PopUpAccountMenuDivbtn">Logout</li>
-                        </Link>
-                      </ul>
-                    </div>
-                  </div>
-                </Popup>
               </li>
             </ul>
           </div>

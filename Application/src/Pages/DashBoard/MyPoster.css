@@ -48,9 +48,9 @@
 
 .popup-content {
   position: fixed !important;
-  top: 3em !important;
   left: 0 !important;
   z-index: 900 !important;
+  top: 0 !important;
 }
 
 .my-popup-overlay {
