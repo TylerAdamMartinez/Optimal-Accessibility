@@ -7,35 +7,36 @@ import BarGraph from "../../Components/BarGraph";
 import AccessibilityBarGraphData from "../../Components/AccessibilityBarGraphData";
 import ConvertImageToBase64 from "../../Utils/ConvertImageToBase64";
 import { getImageGrid } from "../../Utils/Structure";
+import { accessibilityScore } from "../../oaTypes";
 
 const GuestDashboard = () => {
   const [filePreview, setFilePreview] = useState(null);
-  const [posterGrade, setPosterGrade] = useState({
+  const [posterGrade, setPosterGrade] = useState<accessibilityScore>({
     textRating: 1,
     structureRating: 1,
     colorRating: 1,
   });
-  const [totalCalculationTime, setTotalCalculationTime] = useState(0.0);
-  const [calculating, setCalculating] = useState(false);
+  const [totalCalculationTime, setTotalCalculationTime] = useState<number>(0.0);
+  const [calculating, setCalculating] = useState<boolean>(false);
 
-  async function getAccessibilityScore(poster) {
+  async function getAccessibilityScore(poster: Blob) {
     let startTime = Date.now();
     setCalculating(true);
     toast.info("Uploading image...", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 2000,
     });
-    poster = await ConvertImageToBase64(poster);
+    const posterBase64String = (await ConvertImageToBase64(poster));
     toast.info("Calculating accessibility score...", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 4000,
     });
-    await getImageGrid("data:image/png;base64," + poster)
+    await getImageGrid("data:image/png;base64," + posterBase64String)
       .then((score) => {
         setPosterGrade({
-          textRating: Math.round(score.textGrade),
-          structureRating: Math.round(score.structureGrade),
-          colorRating: Math.round(score.colorGrade),
+          textRating: Math.round(score.textRating),
+          structureRating: Math.round(score.structureRating),
+          colorRating: Math.round(score.colorRating),
         });
       })
       .catch(() => {
@@ -54,7 +55,11 @@ const GuestDashboard = () => {
     setTotalCalculationTime((endTime - startTime) / 1000.0);
   }
 
-  const fileDrop = (accepted, rejected, links) => {
+  const fileDrop = (
+    accepted: string | any[],
+    rejected: string | any[],
+    _links: any
+  ) => {
     if (accepted.length && !rejected.length) {
       setFilePreview(accepted[0].preview);
       getAccessibilityScore(accepted[0]);
@@ -68,9 +73,11 @@ const GuestDashboard = () => {
 
   let BarGraphData = new AccessibilityBarGraphData(posterGrade);
 
+  function handleAddPosterCallback(_arg0: string): void {}
+
   return (
     <div>
-      <NavBar IsGuestMode={true} />
+      <NavBar addPosterCallback={handleAddPosterCallback} IsGuestMode={true} />
       <div className="GuestUIContainer">
         <div className="PosterDragAndDrop">
           <h2 className="SectionHeading">Upload a Poster</h2>
@@ -89,7 +96,7 @@ const GuestDashboard = () => {
         <div className="PosterRatingContainer">
           <h2 className="SectionHeading">Accessibility Score</h2>
           <div style={{ width: "95%" }}>
-            <BarGraph chartData={BarGraphData.build} />
+            <BarGraph data={BarGraphData.build} />
             <p className="TimeToCalculate">
               {calculating
                 ? `Calculating score...`
@@ -98,7 +105,7 @@ const GuestDashboard = () => {
           </div>
         </div>
       </div>
-      <ToastContainer autoClose={1000} limit={3} />
+      <ToastContainer autoClose={1000} limit={1} />
     </div>
   );
 };

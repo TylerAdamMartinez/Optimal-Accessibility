@@ -8,6 +8,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { chartData } from "../oaTypes";
 
 ChartJs.register(
   CategoryScale,
@@ -21,11 +22,15 @@ ChartJs.register(
 ChartJs.defaults.scale.grid.drawOnChartArea = true;
 ChartJs.defaults.scales.category.max = 100;
 
-function BarGraph(props) {
+interface BarGraphProp {
+  data: chartData;
+}
+
+function BarGraph(props: BarGraphProp) {
   return (
     <>
       <Bar
-        data={props.chartData}
+        data={props.data}
         options={{
           plugins: {
             legend: {

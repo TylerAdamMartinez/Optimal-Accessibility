@@ -1,5 +1,5 @@
 import "./HomePage.css";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Google_G_Logo from "../../Images/Google__G__Logo.svg";
 import GIF from "../../Images/HomePage_gif.gif";
@@ -17,12 +17,12 @@ import {
   signInAnonymously,
 } from "firebase/auth";
 
-function HomePage() {
-  const [homePageMode, setHomePageMode] = useState("hero");
-  const [mobileMenu, setMobileMenu] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+function HomePage(): JSX.Element {
+  const [homePageMode, setHomePageMode] = useState<string>("hero");
+  const [mobileMenu, setMobileMenu] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,7 +35,7 @@ function HomePage() {
     }
   }, [navigate]);
 
-  function handleLoginSubmit(event) {
+  function handleLoginSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
     toast.info("Login Request Sent", {
       position: toast.POSITION.BOTTOM_RIGHT,
@@ -45,7 +45,7 @@ function HomePage() {
     signInWithEmailAndPassword(authentication, email, password)
       .then((response) => {
         let cookies = new Cookies();
-        cookies.set("refreshToken", response._tokenResponse.refreshToken, {
+        cookies.set("refreshToken", response.user.refreshToken, {
           sameSite: "strict",
           path: "/",
           expires: new Date(Date.now() + 12096e5),
@@ -66,7 +66,7 @@ function HomePage() {
       });
   }
 
-  function handleSignUpSubmit(event) {
+  function handleSignUpSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
     toast.info("Registeration Request Sent", {
       position: toast.POSITION.BOTTOM_RIGHT,
@@ -76,7 +76,7 @@ function HomePage() {
     createUserWithEmailAndPassword(authentication, email, password)
       .then((response) => {
         let cookies = new Cookies();
-        cookies.set("refreshToken", response._tokenResponse.refreshToken, {
+        cookies.set("refreshToken", response.user.refreshToken, {
           sameSite: "strict",
           path: "/",
           expires: new Date(Date.now() + 12096e5),
@@ -97,19 +97,21 @@ function HomePage() {
       });
   }
 
-  function handleLoginWithGoogleSubmit(event) {
+  function handleLoginWithGoogleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
     const authentication = getAuth();
     const provider = new GoogleAuthProvider();
     signInWithPopup(authentication, provider)
       .then((result) => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
-        let cookies = new Cookies();
-        cookies.set("refreshToken", credential.refreshToken, {
-          sameSite: "strict",
-          path: "/",
-          expires: new Date(Date.now() + 12096e5),
-        });
+        if (credential !== null) {
+          let cookies = new Cookies();
+          cookies.set("refreshToken", credential.providerId, {
+            sameSite: "strict",
+            path: "/",
+            expires: new Date(Date.now() + 12096e5),
+          });
+        }
         localStorage.setItem("uid", result.user.uid);
         toast.success("Successfully Signed In with Google!", {
           position: toast.POSITION.BOTTOM_RIGHT,
@@ -118,24 +120,20 @@ function HomePage() {
         navigate(`/dashboard`);
       })
       .catch((err) => {
-        const errorCode = err.code;
-        const errorMessage = err.message;
-        const email = err.customData.email;
-        const uid = err.customData.uid;
+        console.error(err.code);
+        console.error(err.message);
+        console.error(err.customData.email);
+        console.error(err.customData.uid);
         const credential = GoogleAuthProvider.credentialFromError(err);
+        console.error(credential?.providerId);
         toast.error(`${err.message}`, {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: 4000,
         });
-        console.error(errorMessage);
-        console.error(errorCode);
-        console.error(email);
-        console.error(credential.refreshToken);
-        console.error(uid);
       });
   }
 
-  function handleGuestModeSubmit(event) {
+  function handleGuestModeSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
     toast.info("Anonymous sign in request sent", {
       position: toast.POSITION.BOTTOM_RIGHT,
@@ -159,19 +157,33 @@ function HomePage() {
       });
   }
 
-  function handleEmailChange(event) {
+  function handleEmailChange(event: {
+    target: { value: SetStateAction<string> };
+  }) {
     setEmail(event.target.value);
   }
 
-  function handlePasswordChange(event) {
+  function handlePasswordChange(event: {
+    target: { value: SetStateAction<string> };
+  }) {
     setPassword(event.target.value);
   }
 
-  function handleConfirmPasswordChange(event) {
+  function handleConfirmPasswordChange(event: {
+    target: { value: SetStateAction<string> };
+  }) {
     setConfirmPassword(event.target.value);
   }
 
   function validateEmail() {
+    function onlySpaces(str: string): boolean {
+      return str.trim().length === 0;
+    }
+
+    if (onlySpaces(email)) {
+      return;
+    }
+
     let regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 
     if (!email.match(regex)) {
@@ -183,7 +195,11 @@ function HomePage() {
   }
 
   function validateConfirmPassword() {
-    if (password === "") {
+    function onlySpaces(str: string): boolean {
+      return str.trim().length === 0;
+    }
+
+    if (onlySpaces(password)) {
       return;
     } else if (password === confirmPassword) {
       toast.info("passwords match", {
@@ -198,23 +214,23 @@ function HomePage() {
     }
   }
 
-  function LinkToHero(event) {
+  function LinkToHero(event: { preventDefault: () => void }) {
     event.preventDefault();
     setMobileMenu(false);
     setHomePageMode("hero");
   }
 
-  function LinkToSignUp(event) {
+  function LinkToSignUp(event: { preventDefault: () => void }) {
     event.preventDefault();
     setHomePageMode("signup");
   }
 
-  function LinkToLogin(event) {
+  function LinkToLogin(event: { preventDefault: () => void }) {
     event.preventDefault();
     setHomePageMode("login");
   }
 
-  function mobileMenuHandler(state) {
+  function mobileMenuHandler(state: boolean) {
     if (state) {
       return (
         <div id="mobileMenuDiv">
@@ -237,17 +253,16 @@ function HomePage() {
     }
   }
 
-  function HomePageModeHandler(state) {
+  function HomePageModeHandler(state: string): JSX.Element {
     if (state === "hero") {
       return (
         <div id="heroSection">
           <div id="heroSectionCall_to_Action">
             <h1>Optimal Accessibility</h1>
             <p>
-              We believe that more than just the web should be accessible.
-              Optimal Accessibility is a <strong>free</strong>,{" "}
-              <strong>open-source </strong>
-              tool to check image/poster accessibility.
+              We believe that the web should be accessible. Optimal
+              Accessibility is a <strong>free</strong> and{" "}
+              <strong>open-source</strong> image accessibility tool.
             </p>
             <button className="PopUpAccountMenuDivbtn" onClick={LinkToSignUp}>
               Sign Up
@@ -344,6 +359,8 @@ function HomePage() {
         </div>
       );
     } else if (state === "mobileMenu") {
+      return <></>;
+    } else {
       return <></>;
     }
   }

@@ -1,74 +1,76 @@
 import { prominent } from "color.js";
 import { colorContrastRatioCalculator } from "@mdhnpm/color-contrast-ratio-calculator";
+import { ColorContrastRatioCalculatorInput } from "@mdhnpm/color-contrast-ratio-calculator/dist/colorContrastRatioCalculator";
+import { oaImageType } from "../oaTypes";
 
-export async function getColors(image) {
-  let cgArr = [];
+export async function getColors(image: oaImageType) {
+  let cgArr: Array<number> = [];
   await prominent(image.topLeft.img, { amount: 3, format: "hex" }).then(
     (color) => {
-      image.topLeft.color = color;
+      image.topLeft.color = color as ColorContrastRatioCalculatorInput[];
       cgArr[0] = getScore(image.topLeft.color);
     }
   );
 
   await prominent(image.topMiddle.img, { amount: 3, format: "hex" }).then(
     (color) => {
-      image.topMiddle.color = color;
+      image.topMiddle.color = color as ColorContrastRatioCalculatorInput[];
       cgArr[1] = getScore(image.topMiddle.color);
     }
   );
 
   await prominent(image.topRight.img, { amount: 3, format: "hex" }).then(
     (color) => {
-      image.topRight.color = color;
+      image.topRight.color = color as ColorContrastRatioCalculatorInput[];
       cgArr[2] = getScore(image.topRight.color);
     }
   );
 
   await prominent(image.middleLeft.img, { amount: 3, format: "hex" }).then(
     (color) => {
-      image.middleLeft.color = color;
+      image.middleLeft.color = color as ColorContrastRatioCalculatorInput[];
       cgArr[3] = getScore(image.middleLeft.color);
     }
   );
 
   await prominent(image.middle.img, { amount: 3, format: "hex" }).then(
     (color) => {
-      image.middle.color = color;
+      image.middle.color = color as ColorContrastRatioCalculatorInput[];
       cgArr[4] = getScore(image.middle.color);
     }
   );
 
   await prominent(image.middleRight.img, { amount: 3, format: "hex" }).then(
     (color) => {
-      image.middleRight.color = color;
+      image.middleRight.color = color as ColorContrastRatioCalculatorInput[];
       cgArr[5] = getScore(image.middleRight.color);
     }
   );
 
   await prominent(image.bottomLeft.img, { amount: 3, format: "hex" }).then(
     (color) => {
-      image.bottomLeft.color = color;
+      image.bottomLeft.color = color as ColorContrastRatioCalculatorInput[];
       cgArr[6] = getScore(image.bottomLeft.color);
     }
   );
 
   await prominent(image.bottomMiddle.img, { amount: 3, format: "hex" }).then(
     (color) => {
-      image.bottomMiddle.color = color;
+      image.bottomMiddle.color = color as ColorContrastRatioCalculatorInput[];
       cgArr[7] = getScore(image.bottomMiddle.color);
     }
   );
 
   await prominent(image.bottomRight.img, { amount: 3, format: "hex" }).then(
     (color) => {
-      image.bottomRight.color = color;
+      image.bottomRight.color = color as ColorContrastRatioCalculatorInput[];
       cgArr[8] = getScore(image.bottomRight.color);
     }
   );
 
   let colorGrade = 0;
   let counter = 0;
-  cgArr.forEach((grade) => {
+  cgArr.forEach((grade: number) => {
     if (grade === 3) {
       counter++;
     }
@@ -98,8 +100,8 @@ export async function getColors(image) {
   return obj;
 }
 
-const getScore = (color) => {
-  let scores = [];
+const getScore = (color: Array<ColorContrastRatioCalculatorInput>): number => {
+  let scores: Array<number> = [];
   let high = 0;
   if (color.length === 3) {
     scores[0] = colorContrastRatioCalculator(color[0], color[1]);
@@ -110,7 +112,7 @@ const getScore = (color) => {
     return 3;
   }
 
-  scores.forEach((score) => {
+  scores.forEach((score: number) => {
     if (score > high) high = score;
   });
 

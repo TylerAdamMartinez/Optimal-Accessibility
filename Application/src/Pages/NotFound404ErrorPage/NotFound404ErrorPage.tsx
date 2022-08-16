@@ -1,5 +1,5 @@
 import "./NotFound404ErrorPage.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { To, useLocation, useNavigate } from "react-router-dom";
 import Logo from "./../../Images/Optimal-Accessibility-Logo.png";
 import { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
@@ -8,14 +8,14 @@ function NoMatch() {
   let location = useLocation();
   let navigate = useNavigate();
 
-  const [ButtonName, SetButtonName] = useState("Return Home");
-  const [ReturnPath, SetReturnPath] = useState("/");
+  const [ButtonName, SetButtonName] = useState<string>("Return Home");
+  const [ReturnPath, SetReturnPath] = useState<To>("/");
 
   useEffect(() => {
     let cookies = new Cookies();
     if (cookies.get("jwt") != null && localStorage.getItem("userId") != null) {
       SetButtonName("Go Back");
-      SetReturnPath(-1);
+      SetReturnPath("-1");
     }
   }, [navigate]);
 

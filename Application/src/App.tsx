@@ -1,12 +1,12 @@
 import "./App.css";
 import HomePage from "./Pages/Home/HomePage";
-import DashBoard from "./Pages/DashBoard/DashBoard.js";
+import DashBoard from "./Pages/DashBoard/DashBoard";
 import NotFound404ErrorPage from "./Pages/NotFound404ErrorPage/NotFound404ErrorPage";
 import PrivateRoutes from "./Components/PrivateRoutes";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SettingsPage from "./Pages/SettingsPage/SettingsPage";
 import GuestDashboard from "./Pages/DashBoard/GuestDashboard";
-import { analytics } from "./FirebaseConfig";
+// import { analytics } from "./FirebaseConfig";
 
 function App() {
   return (

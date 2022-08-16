@@ -8,7 +8,7 @@ import LoopIcon from "@mui/icons-material/Loop";
 import Popup from "reactjs-popup";
 import OptimalAccessibilityLogo from "../Images/Optimal-Accessibility-Logo.png";
 import HelpPage from "./HelpPage";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { getImageGrid } from "../Utils/Structure";
@@ -21,8 +21,12 @@ import { db } from "../FirebaseConfig";
 import { ref, child, get, set } from "firebase/database";
 import createPDF from "../Utils/CreatePDF";
 import { GlobalPosters } from "../Pages/DashBoard/DashBoard";
+import { accessibilityScore } from "../oaTypes";
 
-function NavBar(props) {
+function NavBar(props: {
+  addPosterCallback: (arg0: string) => void;
+  IsGuestMode: boolean;
+}) {
   let textHelpInfo = `The text rating is mainly based on the readability of the text. If the text cannot be easily read by the computer, then it probably can't be easily read by a person. The size of the text, as well as the color contrast with its surroundings, are the largest factors.
 
 If the text rating for your poster is low, the following list could help you find some issues:
@@ -49,18 +53,19 @@ If the color rating for your poster is low, the following list could help you fi
 - Different colors that are in close proximity may have low contrast
 `;
 
-  const [isOpenHelpPages, setIsOpenHelpPages] = useState(false);
-  const [isOpenAddPosterMenu, setIsOpenAddPosterMenu] = useState(false);
-  const [isOpenSettings, setIsOpenSettings] = useState(false);
-  const [name, SetPosterName] = useState("");
-  const [FileData, SetPosterFileData] = useState("");
-  const [loadingState, setLoadingState] = useState("submit");
-  const [IsProcessing, setIsProcessing] = useState(false);
+  const [isOpenHelpPages, setIsOpenHelpPages] = useState<boolean>(false);
+  const [isOpenAddPosterMenu, setIsOpenAddPosterMenu] =
+    useState<boolean>(false);
+  const [isOpenSettings, setIsOpenSettings] = useState<boolean>(false);
+  const [name, SetPosterName] = useState<string>("");
+  const [FileData, SetPosterFileData] = useState<string>("");
+  const [loadingState, setLoadingState] = useState<string>("submit");
+  const [IsProcessing, setIsProcessing] = useState<boolean>(false);
 
-  async function handleSubmit(event) {
+  async function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
     const posterNameSet = new Set(
-      GlobalPosters.map((element) => {
+      GlobalPosters.map((element: { name: any }) => {
         return element.name;
       })
     );
@@ -75,25 +80,25 @@ If the color rating for your poster is low, the following list could help you fi
 
     setIsProcessing(true);
 
-    async function getAccessibilityScore(poster) {
+    async function getAccessibilityScore(poster: Blob) {
       setLoadingState("Uploading image...");
       toast.info("Uploading image...", {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 2000,
       });
-      poster = await ConvertImageToBase64(poster);
+      let posterBase64String = await ConvertImageToBase64(poster);
       setLoadingState("Calculating accessibility score...");
       toast.info("Calculating accessibility score...", {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 2000,
       });
       let posterGrades = await getImageGrid(
-        "data:image/png;base64," + poster
+        "data:image/png;base64," + posterBase64String?.toString()
       ).then((score) => {
-        let posterGrade = {
-          textRating: Math.round(score.textGrade),
-          structureRating: Math.round(score.structureGrade),
-          colorRating: Math.round(score.colorGrade),
+        let posterGrade: accessibilityScore = {
+          textRating: Math.round(score.textRating),
+          structureRating: Math.round(score.structureRating),
+          colorRating: Math.round(score.colorRating),
         };
 
         return posterGrade;
@@ -106,10 +111,10 @@ If the color rating for your poster is low, the following list could help you fi
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 2000,
     });
-    let accessibilityScore = await getAccessibilityScore(FileData);
+    let accessibilityScore = await getAccessibilityScore(FileData as unknown as Blob);
     setLoadingState("Sending Poster...");
-    ConvertImageToBase64(FileData)
-      .then((data) => {
+    ConvertImageToBase64(FileData as unknown as Blob)
+      .then((data: any) => {
         const addPosterBody = { name, data, accessibilityScore };
         let uid = localStorage.getItem("uid");
 
@@ -139,14 +144,22 @@ If the color rating for your poster is low, the following list could help you fi
                     structureRating: 0,
                     colorRating: 0,
                   };
-                  posterSanpConcat.forEach((element) => {
-                    OverallAccessibilityRating.textRating +=
-                      element.accessibilityScore.textRating;
-                    OverallAccessibilityRating.structureRating +=
-                      element.accessibilityScore.structureRating;
-                    OverallAccessibilityRating.colorRating +=
-                      element.accessibilityScore.colorRating;
-                  });
+                  posterSanpConcat.forEach(
+                    (element: {
+                      accessibilityScore: {
+                        textRating: number;
+                        structureRating: number;
+                        colorRating: number;
+                      };
+                    }) => {
+                      OverallAccessibilityRating.textRating +=
+                        element.accessibilityScore.textRating;
+                      OverallAccessibilityRating.structureRating +=
+                        element.accessibilityScore.structureRating;
+                      OverallAccessibilityRating.colorRating +=
+                        element.accessibilityScore.colorRating;
+                    }
+                  );
 
                   OverallAccessibilityRating.textRating =
                     OverallAccessibilityRating.textRating /
@@ -228,7 +241,7 @@ If the color rating for your poster is low, the following list could help you fi
             console.error(error);
           });
       })
-      .catch((err) => {
+      .catch((err: any) => {
         setIsProcessing(false);
         setLoadingState("Submit");
         SetPosterFileData("");
@@ -245,13 +258,15 @@ If the color rating for your poster is low, the following list could help you fi
     createPDF(GlobalPosters);
   }
 
-  function handleNameChange(event) {
+  function handleNameChange(event: {
+    target: { value: SetStateAction<string> };
+  }) {
     SetPosterName(event.target.value);
   }
 
   function validateName() {
     const posterNameSet = new Set(
-      GlobalPosters.map((element) => {
+      GlobalPosters.map((element: { name: any }) => {
         return element.name;
       })
     );
@@ -264,7 +279,11 @@ If the color rating for your poster is low, the following list could help you fi
     }
   }
 
-  const handleFileChange = (accepted, rejected, links) => {
+  const handleFileChange = (
+    accepted: string | any[],
+    rejected: string | any[],
+    _links: any
+  ) => {
     if (accepted.length && !rejected.length) {
       SetPosterFileData(accepted[0]);
     } else {
@@ -293,7 +312,7 @@ If the color rating for your poster is low, the following list could help you fi
     setIsOpenAddPosterMenu(true);
   }
 
-  function handlePopupAddPosterMenuClose(event) {
+  function handlePopupAddPosterMenuClose() {
     setIsOpenAddPosterMenu(false);
   }
 
@@ -301,11 +320,11 @@ If the color rating for your poster is low, the following list could help you fi
     setIsOpenSettings(true);
   }
 
-  function handlePopupSettingsClose(event) {
+  function handlePopupSettingsClose() {
     setIsOpenSettings(false);
   }
 
-  function stopPropagation(event) {
+  function stopPropagation(event: { stopPropagation: () => void }) {
     event.stopPropagation();
   }
 

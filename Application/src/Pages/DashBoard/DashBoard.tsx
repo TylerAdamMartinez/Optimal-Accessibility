@@ -1,35 +1,27 @@
 import "./../../App.css";
-import NavBar from "../../Components/NavBar.js";
+import NavBar from "../../Components/NavBar";
 import MyPostersSection from "./MyPostersSection";
 import OverallAccessibilitySection from "./OverallAccessibilitySection";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import AccessibilityBarGraphData from "../../Components/AccessibilityBarGraphData";
 import { db } from "../../FirebaseConfig";
 import { ref, child, get, set } from "firebase/database";
+import { poster, chartData, accessibilityScore } from "../../oaTypes";
 
-export var GlobalPosters;
+export var GlobalPosters: Array<poster>;
 
 function DashBoard() {
-  const [NewPosterAdded, SetNewPosterAdded] = useState("");
-  const [OldPosterEdited, SetOldPosterEdited] = useState("");
-  const [OverallAccessibilityRating, SetOverallAccessibilityRating] = useState({
-    textRating: 0,
-    structureRating: 0,
-    colorRating: 0,
-  });
+  const [NewPosterAdded, SetNewPosterAdded] = useState<string>("");
+  const [OldPosterEdited, SetOldPosterEdited] = useState<string>("");
+  const [OverallAccessibilityRating, SetOverallAccessibilityRating] =
+    useState<accessibilityScore>({
+      textRating: 0,
+      structureRating: 0,
+      colorRating: 0,
+    });
 
-  const [Posters, SetPosters] = useState([
-    {
-      name: "example poster",
-      data: "",
-      accessibilityScore: {
-        textRating: 5,
-        structureRating: 5,
-        colorRating: 5,
-      },
-    },
-  ]);
+  const [Posters, SetPosters] = useState<Array<poster> | null>(null);
 
   useEffect(() => {
     let uid = localStorage.getItem("uid");
@@ -40,20 +32,10 @@ function DashBoard() {
           let posters = snapshot.val().posters;
           SetPosters(posters);
           GlobalPosters = posters;
-          sessionStorage.setItem("cached-posters", true);
+          sessionStorage.setItem("cached-posters", "true");
         } else {
           set(ref(db, "Posters/" + uid), {
-            posters: [
-              {
-                name: "example poster",
-                data: "",
-                accessibilityScore: {
-                  textRating: 5,
-                  structureRating: 5,
-                  colorRating: 5,
-                },
-              },
-            ],
+            posters: [],
           })
             .then(() => {
               toast.info("Successfully initiated Posters", {
@@ -106,28 +88,30 @@ function DashBoard() {
       });
   }, [NewPosterAdded, OldPosterEdited]);
 
-  function addPosterCallbackHandler(name) {
+  function addPosterCallbackHandler(name: SetStateAction<string>) {
     SetNewPosterAdded(name);
   }
 
-  function editPosterCallbackHandler(title) {
+  function editPosterCallbackHandler(title: SetStateAction<string>) {
     SetOldPosterEdited(title);
   }
 
-  let OverallAccessibilityBarGraphData = new AccessibilityBarGraphData(
-    OverallAccessibilityRating
-  );
+  let OverallAccessibilityBarGraphData: AccessibilityBarGraphData =
+    new AccessibilityBarGraphData(OverallAccessibilityRating);
+
+  let chartData: chartData = OverallAccessibilityBarGraphData.build;
 
   return (
     <div className="App">
-      <NavBar addPosterCallback={addPosterCallbackHandler} />
+      <NavBar
+        addPosterCallback={addPosterCallbackHandler}
+        IsGuestMode={false}
+      />
       <MyPostersSection
         myPosters={Posters}
         editPosterCallback={editPosterCallbackHandler}
       />
-      <OverallAccessibilitySection
-        chartData={OverallAccessibilityBarGraphData.build}
-      />
+      <OverallAccessibilitySection data={chartData} />
     </div>
   );
 }

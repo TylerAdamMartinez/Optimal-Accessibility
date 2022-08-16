@@ -1,12 +1,17 @@
 import "./OverallAccessibilitySection.css";
 import BarGraph from "../../Components/BarGraph";
+import { chartData } from "../../oaTypes";
 
-function OverallAccessibilitySection(props) {
+interface OverallAccessibilitySectionProp {
+  data: chartData;
+}
+
+function OverallAccessibilitySection(props: OverallAccessibilitySectionProp) {
   return (
     <div id="OverallAccessibilityDiv">
       <div id="InnerOverallAccessibilityDiv">
         <h2>My Average Accessibility Rating</h2>
-        <BarGraph chartData={props.chartData} />
+        <BarGraph data={props.data} />
       </div>
     </div>
   );

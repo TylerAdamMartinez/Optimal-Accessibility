@@ -1,6 +1,7 @@
 import { jsPDF } from "jspdf";
+import { poster } from "../oaTypes";
 
-const createPDF = (posters) => {
+const createPDF = (posters: Array<poster>) => {
   const formatDate = () => {
     let d = new Date();
     let month = (d.getMonth() + 1).toString();
@@ -23,13 +24,12 @@ const createPDF = (posters) => {
     "Optimal Accessibility Poster Rating Report",
     100,
     20,
-    null,
-    null,
+    undefined,
     "center"
   );
   doc.setFont("helvetica", "normal");
   // report date
-  doc.text(today, 100, 30, null, null, "center");
+  doc.text(today, 100, 30, undefined, "center");
   // loop through each poster and show data
   let posY = 50;
   posters.forEach((poster) => {

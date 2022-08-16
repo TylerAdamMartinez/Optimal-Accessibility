@@ -1,7 +1,8 @@
+import { oaImageType } from "../oaTypes";
 import Tesseract from "tesseract.js";
 import { getColors } from "./Color";
 
-export async function getText(image) {
+export async function getText(image: oaImageType) {
   let grade = 0;
 
   [image, grade] = await findText(image, grade);
@@ -33,7 +34,10 @@ export async function getText(image) {
   return imagesWithGrades;
 }
 
-const findText = async (image, grade) => {
+const findText = async (
+  image: oaImageType,
+  grade: number
+): Promise<[oaImageType, number]> => {
   await Tesseract.recognize(image.tempImages.top.img, "eng").then(
     ({ data }) => {
       image.tempImages.top.text = data.text;
@@ -63,7 +67,7 @@ const findText = async (image, grade) => {
   return [image, grade];
 };
 
-const findOutlier = (image, grade) => {
+const findOutlier = (image: oaImageType, grade: number): number => {
   let topGrade = image.tempImages.top.textConfidence;
   let middleGrade = image.tempImages.middle.textConfidence;
   let bottomGrade = image.tempImages.bottom.textConfidence;

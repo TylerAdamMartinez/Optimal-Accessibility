@@ -1,6 +1,6 @@
 import NavBar from "../../Components/NavBar";
 import "./SettingsPage.css";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import Cookies from "universal-cookie";
@@ -10,136 +10,67 @@ import { ToastContainer, toast } from "react-toastify";
 
 function Settings() {
   const navigate = useNavigate();
-  const [IsEditing, SetIsEditing] = useState(false);
-  const [Email, SetEmail] = useState("Email");
-  const [FirstName, SetFirstName] = useState("Frist Name");
-  const [LastName, SetLastName] = useState("Last Name");
-  const [Birthday, SetBirthday] = useState("Birthday");
+  const [IsEditing, SetIsEditing] = useState<boolean>(false);
+  const [Email, SetEmail] = useState<string>("Email");
+  const [FirstName, SetFirstName] = useState<string>("Frist Name");
+  const [LastName, SetLastName] = useState<string>("Last Name");
+  const [Birthday, SetBirthday] = useState<string>("Birthday");
 
   useEffect(() => {
     GetUserData();
   }, []);
 
   function GetUserData() {
-    let uid = localStorage.getItem("uid");
-
-    // fetch(`https://localhost:7267/api/Auth/GetUserById/${userId}`, {
-    //   method: "GET",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     accept: "application/json",
-    //     Authorization: `bearer ${Jwt}`,
-    //   },
-    // })
-    //   .then((responce) => {
-    //     if (!responce.ok) {
-    //       errorFlag = true;
-    //     }
-
-    //     return responce.json();
-    //   })
-    //   .then((responseJSON) => {
-    //     if (errorFlag) {
-    //       throw new Error(`${responseJSON}`);
-    //     }
-
-    //     SetEUID(responseJSON.euid);
-    //     SetEmail(
-    //       responseJSON.email === null ? "No Email Provided" : responseJSON.email
-    //     );
-    //     SetFirstName(responseJSON.firstName);
-    //     SetLastName(responseJSON.lastName);
-    //     SetMiddleInitial(
-    //       responseJSON.middleInitial === null
-    //         ? "No middle initial Provided"
-    //         : responseJSON.middleInitial
-    //     );
-    //     SetBirthday(
-    //       responseJSON.birthday === null ? "2022-06-13" : responseJSON.birthday
-    //     );
-    //     SetGender(GenderArray[responseJSON.gender]);
-    //     SetClassfication(ClassficationArray[responseJSON.classfication]);
-    //   })
-    //   .catch((err) => {
-    //     toast.error(`${err}`, {
-    //       position: toast.POSITION.BOTTOM_RIGHT,
-    //       autoClose: 2000,
-    //     });
-    //     console.error(err);
-    //   });
+    // let uid = localStorage.getItem("uid");
   }
 
-  function handleSubmit(event) {
+  function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
-    let userId = localStorage.getItem("userId");
+    // let userId = localStorage.getItem("userId");
 
     toast.info("sent", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 2000,
     });
 
-    const firstName = FirstName;
-    const lastName = LastName;
-    const email = Email;
-    const birthday = Birthday;
+    // const firstName = FirstName;
+    // const lastName = LastName;
+    // const email = Email;
+    // const birthday = Birthday;
 
-    const updateUserBody = {
-      firstName,
-      lastName,
-      email,
-      birthday,
-    };
-    // fetch(`https://localhost:7267/api/Auth/UpdateUserById/${userId}`, {
-    //   method: "PUT",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     accept: "application/json",
-    //     Authorization: `bearer ${Jwt}`,
-    //   },
-    //   body: JSON.stringify(updateUserBody),
-    // })
-    //   .then((responce) => {
-    //     if (!responce.ok) {
-    //       errorFlag = true;
-    //     } else {
-    //       toast.success("User was successfully updated!", {
-    //         position: toast.POSITION.BOTTOM_RIGHT,
-    //         autoClose: 2000,
-    //       });
-    //     }
-    //     return responce.json();
-    //   })
-    //   .then((responseJSON) => {
-    //     if (errorFlag) {
-    //       throw new Error(`${responseJSON}`);
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     toast.error(`${err}`, {
-    //       position: toast.POSITION.BOTTOM_RIGHT,
-    //       autoClose: 2000,
-    //     });
-    //     console.error(err);
-    //   });
+    // const updateUserBody = {
+    //   firstName,
+    //   lastName,
+    //   email,
+    //   birthday,
+    // };
   }
 
-  function handleEmailChange(event) {
+  function handleEmailChange(event: {
+    target: { value: SetStateAction<string> };
+  }) {
     SetEmail(event.target.value);
   }
 
-  function handleFristNameChange(event) {
+  function handleFristNameChange(event: {
+    target: { value: SetStateAction<string> };
+  }) {
     SetFirstName(event.target.value);
   }
 
-  function handleLastNameChange(event) {
+  function handleLastNameChange(event: {
+    target: { value: SetStateAction<string> };
+  }) {
     SetLastName(event.target.value);
   }
 
-  function handleBirthdayChange(event) {
+  function handleBirthdayChange(event: {
+    target: { value: SetStateAction<string> };
+  }) {
     SetBirthday(event.target.value);
   }
 
-  function resetSettingsHandler(event) {
+  function resetSettingsHandler(event: { preventDefault: () => void }) {
     event.preventDefault();
     GetUserData();
   }
@@ -150,45 +81,13 @@ function Settings() {
     );
 
     if (ans) {
-      let uid = localStorage.getItem("userId");
+      // let uid = localStorage.getItem("userId");
       let cookies = new Cookies();
 
       toast.info("sent", {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 2000,
       });
-
-      // fetch(`https://localhost:7267/api/Auth/DeleteUserById/${userId}`, {
-      //   method: "DELETE",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     accept: "application/json",
-      //     Authorization: `bearer ${Jwt}`,
-      //   },
-      // })
-      //   .then((responce) => {
-      //     if (!responce.ok) {
-      //       errorFlag = true;
-      //     } else {
-      //       toast.success("User was successfully deleted!", {
-      //         position: toast.POSITION.BOTTOM_RIGHT,
-      //         autoClose: 2000,
-      //       });
-      //     }
-      //     return responce.json();
-      //   })
-      //   .then((responseJSON) => {
-      //     if (errorFlag) {
-      //       throw new Error(`${responseJSON}`);
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     toast.error(`${err}`, {
-      //       position: toast.POSITION.BOTTOM_RIGHT,
-      //       autoClose: 2000,
-      //     });
-      //     console.error(err);
-      //   });
 
       localStorage.clear();
       sessionStorage.clear();
@@ -201,9 +100,11 @@ function Settings() {
     navigate("/dashboard");
   }
 
+  function handleAddPosterCallback(_arg0: string): void {}
+
   return (
     <>
-      <NavBar />
+      <NavBar addPosterCallback={handleAddPosterCallback} IsGuestMode={false} />
       <div id="MyPostersDiv">
         <div id="InnerMyPostersDiv">
           <div id="SettingsPageHeaderDiv">

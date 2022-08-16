@@ -1,63 +1,66 @@
 import { Image } from "image-js";
 import { changeDpiDataUrl } from "changedpi";
 import { getText } from "./Text";
+import { accessibilityScore, oaImageType } from "../oaTypes";
 
-export async function getImageGrid(image) {
+export async function getImageGrid(
+  image: string | ArrayBuffer | Uint8Array
+): Promise<accessibilityScore> {
   const ogImage = await Image.load(image);
   const { width, height } = ogImage;
-  let newImages = {
+  let newImages: oaImageType = {
     tempImages: {
       top: {
-        img: null,
+        img: "",
         text: null,
-        textConfidence: null,
+        textConfidence: 0,
       },
       middle: {
-        img: null,
+        img: "",
         text: null,
-        textConfidence: null,
+        textConfidence: 0,
       },
       bottom: {
-        img: null,
+        img: "",
         text: null,
-        textConfidence: null,
+        textConfidence: 0,
       },
     },
     topLeft: {
-      img: null,
-      color: null,
+      img: "",
+      color: [],
     },
     topMiddle: {
-      img: null,
-      color: null,
+      img: "",
+      color: [],
     },
     topRight: {
-      img: null,
-      color: null,
+      img: "",
+      color: [],
     },
     middleLeft: {
-      img: null,
-      color: null,
+      img: "",
+      color: [],
     },
     middle: {
-      img: null,
-      color: null,
+      img: "",
+      color: [],
     },
     middleRight: {
-      img: null,
-      color: null,
+      img: "",
+      color: [],
     },
     bottomLeft: {
-      img: null,
-      color: null,
+      img: "",
+      color: [],
     },
     bottomMiddle: {
-      img: null,
-      color: null,
+      img: "",
+      color: [],
     },
     bottomRight: {
-      img: null,
-      color: null,
+      img: "",
+      color: [],
     },
   };
 
@@ -70,10 +73,17 @@ export async function getImageGrid(image) {
 
   let structureGrade = 0;
 
-  const grades = {
-    images: null,
-    textGrade: null,
-    colorGrade: null,
+  type gradesType = {
+    images: Image | undefined;
+    textGrade: number;
+    colorGrade: number | undefined;
+    structureGrade: number;
+  };
+
+  const grades: gradesType = {
+    images: undefined,
+    textGrade: 0,
+    colorGrade: 0,
     structureGrade: structureGrade,
   };
 
@@ -84,6 +94,7 @@ export async function getImageGrid(image) {
     grades.colorGrade = cg;
   });
 
+  grades.colorGrade = undefined ?? 0;
   structureGrade = grades.colorGrade + grades.textGrade;
 
   grades.structureGrade = structureGrade / 2;
@@ -100,10 +111,19 @@ export async function getImageGrid(image) {
     grades.colorGrade += difference + 3;
   }
 
-  return grades;
+  return {
+    textRating: grades.textGrade,
+    structureRating: grades.structureGrade,
+    colorRating: grades.colorGrade,
+  };
 }
 
-const bigGrid = (images, ogImage, squareHeight, squareWidth) => {
+const bigGrid = (
+  images: oaImageType,
+  ogImage: Image,
+  squareHeight: number,
+  squareWidth: number
+) => {
   images.topLeft.img = ogImage
     .crop({
       x: 0,
@@ -198,7 +218,12 @@ const bigGrid = (images, ogImage, squareHeight, squareWidth) => {
   return images;
 };
 
-const smallGrid = async (newImages, ogImage, height, width) => {
+const smallGrid = async (
+  newImages: oaImageType,
+  ogImage: Image,
+  height: number,
+  width: number
+) => {
   const maskOptions = {
     useAlpha: true,
     invert: true,

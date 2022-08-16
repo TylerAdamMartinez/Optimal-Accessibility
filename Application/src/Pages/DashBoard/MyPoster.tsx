@@ -2,7 +2,7 @@ import "./MyPoster.css";
 import DefaultImage from "../../Images/missing_image.jpg";
 import Popup from "reactjs-popup";
 import BarGraph from "../../Components/BarGraph";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, SetStateAction } from "react";
 import AccessibilityBarGraphData from "../../Components/AccessibilityBarGraphData";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
@@ -14,18 +14,26 @@ import "react-toastify/dist/ReactToastify.css";
 import { db } from "../../FirebaseConfig";
 import { ref, set } from "firebase/database";
 import { GlobalPosters } from "../../Pages/DashBoard/DashBoard";
+import { accessibilityScore, poster } from "../../oaTypes";
 
-function MyPoster(props) {
-  const imgRef = useRef();
+const MyPoster: React.FC<{
+  name: string;
+  data: string;
+  accessibilityRating: accessibilityScore;
+  editPosterCallback: (arg0: string) => void;
+  Id: string;
+}> = ({ name, data, accessibilityRating, editPosterCallback, Id }) => {
+  const imgRef = useRef<HTMLImageElement>(null);
   function onImageError() {
-    imgRef.current.src = DefaultImage;
+    if (imgRef.current === undefined || imgRef.current === null) return;
+    imgRef.current.src = DefaultImage as string;
   }
 
-  let [isOpen, setIsOpen] = useState(false);
-  let [isEditing, setIsEditing] = useState(false);
-  let [editPosterName, setEditPosterName] = useState(props.PosterName);
-  let [editPosterData, setEditPosterData] = useState(props.Data);
-  const [IsProcessing, setIsProcessing] = useState(false);
+  let [isOpen, setIsOpen] = useState<boolean>(false);
+  let [isEditing, setIsEditing] = useState<boolean>(false);
+  let [editPosterName, setEditPosterName] = useState<string>(name);
+  let [editPosterData, setEditPosterData] = useState<string | File>(data);
+  const [IsProcessing, setIsProcessing] = useState<boolean>(false);
 
   function DeletePoster() {
     setIsProcessing(true);
@@ -34,7 +42,7 @@ function MyPoster(props) {
     const posterNames = GlobalPosters.map((element) => {
       return element.name;
     });
-    const index = posterNames.indexOf(props.PosterName);
+    const index = posterNames.indexOf(name);
 
     if (index > -1) {
       GlobalPosters.splice(index, 1);
@@ -88,7 +96,7 @@ function MyPoster(props) {
         })
           .then(() => {
             setIsProcessing(false);
-            props.editPosterCallback(Math.random());
+            editPosterCallback(Math.random().toString());
           })
           .catch(() => {
             setIsProcessing(false);
@@ -107,7 +115,7 @@ function MyPoster(props) {
       });
   }
 
-  function UpdatePosterName(event) {
+  function UpdatePosterName(event: { preventDefault: () => void }) {
     setIsEditing(false);
     setIsProcessing(true);
     event.preventDefault();
@@ -130,7 +138,7 @@ function MyPoster(props) {
     const posterNames = GlobalPosters.map((element) => {
       return element.name;
     });
-    const index = posterNames.indexOf(props.PosterName);
+    const index = posterNames.indexOf(name);
 
     if (index > -1) {
       GlobalPosters[index] = {
@@ -160,7 +168,7 @@ function MyPoster(props) {
           autoClose: 4000,
         });
         setIsProcessing(false);
-        props.editPosterCallback(editPosterName);
+        editPosterCallback(editPosterName);
       })
       .catch(() => {
         setIsProcessing(false);
@@ -171,21 +179,21 @@ function MyPoster(props) {
       });
   }
 
-  async function UpdatePosterData(event) {
+  async function UpdatePosterData(event: { preventDefault: () => void }) {
     setIsEditing(false);
     setIsProcessing(true);
     event.preventDefault();
     let uid = localStorage.getItem("uid");
 
-    async function getAccessibilityScore(poster) {
-      poster = await ConvertImageToBase64(poster);
+    async function getAccessibilityScore(poster: Blob) {
+      const posterBase64String = await ConvertImageToBase64(poster);
       let posterGrades = await getImageGrid(
-        "data:image/png;base64," + poster
+        "data:image/png;base64," + posterBase64String
       ).then((score) => {
         let posterGrade = {
-          textRating: Math.round(score.textGrade),
-          structureRating: Math.round(score.structureGrade),
-          colorRating: Math.round(score.colorGrade),
+          textRating: Math.round(score.textRating),
+          structureRating: Math.round(score.structureRating),
+          colorRating: Math.round(score.colorRating),
         };
 
         return posterGrade;
@@ -198,20 +206,22 @@ function MyPoster(props) {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 4000,
     });
-    let accessibilityScore = await getAccessibilityScore(editPosterData);
+    let accessibilityScore = await getAccessibilityScore(
+      editPosterData as Blob
+    );
     toast.info("Caculating Accessibility Score...", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 4000,
     });
 
-    ConvertImageToBase64(editPosterData)
-      .then((data) => {
+    ConvertImageToBase64(editPosterData as Blob)
+      .then((data: any) => {
         const newPosterBody = { data, accessibilityScore };
         const posterNames = GlobalPosters.map((element) => {
           return element.name;
         });
 
-        const index = posterNames.indexOf(props.PosterName);
+        const index = posterNames.indexOf(name);
 
         console.log("old posters", GlobalPosters);
         if (index > -1) {
@@ -266,7 +276,7 @@ function MyPoster(props) {
             colorRating: OverallAccessibilityRating.colorRating,
           })
             .then(() => {
-              props.editPosterCallback(Math.random());
+              editPosterCallback(Math.random().toString());
             })
             .catch(() => {
               toast.error(
@@ -279,7 +289,7 @@ function MyPoster(props) {
             });
         });
       })
-      .catch((err) => {
+      .catch((err: any) => {
         setIsProcessing(false);
         toast.error(`${err}`, {
           position: toast.POSITION.BOTTOM_RIGHT,
@@ -289,19 +299,29 @@ function MyPoster(props) {
       });
   }
 
-  function editPosterNameHandler(event) {
+  function editPosterNameHandler(event: {
+    target: { value: SetStateAction<string> };
+  }) {
     setEditPosterName(event.target.value);
   }
 
-  function editPosterDatahandler(event) {
-    let file = event.target.files[0];
+  function editPosterDatahandler(event: {
+    target: { files: FileList | null };
+  }) {
+    if (event.target.files === null) return;
+    let file: File | null = event.target.files[0];
+    if (file === null) return;
     setEditPosterData(file);
   }
 
   function validateEditPosterName() {
-    let GlobalPosters = JSON.parse(sessionStorage.getItem("cached-posters"));
+    const cached_posters = sessionStorage.getItem("cached-posters");
+
+    if (cached_posters === null) return;
+
+    let GlobalPosters: Array<poster> = JSON.parse(cached_posters);
     const posterNameSet = new Set(
-      GlobalPosters.map((element) => {
+      GlobalPosters.map((element: { name: string }) => {
         return element.name;
       })
     );
@@ -316,7 +336,7 @@ function MyPoster(props) {
 
   function DeleteForeverHandler() {
     let userAnswer = window.confirm(
-      `Are you sure you would like to delete poster: '${props.PosterName}' forever?`
+      `Are you sure you would like to delete poster: '${name}' forever?`
     );
 
     if (userAnswer) {
@@ -324,7 +344,7 @@ function MyPoster(props) {
     }
   }
 
-  let BarGraphData = new AccessibilityBarGraphData(props.AccessibilityRating);
+  let BarGraphData = new AccessibilityBarGraphData(accessibilityRating);
 
   function handlePopupOpen() {
     setIsOpen(true);
@@ -334,7 +354,7 @@ function MyPoster(props) {
     setIsOpen(false);
   }
 
-  function stopPropagation(event) {
+  function stopPropagation(event: { stopPropagation: () => void }) {
     event.stopPropagation();
   }
 
@@ -344,14 +364,14 @@ function MyPoster(props) {
         <div id="MyPoster">
           <div id="PosterImage">
             <img
-              src={`data:image/png;base64,${props.Data}`}
+              src={`data:image/png;base64,${data}`}
               ref={imgRef}
               onError={onImageError}
-              alt={`Poster number ${props.Id}`}
+              alt={`Poster number ${Id}`}
             />
           </div>
           <div id="PosterNameSection">
-            <h3>{props.PosterName}</h3>
+            <h3>{name}</h3>
           </div>
           <ToastContainer autoClose={1000} limit={1} />
         </div>
@@ -379,7 +399,7 @@ function MyPoster(props) {
                       <input
                         readOnly={IsProcessing}
                         id="editPosterNameInput"
-                        placeholder={props.PosterName}
+                        placeholder={name}
                         type="text"
                         value={editPosterName}
                         onChange={editPosterNameHandler}
@@ -393,7 +413,7 @@ function MyPoster(props) {
                       />
                     </form>
                   ) : (
-                    <h3>{props.PosterName}</h3>
+                    <h3>{name}</h3>
                   )}
                 </div>
                 <div id="PosterPopUpMenuImgDiv">
@@ -420,8 +440,8 @@ function MyPoster(props) {
                         id="editingPosterDataImage"
                         ref={imgRef}
                         onError={onImageError}
-                        src={`data:image/png;base64,${props.Data}`}
-                        alt={`Poster number ${props.Id}`}
+                        src={`data:image/png;base64,${data}`}
+                        alt={`Poster number ${Id}`}
                       />
                     </>
                   ) : (
@@ -429,8 +449,8 @@ function MyPoster(props) {
                       <img
                         ref={imgRef}
                         onError={onImageError}
-                        src={`data:image/png;base64,${props.Data}`}
-                        alt={`Poster number ${props.Id}`}
+                        src={`data:image/png;base64,${data}`}
+                        alt={`Poster number ${Id}`}
                       />
                     </div>
                   )}
@@ -459,7 +479,7 @@ function MyPoster(props) {
               <div className="AccessibilityBarGraphScoreContainer">
                 <h3>Accessibility Score</h3>
                 <div id="PosterPopUpMenuBarGraphDiv">
-                  <BarGraph chartData={BarGraphData.build} />
+                  <BarGraph data={BarGraphData.build} />
                 </div>
               </div>
             </div>
@@ -468,6 +488,6 @@ function MyPoster(props) {
       </div>
     </Popup>
   );
-}
+};
 
 export default MyPoster;

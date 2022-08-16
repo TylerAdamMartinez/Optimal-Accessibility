@@ -1,9 +1,12 @@
+import { accessibilityScore, chartData } from "../oaTypes";
+
 class AccessibilityBarGraphData {
-  constructor(AccessibilityScore) {
-    this.AccessibilityScore = AccessibilityScore;
+  score: accessibilityScore;
+  constructor(barGraphData: accessibilityScore) {
+    this.score = barGraphData;
   }
 
-  get build() {
+  get build(): chartData {
     return {
       labels: ["Text", "Structure", "Color"],
       datasets: [
@@ -17,9 +20,9 @@ class AccessibilityBarGraphData {
           borderColor: "rgba(51, 51, 51, 1)",
           borderWidth: 1,
           data: [
-            this.AccessibilityScore.textRating,
-            this.AccessibilityScore.structureRating,
-            this.AccessibilityScore.colorRating,
+            this.score.textRating,
+            this.score.structureRating,
+            this.score.colorRating,
           ],
           options: {
             responsive: true,
