@@ -104,7 +104,7 @@ function Settings() {
 
   return (
     <>
-      <NavBar addPosterCallback={handleAddPosterCallback} IsGuestMode={false} />
+      <NavBar addPosterCallback={handleAddPosterCallback} />
       <div id="MyPostersDiv">
         <div id="InnerMyPostersDiv">
           <div id="SettingsPageHeaderDiv">

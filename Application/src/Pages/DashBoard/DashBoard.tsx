@@ -103,10 +103,7 @@ function DashBoard() {
 
   return (
     <div className="App">
-      <NavBar
-        addPosterCallback={addPosterCallbackHandler}
-        IsGuestMode={false}
-      />
+      <NavBar addPosterCallback={addPosterCallbackHandler} />
       <MyPostersSection
         myPosters={Posters}
         editPosterCallback={editPosterCallbackHandler}

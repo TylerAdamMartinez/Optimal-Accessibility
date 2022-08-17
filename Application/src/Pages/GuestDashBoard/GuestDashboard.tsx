@@ -2,7 +2,7 @@ import "./GuestDashboard.css";
 import React, { useState } from "react";
 import MagicDropZone from "react-magic-dropzone";
 import { ToastContainer, toast } from "react-toastify";
-import NavBar from "../../Components/NavBar";
+import GuestNavBar from "./GuestNavBar";
 import BarGraph from "../../Components/BarGraph";
 import AccessibilityBarGraphData from "../../Components/AccessibilityBarGraphData";
 import ConvertImageToBase64 from "../../Utils/ConvertImageToBase64";
@@ -26,7 +26,7 @@ const GuestDashboard = () => {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 2000,
     });
-    const posterBase64String = (await ConvertImageToBase64(poster));
+    const posterBase64String = await ConvertImageToBase64(poster);
     toast.info("Calculating accessibility score...", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 4000,
@@ -73,11 +73,9 @@ const GuestDashboard = () => {
 
   let BarGraphData = new AccessibilityBarGraphData(posterGrade);
 
-  function handleAddPosterCallback(_arg0: string): void {}
-
   return (
     <div>
-      <NavBar addPosterCallback={handleAddPosterCallback} IsGuestMode={true} />
+      <GuestNavBar />
       <div className="GuestUIContainer">
         <div className="PosterDragAndDrop">
           <h2 className="SectionHeading">Upload a Poster</h2>

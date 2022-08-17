@@ -14,19 +14,15 @@ import Cookies from "universal-cookie";
 import { getImageGrid } from "../Utils/Structure";
 import ConvertImageToBase64 from "../Utils/ConvertImageToBase64";
 import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import MagicDropZone from "react-magic-dropzone";
 import "react-toastify/dist/ReactToastify.css";
 import { db } from "../FirebaseConfig";
 import { ref, child, get, set } from "firebase/database";
 import createPDF from "../Utils/CreatePDF";
 import { GlobalPosters } from "../Pages/DashBoard/DashBoard";
-import { accessibilityScore } from "../oaTypes";
+import { accessibilityScore, poster } from "../oaTypes";
 
-function NavBar(props: {
-  addPosterCallback: (arg0: string) => void;
-  IsGuestMode: boolean;
-}) {
+function NavBar(props: { addPosterCallback: (arg0: string) => void }) {
   let textHelpInfo = `The text rating is mainly based on the readability of the text. If the text cannot be easily read by the computer, then it probably can't be easily read by a person. The size of the text, as well as the color contrast with its surroundings, are the largest factors.
 
 If the text rating for your poster is low, the following list could help you find some issues:
@@ -111,7 +107,9 @@ If the color rating for your poster is low, the following list could help you fi
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 2000,
     });
-    let accessibilityScore = await getAccessibilityScore(FileData as unknown as Blob);
+    let accessibilityScore = await getAccessibilityScore(
+      FileData as unknown as Blob
+    );
     setLoadingState("Sending Poster...");
     ConvertImageToBase64(FileData as unknown as Blob)
       .then((data: any) => {
@@ -123,7 +121,7 @@ If the color rating for your poster is low, the following list could help you fi
         get(child(dbRef, `Posters/${uid}`))
           .then((snapshot) => {
             if (snapshot.exists()) {
-              let postersSnap = snapshot.val().posters;
+              let postersSnap: Array<poster> = snapshot.val().posters;
               let posterSanpConcat = postersSnap.concat([addPosterBody]);
               set(ref(db, "Posters/" + uid), {
                 posters: posterSanpConcat,
@@ -139,7 +137,7 @@ If the color rating for your poster is low, the following list could help you fi
                   SetPosterFileData("");
                   setIsOpenAddPosterMenu(false);
 
-                  let OverallAccessibilityRating = {
+                  let OverallAccessibilityRating: accessibilityScore = {
                     textRating: 0,
                     structureRating: 0,
                     colorRating: 0,
@@ -328,249 +326,191 @@ If the color rating for your poster is low, the following list could help you fi
     event.stopPropagation();
   }
 
-  const navigate = useNavigate();
-
   return (
     <div className="NavBar">
-      {!props.IsGuestMode ? (
-        <>
-          <div id="NavItemsBox">
-            <ul>
-              <li>
-                <Link to="/dashboard" id="LogoBoxLink">
-                  <div id="LogoBox">
-                    <img
-                      id="LogoImg"
-                      alt="Optimal Accessibility Logo"
-                      src={OptimalAccessibilityLogo}
-                    />
-                  </div>
-                </Link>
-              </li>
-              <li>
-                <Popup
-                  trigger={
-                    <div className="tooltip">
-                      <AccountCircleIcon fontSize="large" />
-                      <span className="tooltiptext">
-                        Account Settings and Logout
-                      </span>
-                    </div>
-                  }
-                  open={isOpenSettings}
-                  onOpen={handlePopupSettingsOpen}
+      <div id="NavItemsBox">
+        <ul>
+          <li>
+            <Link to="/dashboard" id="LogoBoxLink">
+              <div id="LogoBox">
+                <img
+                  id="LogoImg"
+                  alt="Optimal Accessibility Logo"
+                  src={OptimalAccessibilityLogo}
+                />
+              </div>
+            </Link>
+          </li>
+          <li>
+            <Popup
+              trigger={
+                <div className="tooltip">
+                  <AccountCircleIcon fontSize="large" />
+                  <span className="tooltiptext">
+                    Account Settings and Logout
+                  </span>
+                </div>
+              }
+              open={isOpenSettings}
+              onOpen={handlePopupSettingsOpen}
+            >
+              <div
+                className="PopUpBackground"
+                onClick={handlePopupSettingsClose}
+              >
+                <div id="PopUpAccountsMenuDivSection">
+                  <ul id="PopUpAccountMenuDiv" onClick={stopPropagation}>
+                    <Link to="/settings">
+                      <li
+                        className="PopUpAccountMenuDivbtn"
+                        style={{ marginBottom: 10 }}
+                      >
+                        Settings
+                      </li>
+                    </Link>
+                    <Link to="/" onClick={handleLogout}>
+                      <li className="PopUpAccountMenuDivbtn">Logout</li>
+                    </Link>
+                  </ul>
+                </div>
+              </div>
+            </Popup>
+          </li>
+          <li>
+            <Popup
+              trigger={
+                <div className="tooltip">
+                  <HelpIcon fontSize="large" />
+                  <span className="tooltiptext">Help pages</span>
+                </div>
+              }
+              open={isOpenHelpPages}
+              onOpen={handlePopupHelpPagesOpen}
+            >
+              <div className="PopUpBackground">
+                <div
+                  id="PopUpHelpMenuDivSection"
+                  onClick={handlePopupHelpPagesClose}
                 >
-                  <div
-                    className="PopUpBackground"
-                    onClick={handlePopupSettingsClose}
-                  >
-                    <div id="PopUpAccountsMenuDivSection">
-                      <ul id="PopUpAccountMenuDiv" onClick={stopPropagation}>
-                        <Link to="/settings">
-                          <li
-                            className="PopUpAccountMenuDivbtn"
-                            style={{ marginBottom: 10 }}
-                          >
-                            Settings
-                          </li>
-                        </Link>
-                        <Link to="/" onClick={handleLogout}>
-                          <li className="PopUpAccountMenuDivbtn">Logout</li>
-                        </Link>
-                      </ul>
-                    </div>
-                  </div>
-                </Popup>
-              </li>
-              <li>
-                <Popup
-                  trigger={
-                    <div className="tooltip">
-                      <HelpIcon fontSize="large" />
-                      <span className="tooltiptext">Help pages</span>
-                    </div>
-                  }
-                  open={isOpenHelpPages}
-                  onOpen={handlePopupHelpPagesOpen}
-                >
-                  <div className="PopUpBackground">
-                    <div
-                      id="PopUpHelpMenuDivSection"
-                      onClick={handlePopupHelpPagesClose}
+                  <ul id="PopUpHelpMenuDiv" onClick={stopPropagation}>
+                    <Popup
+                      trigger={<li id="PopUpHelpMenuDivTextField">Text</li>}
                     >
-                      <ul id="PopUpHelpMenuDiv" onClick={stopPropagation}>
-                        <Popup
-                          trigger={<li id="PopUpHelpMenuDivTextField">Text</li>}
-                        >
-                          <div className="PopUpBackground">
-                            <HelpPage
-                              PageName="Text"
-                              PageContent={textHelpInfo}
-                              Color={"#017F01"}
-                            />
-                          </div>
-                        </Popup>
-                        <Popup
-                          trigger={
-                            <li id="PopUpHelpMenuDivStructureField">
-                              Structure
-                            </li>
-                          }
-                        >
-                          <div className="PopUpBackground">
-                            <HelpPage
-                              PageName="Structure"
-                              PageContent={structureHelpInfo}
-                              Color={"#640665"}
-                            />
-                          </div>
-                        </Popup>
-                        <Popup
-                          trigger={
-                            <li id="PopUpHelpMenuDivColorField">Color</li>
-                          }
-                        >
-                          <div className="PopUpBackground">
-                            <HelpPage
-                              PageName="Color"
-                              PageContent={colorHelpInfo}
-                              Color={"#DA364A"}
-                            />
-                          </div>
-                        </Popup>
-                      </ul>
-                    </div>
-                  </div>
-                </Popup>
-              </li>
-              <li>
-                <Popup
-                  trigger={
-                    <div className="tooltip">
-                      <AddIcon
-                        onClick={() => {
-                          setLoadingState("Submit");
-                        }}
+                      <div className="PopUpBackground">
+                        <HelpPage
+                          PageName="Text"
+                          PageContent={textHelpInfo}
+                          Color={"#017F01"}
+                        />
+                      </div>
+                    </Popup>
+                    <Popup
+                      trigger={
+                        <li id="PopUpHelpMenuDivStructureField">Structure</li>
+                      }
+                    >
+                      <div className="PopUpBackground">
+                        <HelpPage
+                          PageName="Structure"
+                          PageContent={structureHelpInfo}
+                          Color={"#640665"}
+                        />
+                      </div>
+                    </Popup>
+                    <Popup
+                      trigger={<li id="PopUpHelpMenuDivColorField">Color</li>}
+                    >
+                      <div className="PopUpBackground">
+                        <HelpPage
+                          PageName="Color"
+                          PageContent={colorHelpInfo}
+                          Color={"#DA364A"}
+                        />
+                      </div>
+                    </Popup>
+                  </ul>
+                </div>
+              </div>
+            </Popup>
+          </li>
+          <li>
+            <Popup
+              trigger={
+                <div className="tooltip">
+                  <AddIcon
+                    onClick={() => {
+                      setLoadingState("Submit");
+                    }}
+                    fontSize="large"
+                  />
+                  <span className="tooltiptext">Add a new poster</span>
+                </div>
+              }
+              open={isOpenAddPosterMenu}
+              onOpen={handlePopupAddPosterMenuOpen}
+            >
+              <div
+                className="PopUpBackground"
+                onClick={handlePopupAddPosterMenuClose}
+              >
+                <div id="PopUpAddMenuDivSection">
+                  <div id="PopUpAddMenuDiv" onClick={stopPropagation}>
+                    <div id="PopUpAddMenuHeaderDiv">
+                      <h2>New Poster</h2>
+                      <CloseRounded
+                        id="PopUpAddMenuHeadeCloseBtn"
                         fontSize="large"
+                        onClick={handlePopupAddPosterMenuClose}
                       />
-                      <span className="tooltiptext">Add a new poster</span>
                     </div>
-                  }
-                  open={isOpenAddPosterMenu}
-                  onOpen={handlePopupAddPosterMenuOpen}
-                >
-                  <div
-                    className="PopUpBackground"
-                    onClick={handlePopupAddPosterMenuClose}
-                  >
-                    <div id="PopUpAddMenuDivSection">
-                      <div id="PopUpAddMenuDiv" onClick={stopPropagation}>
-                        <div id="PopUpAddMenuHeaderDiv">
-                          <h2>New Poster</h2>
-                          <CloseRounded
-                            id="PopUpAddMenuHeadeCloseBtn"
+                    <form onSubmit={handleSubmit} id="PopUpAddMenuForm">
+                      <input
+                        readOnly={IsProcessing}
+                        placeholder="Name"
+                        type="text"
+                        value={name}
+                        onChange={handleNameChange}
+                        onBlur={validateName}
+                      />
+                      {IsProcessing ? (
+                        <div className="spinning_loader_wrapper">
+                          <LoopIcon
                             fontSize="large"
-                            onClick={handlePopupAddPosterMenuClose}
+                            className="spinning_loader"
                           />
                         </div>
-                        <form onSubmit={handleSubmit} id="PopUpAddMenuForm">
-                          <input
-                            readOnly={IsProcessing}
-                            placeholder="Name"
-                            type="text"
-                            value={name}
-                            onChange={handleNameChange}
-                            onBlur={validateName}
-                          />
-                          {IsProcessing ? (
-                            <div className="spinning_loader_wrapper">
-                              <LoopIcon
-                                fontSize="large"
-                                className="spinning_loader"
-                              />
-                            </div>
-                          ) : (
-                            <MagicDropZone
-                              className="DragAndDropSection"
-                              accept=".jpg, .png, .jpeg"
-                              onDrop={handleFileChange}
-                            >
-                              {FileData === ""
-                                ? "Drop your poster here"
-                                : "✅ Poster received!"}
-                            </MagicDropZone>
-                          )}
-                          <input
-                            readOnly={IsProcessing}
-                            type="submit"
-                            value={loadingState}
-                            className="PopUpAccountMenuDivbtn"
-                          />
-                        </form>
-                      </div>
-                    </div>
+                      ) : (
+                        <MagicDropZone
+                          className="DragAndDropSection"
+                          accept=".jpg, .png, .jpeg"
+                          onDrop={handleFileChange}
+                        >
+                          {FileData === ""
+                            ? "Drop your poster here"
+                            : "✅ Poster received!"}
+                        </MagicDropZone>
+                      )}
+                      <input
+                        readOnly={IsProcessing}
+                        type="submit"
+                        value={loadingState}
+                        className="PopUpAccountMenuDivbtn"
+                      />
+                    </form>
                   </div>
-                </Popup>
-              </li>
-              <li>
-                <div className="tooltip">
-                  <PictureAsPdf onClick={generatePDF} fontSize="large" />
-                  <span className="tooltiptext">Generate a new PDF report</span>
                 </div>
-              </li>
-            </ul>
-          </div>
-          <ToastContainer autoClose={1000} limit={1} />
-        </>
-      ) : (
-        <div className="GuestModeTextContainer">
-          <p className="GuestModeText">You are in guest mode</p>
-          <button className="CreateAccountButton" onClick={() => navigate("/")}>
-            Create an Account
-          </button>
-          <Popup trigger={<HelpIcon className="HelpIcon" fontSize="large" />}>
-            <div className="PopUpBackground">
-              <div id="PopUpHelpMenuDivSection">
-                <ul id="PopUpHelpMenuDiv">
-                  <Popup trigger={<li id="PopUpHelpMenuDivTextField">Text</li>}>
-                    <div className="PopUpBackground">
-                      <HelpPage
-                        PageName="Text"
-                        PageContent={textHelpInfo}
-                        Color={"#017F01"}
-                      />
-                    </div>
-                  </Popup>
-                  <Popup
-                    trigger={
-                      <li id="PopUpHelpMenuDivStructureField">Structure</li>
-                    }
-                  >
-                    <div className="PopUpBackground">
-                      <HelpPage
-                        PageName="Structure"
-                        PageContent={structureHelpInfo}
-                        Color={"#640665"}
-                      />
-                    </div>
-                  </Popup>
-                  <Popup
-                    trigger={<li id="PopUpHelpMenuDivColorField">Color</li>}
-                  >
-                    <div className="PopUpBackground">
-                      <HelpPage
-                        PageName="Color"
-                        PageContent={colorHelpInfo}
-                        Color={"#DA364A"}
-                      />
-                    </div>
-                  </Popup>
-                </ul>
               </div>
+            </Popup>
+          </li>
+          <li>
+            <div className="tooltip">
+              <PictureAsPdf onClick={generatePDF} fontSize="large" />
+              <span className="tooltiptext">Generate a new PDF report</span>
             </div>
-          </Popup>
-        </div>
-      )}
+          </li>
+        </ul>
+      </div>
+      <ToastContainer autoClose={1000} limit={1} />
     </div>
   );
 }

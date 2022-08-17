@@ -5,7 +5,7 @@ import NotFound404ErrorPage from "./Pages/NotFound404ErrorPage/NotFound404ErrorP
 import PrivateRoutes from "./Components/PrivateRoutes";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SettingsPage from "./Pages/SettingsPage/SettingsPage";
-import GuestDashboard from "./Pages/DashBoard/GuestDashboard";
+import GuestDashboard from "./Pages/GuestDashBoard/GuestDashboard";
 // import { analytics } from "./FirebaseConfig";
 
 function App() {
