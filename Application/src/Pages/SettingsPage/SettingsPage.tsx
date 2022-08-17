@@ -100,11 +100,9 @@ function Settings() {
     navigate("/dashboard");
   }
 
-  function handleAddPosterCallback(_arg0: string): void {}
-
   return (
     <>
-      <NavBar addPosterCallback={handleAddPosterCallback} />
+      <NavBar addPosterCallback={undefined} />
       <div id="MyPostersDiv">
         <div id="InnerMyPostersDiv">
           <div id="SettingsPageHeaderDiv">

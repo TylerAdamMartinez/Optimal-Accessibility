@@ -4,6 +4,9 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CloseRounded from "@mui/icons-material/CloseRounded";
 import HelpIcon from "@mui/icons-material/Help";
 import PictureAsPdf from "@mui/icons-material/PictureAsPdf";
+import BugReportIcon from "@mui/icons-material/BugReport";
+import AddReactionIcon from "@mui/icons-material/AddReaction";
+import SettingsAccessibilityIcon from "@mui/icons-material/SettingsAccessibility";
 import LoopIcon from "@mui/icons-material/Loop";
 import Popup from "reactjs-popup";
 import OptimalAccessibilityLogo from "../Images/Optimal-Accessibility-Logo.png";
@@ -22,7 +25,9 @@ import createPDF from "../Utils/CreatePDF";
 import { GlobalPosters } from "../Pages/DashBoard/DashBoard";
 import { accessibilityScore, poster } from "../oaTypes";
 
-function NavBar(props: { addPosterCallback: (arg0: string) => void }) {
+function NavBar(props: {
+  addPosterCallback: undefined | ((arg0: string) => void);
+}) {
   let textHelpInfo = `The text rating is mainly based on the readability of the text. If the text cannot be easily read by the computer, then it probably can't be easily read by a person. The size of the text, as well as the color contrast with its surroundings, are the largest factors.
 
 If the text rating for your poster is low, the following list could help you find some issues:
@@ -175,6 +180,7 @@ If the color rating for your poster is low, the following list could help you fi
                     colorRating: OverallAccessibilityRating.colorRating,
                   })
                     .then(() => {
+                      if (props.addPosterCallback === undefined) return;
                       props.addPosterCallback(name);
                     })
                     .catch(() => {
@@ -215,6 +221,7 @@ If the color rating for your poster is low, the following list could help you fi
                     autoClose: 4000,
                   });
                   setIsProcessing(false);
+                  if (props.addPosterCallback === undefined) return;
                   props.addPosterCallback(name);
                   setLoadingState("Submit");
                   SetPosterName("");
@@ -331,15 +338,18 @@ If the color rating for your poster is low, the following list could help you fi
       <div id="NavItemsBox">
         <ul>
           <li>
-            <Link to="/dashboard" id="LogoBoxLink">
-              <div id="LogoBox">
-                <img
-                  id="LogoImg"
-                  alt="Optimal Accessibility Logo"
-                  src={OptimalAccessibilityLogo}
-                />
-              </div>
-            </Link>
+            <div className="tooltip">
+              <Link to="/dashboard" id="LogoBoxLink">
+                <div id="LogoBox">
+                  <img
+                    id="LogoImg"
+                    alt="Optimal Accessibility Logo"
+                    src={OptimalAccessibilityLogo}
+                  />
+                </div>
+              </Link>{" "}
+              <span className="tooltiptext">Reload/Return to Dashboard</span>
+            </div>
           </li>
           <li>
             <Popup
@@ -377,62 +387,16 @@ If the color rating for your poster is low, the following list could help you fi
             </Popup>
           </li>
           <li>
-            <Popup
-              trigger={
-                <div className="tooltip">
-                  <HelpIcon fontSize="large" />
-                  <span className="tooltiptext">Help pages</span>
-                </div>
-              }
-              open={isOpenHelpPages}
-              onOpen={handlePopupHelpPagesOpen}
-            >
-              <div className="PopUpBackground">
-                <div
-                  id="PopUpHelpMenuDivSection"
-                  onClick={handlePopupHelpPagesClose}
-                >
-                  <ul id="PopUpHelpMenuDiv" onClick={stopPropagation}>
-                    <Popup
-                      trigger={<li id="PopUpHelpMenuDivTextField">Text</li>}
-                    >
-                      <div className="PopUpBackground">
-                        <HelpPage
-                          PageName="Text"
-                          PageContent={textHelpInfo}
-                          Color={"#017F01"}
-                        />
-                      </div>
-                    </Popup>
-                    <Popup
-                      trigger={
-                        <li id="PopUpHelpMenuDivStructureField">Structure</li>
-                      }
-                    >
-                      <div className="PopUpBackground">
-                        <HelpPage
-                          PageName="Structure"
-                          PageContent={structureHelpInfo}
-                          Color={"#640665"}
-                        />
-                      </div>
-                    </Popup>
-                    <Popup
-                      trigger={<li id="PopUpHelpMenuDivColorField">Color</li>}
-                    >
-                      <div className="PopUpBackground">
-                        <HelpPage
-                          PageName="Color"
-                          PageContent={colorHelpInfo}
-                          Color={"#DA364A"}
-                        />
-                      </div>
-                    </Popup>
-                  </ul>
-                </div>
-              </div>
-            </Popup>
-          </li>
+            <div className="tooltip">
+              <SettingsAccessibilityIcon
+                onClick={() =>
+                  alert("need to create a acessibility settings popup")
+                }
+                fontSize="large"
+              />
+              <span className="tooltiptext">Dashboard accessibility tools</span>
+            </div>
+          </li>{" "}
           <li>
             <Popup
               trigger={
@@ -506,6 +470,83 @@ If the color rating for your poster is low, the following list could help you fi
             <div className="tooltip">
               <PictureAsPdf onClick={generatePDF} fontSize="large" />
               <span className="tooltiptext">Generate a new PDF report</span>
+            </div>
+          </li>
+          <li>
+            <Popup
+              trigger={
+                <div className="tooltip">
+                  <HelpIcon fontSize="large" />
+                  <span className="tooltiptext">Help pages</span>
+                </div>
+              }
+              open={isOpenHelpPages}
+              onOpen={handlePopupHelpPagesOpen}
+            >
+              <div
+                className="PopUpBackground"
+                onClick={handlePopupHelpPagesClose}
+              >
+                <div id="PopUpHelpMenuDivSection">
+                  <ul id="PopUpHelpMenuDiv" onClick={stopPropagation}>
+                    <Popup
+                      trigger={<li id="PopUpHelpMenuDivTextField">Text</li>}
+                    >
+                      <div className="PopUpBackground">
+                        <HelpPage
+                          PageName="Text"
+                          PageContent={textHelpInfo}
+                          Color={"#017F01"}
+                        />
+                      </div>
+                    </Popup>
+                    <Popup
+                      trigger={
+                        <li id="PopUpHelpMenuDivStructureField">Structure</li>
+                      }
+                    >
+                      <div className="PopUpBackground">
+                        <HelpPage
+                          PageName="Structure"
+                          PageContent={structureHelpInfo}
+                          Color={"#640665"}
+                        />
+                      </div>
+                    </Popup>
+                    <Popup
+                      trigger={<li id="PopUpHelpMenuDivColorField">Color</li>}
+                    >
+                      <div className="PopUpBackground">
+                        <HelpPage
+                          PageName="Color"
+                          PageContent={colorHelpInfo}
+                          Color={"#DA364A"}
+                        />
+                      </div>
+                    </Popup>
+                  </ul>
+                </div>
+              </div>
+            </Popup>
+          </li>
+          <li>
+            <div className="tooltip">
+              <AddReactionIcon
+                onClick={() =>
+                  alert("need to create a form for customer reactions report")
+                }
+                fontSize="large"
+              />
+              <span className="tooltiptext">Let us know how we are doing</span>
+            </div>
+          </li>
+          <li>
+            <div className="tooltip">
+              <BugReportIcon
+                onClick={() => alert("need to create a form for bug report")}
+                fontSize="large"
+              />
+              <span className="tooltiptext">Report a bug</span>
             </div>
           </li>
         </ul>
