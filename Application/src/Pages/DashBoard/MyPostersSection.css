@@ -37,4 +37,21 @@
 .PosterSpan {
   display: flex;
   overflow-x: scroll !important;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.PosterSpan::-webkit-scrollbar {
+  display: none;
+}
+
+.FolderSpan {
+  display: flex;
+  overflow-x: scroll !important;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.FolderSpan::-webkit-scrollbar {
+  display: none;
 }

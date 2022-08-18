@@ -339,14 +339,12 @@ If the color rating for your poster is low, the following list could help you fi
         <ul>
           <li>
             <div className="tooltip">
-              <Link to="/dashboard" id="LogoBoxLink">
-                <div id="LogoBox">
-                  <img
-                    id="LogoImg"
-                    alt="Optimal Accessibility Logo"
-                    src={OptimalAccessibilityLogo}
-                  />
-                </div>
+              <Link to="/dashboard">
+                <img
+                  id="LogoImg"
+                  alt="Optimal Accessibility Logo"
+                  src={OptimalAccessibilityLogo}
+                />
               </Link>{" "}
               <span className="tooltiptext">Reload/Return to Dashboard</span>
             </div>

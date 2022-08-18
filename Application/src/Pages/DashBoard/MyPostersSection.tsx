@@ -2,6 +2,7 @@ import "./MyPostersSection.css";
 import MyPoster from "./MyPoster";
 import { useEffect, useId, useState } from "react";
 import { poster } from "../../oaTypes";
+import MyFolder from "./MyFolder";
 
 interface MyPostersSectionProp {
   myPosters: Array<poster> | null;
@@ -24,6 +25,11 @@ function MyPostersSection(props: MyPostersSectionProp) {
     <div id="MyPostersDiv">
       <div id="InnerMyPostersDiv">
         <h2>My Posters</h2>
+        <span className="FolderSpan">
+          <MyFolder folderType="old" folderName="My Folder example" />
+          <MyFolder folderType="old" folderName="Other Folder example" />
+          <MyFolder folderType="new" folderName="Create a new folder" />
+        </span>
         <span className="PosterSpan">
           {props.myPosters?.map((poster, index) => {
             return (
