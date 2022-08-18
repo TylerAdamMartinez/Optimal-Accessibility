@@ -22,6 +22,7 @@
   display: grid;
   grid-template-columns: 1fr;
   box-shadow: 4px 4px 10px rgb(90, 90, 90);
+  border: 0.15em solid #333;
 }
 
 #InnerOverallAccessibilityDiv h2 {

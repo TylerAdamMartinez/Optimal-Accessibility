@@ -58,6 +58,9 @@
   margin-bottom: 0.25em;
 }
 
+#NavItemsBox ul li:hover {
+scale: 1.2;
+}
 #PopUpHelpMenuDivSection,
 #PopUpAccountsMenuDivSection {
   display: grid;

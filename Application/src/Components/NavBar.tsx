@@ -5,7 +5,10 @@ import CloseRounded from "@mui/icons-material/CloseRounded";
 import HelpIcon from "@mui/icons-material/Help";
 import PictureAsPdf from "@mui/icons-material/PictureAsPdf";
 import BugReportIcon from "@mui/icons-material/BugReport";
-import AddReactionIcon from "@mui/icons-material/AddReaction";
+//import AddReactionIcon from "@mui/icons-material/AddReaction";
+//import RateReviewIcon from '@mui/icons-material/RateReview';
+import BusinessIcon from '@mui/icons-material/Business';
+import FeedbackIcon from '@mui/icons-material/Feedback';
 import SettingsAccessibilityIcon from "@mui/icons-material/SettingsAccessibility";
 import LoopIcon from "@mui/icons-material/Loop";
 import Popup from "reactjs-popup";
@@ -338,7 +341,6 @@ If the color rating for your poster is low, the following list could help you fi
       <div id="NavItemsBox">
         <ul>
           <li>
-            <div className="tooltip">
               <Link to="/dashboard">
                 <img
                   id="LogoImg"
@@ -346,8 +348,6 @@ If the color rating for your poster is low, the following list could help you fi
                   src={OptimalAccessibilityLogo}
                 />
               </Link>{" "}
-              <span className="tooltiptext">Reload/Return to Dashboard</span>
-            </div>
           </li>
           <li>
             <Popup
@@ -395,6 +395,15 @@ If the color rating for your poster is low, the following list could help you fi
               <span className="tooltiptext">Dashboard accessibility tools</span>
             </div>
           </li>{" "}
+          <li>
+            <div className="tooltip">
+              <BusinessIcon
+                onClick={() => alert("need to create a work group/organization page")}
+                fontSize="large"
+              />
+              <span className="tooltiptext">Organizational Page</span>
+            </div>
+          </li>
           <li>
             <Popup
               trigger={
@@ -448,7 +457,7 @@ If the color rating for your poster is low, the following list could help you fi
                           onDrop={handleFileChange}
                         >
                           {FileData === ""
-                            ? "Drop your poster here"
+                            ? "Drop your poster here or click"
                             : "✅ Poster received!"}
                         </MagicDropZone>
                       )}
@@ -529,7 +538,7 @@ If the color rating for your poster is low, the following list could help you fi
           </li>
           <li>
             <div className="tooltip">
-              <AddReactionIcon
+              <FeedbackIcon
                 onClick={() =>
                   alert("need to create a form for customer reactions report")
                 }

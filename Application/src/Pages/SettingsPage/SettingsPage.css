@@ -66,6 +66,7 @@ label {
 .IconHover:hover {
   cursor: pointer;
   color: #b90504;
+  scale: 1.15;
 }
 
 #SettingsPageOnEditInfo {
@@ -108,4 +109,5 @@ label {
 
 #SettingsPageHeaderDiv #SettingsPageHeaderReturnBtn:hover {
   color: #990100;
+  scale: 1.15;
 }
