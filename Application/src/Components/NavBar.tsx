@@ -7,8 +7,8 @@ import PictureAsPdf from "@mui/icons-material/PictureAsPdf";
 import BugReportIcon from "@mui/icons-material/BugReport";
 //import AddReactionIcon from "@mui/icons-material/AddReaction";
 //import RateReviewIcon from '@mui/icons-material/RateReview';
-import BusinessIcon from '@mui/icons-material/Business';
-import FeedbackIcon from '@mui/icons-material/Feedback';
+import BusinessIcon from "@mui/icons-material/Business";
+import FeedbackIcon from "@mui/icons-material/Feedback";
 import SettingsAccessibilityIcon from "@mui/icons-material/SettingsAccessibility";
 import LoopIcon from "@mui/icons-material/Loop";
 import Popup from "reactjs-popup";
@@ -341,13 +341,13 @@ If the color rating for your poster is low, the following list could help you fi
       <div id="NavItemsBox">
         <ul>
           <li>
-              <Link to="/dashboard">
-                <img
-                  id="LogoImg"
-                  alt="Optimal Accessibility Logo"
-                  src={OptimalAccessibilityLogo}
-                />
-              </Link>{" "}
+            <Link to="/dashboard">
+              <img
+                id="LogoImg"
+                alt="Optimal Accessibility Logo"
+                src={OptimalAccessibilityLogo}
+              />
+            </Link>{" "}
           </li>
           <li>
             <Popup
@@ -398,7 +398,9 @@ If the color rating for your poster is low, the following list could help you fi
           <li>
             <div className="tooltip">
               <BusinessIcon
-                onClick={() => alert("need to create a work group/organization page")}
+                onClick={() =>
+                  alert("need to create a work group/organization page")
+                }
                 fontSize="large"
               />
               <span className="tooltiptext">Organizational Page</span>

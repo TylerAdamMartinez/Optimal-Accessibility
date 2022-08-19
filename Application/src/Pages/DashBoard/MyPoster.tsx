@@ -7,7 +7,7 @@ import AccessibilityBarGraphData from "../../Components/AccessibilityBarGraphDat
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseRounded from "@mui/icons-material/CloseRounded";
-//import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
+import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import ConvertImageToBase64 from "../../Utils/ConvertImageToBase64";
 import { getImageGrid } from "../../Utils/Structure";
 import { ToastContainer, toast } from "react-toastify";
@@ -18,12 +18,20 @@ import { GlobalPosters } from "../../Pages/DashBoard/DashBoard";
 import { accessibilityScore, poster } from "../../oaTypes";
 
 const MyPoster: React.FC<{
+  posterType: string;
   name: string;
   data: string;
   accessibilityRating: accessibilityScore;
   editPosterCallback: (arg0: string) => void;
   Id: string;
-}> = ({ name, data, accessibilityRating, editPosterCallback, Id }) => {
+}> = ({
+  posterType,
+  name,
+  data,
+  accessibilityRating,
+  editPosterCallback,
+  Id,
+}) => {
   const imgRef = useRef<HTMLImageElement>(null);
   function onImageError() {
     if (imgRef.current === undefined || imgRef.current === null) return;
@@ -35,6 +43,28 @@ const MyPoster: React.FC<{
   let [editPosterName, setEditPosterName] = useState<string>(name);
   let [editPosterData, setEditPosterData] = useState<string | File>(data);
   const [IsProcessing, setIsProcessing] = useState<boolean>(false);
+
+  function GetPosterClass(type: string): string {
+    if (type === "new") {
+      return "CreatePoster";
+    }
+    return "MadePoster";
+  }
+
+  function GetPosterPreview(type: string): JSX.Element {
+    if (type === "new") {
+      return <AddAPhotoIcon style={{ alignSelf: "center" }} fontSize="large" />;
+    }
+
+    return (
+      <img
+        src={`data:image/png;base64,${data}`}
+        ref={imgRef}
+        onError={onImageError}
+        alt={`Poster number ${Id}`}
+      />
+    );
+  }
 
   function DeletePoster() {
     setIsProcessing(true);
@@ -362,15 +392,8 @@ const MyPoster: React.FC<{
   return (
     <Popup
       trigger={
-        <div id="MyPoster">
-          <div id="PosterImage">
-            <img
-              src={`data:image/png;base64,${data}`}
-              ref={imgRef}
-              onError={onImageError}
-              alt={`Poster number ${Id}`}
-            />
-          </div>
+        <div id="MyPoster" className={GetPosterClass(posterType)}>
+          <div id="PosterImage">{GetPosterPreview(posterType)}</div>
           <div id="PosterNameSection">
             <h3>{name}</h3>
           </div>

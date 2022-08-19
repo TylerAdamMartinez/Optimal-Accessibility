@@ -1,7 +1,7 @@
 import "./MyPostersSection.css";
 import MyPoster from "./MyPoster";
 import { useEffect, useId, useState } from "react";
-import { poster } from "../../oaTypes";
+import { accessibilityScore, poster } from "../../oaTypes";
 import MyFolder from "./MyFolder";
 
 interface MyPostersSectionProp {
@@ -20,6 +20,12 @@ function MyPostersSection(props: MyPostersSectionProp) {
     SetOldPosterEdited(title);
   }
 
+  let AddPosterAccessibilitScore: accessibilityScore = {
+    textRating: 0,
+    structureRating: 0,
+    colorRating: 0,
+  };
+
   let unquie_id: string = useId();
   return (
     <div id="MyPostersDiv">
@@ -31,9 +37,10 @@ function MyPostersSection(props: MyPostersSectionProp) {
           <MyFolder folderType="new" folderName="Create a new folder" />
         </span>
         <span className="PosterSpan">
-          {props.myPosters?.map((poster, index) => {
+          {props.myPosters?.reverse().map((poster, index) => {
             return (
               <MyPoster
+                posterType="old"
                 name={poster.name}
                 key={Math.random()}
                 Id={unquie_id + index}
@@ -43,6 +50,15 @@ function MyPostersSection(props: MyPostersSectionProp) {
               />
             );
           })}
+          <MyPoster
+            posterType="new"
+            name={"Add a new poster"}
+            key={Math.random()}
+            Id={unquie_id}
+            data={""}
+            accessibilityRating={AddPosterAccessibilitScore}
+            editPosterCallback={editPosterCallbackHandler}
+          />
         </span>
       </div>
     </div>
