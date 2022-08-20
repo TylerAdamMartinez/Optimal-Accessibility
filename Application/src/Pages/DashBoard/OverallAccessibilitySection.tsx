@@ -1,5 +1,5 @@
 import "./OverallAccessibilitySection.css";
-import BarGraph from "../../Components/BarGraph";
+import PolarGraph from "../../Components/PieGraph";
 import { chartData } from "../../oaTypes";
 
 interface OverallAccessibilitySectionProp {
@@ -11,7 +11,13 @@ function OverallAccessibilitySection(props: OverallAccessibilitySectionProp) {
     <div id="OverallAccessibilityDiv">
       <div id="InnerOverallAccessibilityDiv">
         <h2>My Average Accessibility Rating</h2>
-        <BarGraph data={props.data} />
+          <PolarGraph data={props.data} />
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Debitis
+            obcaecati dolorum eius nam. Totam nesciunt praesentium quia maxime
+            perferendis consectetur saepe tenetur, repellendus, impedit
+            reprehenderit dolores illo deleniti soluta ipsam.
+          </p>
       </div>
     </div>
   );

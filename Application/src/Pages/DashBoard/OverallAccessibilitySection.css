@@ -36,9 +36,9 @@
 }
 
 #InnerOverallAccessibilityDiv canvas {
-  overflow-y: hidden;
-  overflow-x: hidden;
-  padding: 1em;
   width: 100% !important;
-  height: auto !important;
+}
+
+#InnerOverallAccessibilityDiv p {
+  padding: 1em;
 }

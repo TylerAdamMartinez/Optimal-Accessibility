@@ -37,7 +37,7 @@ function MyPostersSection(props: MyPostersSectionProp) {
           <MyFolder folderType="new" folderName="Create a new folder" />
         </span>
         <span className="PosterSpan">
-          {props.myPosters?.reverse().map((poster, index) => {
+          {props.myPosters?.map((poster, index) => {
             return (
               <MyPoster
                 posterType="old"

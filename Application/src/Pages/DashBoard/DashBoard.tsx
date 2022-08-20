@@ -4,10 +4,10 @@ import MyPostersSection from "./MyPostersSection";
 import OverallAccessibilitySection from "./OverallAccessibilitySection";
 import { SetStateAction, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import AccessibilityBarGraphData from "../../Components/AccessibilityBarGraphData";
 import { db } from "../../FirebaseConfig";
 import { ref, child, get, set } from "firebase/database";
 import { poster, chartData, accessibilityScore } from "../../oaTypes";
+import AccessibilityPieGraphData from "../../Components/AccessibilityPieGraphData";
 
 export var GlobalPosters: Array<poster>;
 
@@ -96,10 +96,10 @@ function DashBoard() {
     SetOldPosterEdited(title);
   }
 
-  let OverallAccessibilityBarGraphData: AccessibilityBarGraphData =
-    new AccessibilityBarGraphData(OverallAccessibilityRating);
+  let OverallAccessibilityPieGraphData: AccessibilityPieGraphData =
+    new AccessibilityPieGraphData(OverallAccessibilityRating);
 
-  let chartData: chartData = OverallAccessibilityBarGraphData.build;
+  let chartData: chartData = OverallAccessibilityPieGraphData.build;
 
   return (
     <div className="App">

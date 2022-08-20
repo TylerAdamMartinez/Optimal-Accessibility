@@ -20,6 +20,7 @@ export declare type chartData = {
       backgroundColor: Array<string>;
       borderColor: string;
       borderWidth: number;
+      hoverOffset: number;
       data: Array<number>;
       options: {
         responsive: boolean;

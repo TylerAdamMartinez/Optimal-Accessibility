@@ -37,6 +37,15 @@ function BarGraph(props: BarGraphProp) {
               display: false,
               position: "bottom",
             },
+            tooltip: {
+              titleFont: {
+                size: 18
+              },
+              bodyFont: {
+                size: 18
+              },
+              caretSize: 16,
+            },
           },
           scales: {
             y: {
