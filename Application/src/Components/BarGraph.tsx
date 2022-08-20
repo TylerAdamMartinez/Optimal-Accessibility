@@ -7,8 +7,9 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
+import { Bar, getElementAtEvent } from "react-chartjs-2";
 import { chartData } from "../oaTypes";
+import { useRef } from "react";
 
 ChartJs.register(
   CategoryScale,
@@ -24,12 +25,28 @@ ChartJs.defaults.scales.category.max = 100;
 
 interface BarGraphProp {
   data: chartData;
+  BarGraphCallback: (state: string) => void;
 }
 
 function BarGraph(props: BarGraphProp) {
+  const barGraphRef = useRef(null);
+  const accessibilityScoreMap = ["Text", "Structure", "Color"];
+
+  function BarGraphOnClickHandler(event: any) {
+    const { current: chart } = barGraphRef;
+    if (!chart) return;
+    let index: number | undefined = getElementAtEvent(chart, event).at(
+      0
+    )?.index;
+    if (!index) index = 0;
+    props.BarGraphCallback(accessibilityScoreMap[index]);
+  }
+
   return (
     <>
       <Bar
+        ref={barGraphRef}
+        onClick={BarGraphOnClickHandler}
         data={props.data}
         options={{
           plugins: {
@@ -39,10 +56,10 @@ function BarGraph(props: BarGraphProp) {
             },
             tooltip: {
               titleFont: {
-                size: 18
+                size: 18,
               },
               bodyFont: {
-                size: 18
+                size: 18,
               },
               caretSize: 16,
             },

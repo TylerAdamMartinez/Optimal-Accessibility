@@ -94,7 +94,7 @@ const GuestDashboard = () => {
         <div className="PosterRatingContainer">
           <h2 className="SectionHeading">Accessibility Score</h2>
           <div style={{ width: "95%" }}>
-            <BarGraph data={BarGraphData.build} />
+            <BarGraph data={BarGraphData.build} BarGraphCallback={(_state: string) => {}}/>
             <p className="TimeToCalculate">
               {calculating
                 ? `Calculating score...`

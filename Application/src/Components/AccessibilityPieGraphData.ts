@@ -8,7 +8,11 @@ class AccessibilityPieGraphData {
 
   get build(): chartData {
     let totalPossibleScore = 300;
-    let remainingScore = totalPossibleScore - (this.score.textRating + this.score.structureRating + this.score.colorRating);
+    let remainingScore =
+      totalPossibleScore -
+      (this.score.textRating +
+        this.score.structureRating +
+        this.score.colorRating);
 
     return {
       labels: ["Remaing", "Text", "Structure", "Color"],

@@ -9,13 +9,7 @@ import {
 import { Doughnut } from "react-chartjs-2";
 import { chartData } from "../oaTypes";
 
-ChartJs.register(
-  RadialLinearScale,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJs.register(RadialLinearScale, ArcElement, Title, Tooltip, Legend);
 
 ChartJs.defaults.scale.grid.drawOnChartArea = false;
 
@@ -35,22 +29,22 @@ function PieGraph(props: PieGraphProp) {
               position: "right",
               labels: {
                 font: {
-                  size: 28
+                  size: 28,
                 },
                 boxHeight: 35,
                 boxWidth: 55,
-              }
+              },
             },
             tooltip: {
               bodyFont: {
-                size: 28
+                size: 28,
               },
               caretSize: 20,
             },
           },
           layout: {
-            padding: 15
-          }
+            padding: 15,
+          },
         }}
       />
     </>

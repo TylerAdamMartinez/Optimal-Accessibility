@@ -43,6 +43,7 @@ const MyPoster: React.FC<{
   let [editPosterName, setEditPosterName] = useState<string>(name);
   let [editPosterData, setEditPosterData] = useState<string | File>(data);
   const [IsProcessing, setIsProcessing] = useState<boolean>(false);
+  const [moreInfoText, setMoreInfoText] = useState<string>("Text");
 
   function GetPosterClass(type: string): string {
     if (type === "new") {
@@ -375,6 +376,50 @@ const MyPoster: React.FC<{
     }
   }
 
+  function BarGarphCallbackHandler(state: string): void {
+    setMoreInfoText(state);
+  }
+
+  function MoreInformationText(state: string): JSX.Element {
+    if (state === "Text") {
+      return (
+        <p>
+          Text Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus
+          omnis eligendi veniam. Cupiditate corporis dicta, nihil porro
+          praesentium quam dolorem omnis nobis voluptatibus voluptatum maiores
+          impedit fugit reiciendis voluptates eum!
+        </p>
+      );
+    } else if (state === "Structure") {
+      return (
+        <p>
+          Strucuture Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+          Quibusdam cum id quia explicabo dolores aut officiis? Incidunt modi
+          aliquid perferendis natus consectetur amet, blanditiis excepturi vel
+          nisi, reiciendis quis adipisci?
+        </p>
+      );
+    } else if (state === "Color") {
+      return (
+        <p>
+          Color Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+          Inventore maiores autem, animi quasi temporibus, necessitatibus
+          praesentium recusandae quam id ipsam veritatis aliquid, molestias nisi
+          atque unde repellendus laborum voluptas perspiciatis!
+        </p>
+      );
+    }
+
+    return (
+      <p>
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sequi numquam
+        totam qui. Cupiditate eveniet asperiores eligendi libero distinctio
+        optio sed ipsam dolorem culpa neque odio debitis, vel ducimus fugit
+        sapiente.
+      </p>
+    );
+  }
+
   let BarGraphData = new AccessibilityBarGraphData(accessibilityRating);
 
   function handlePopupOpen() {
@@ -503,10 +548,20 @@ const MyPoster: React.FC<{
               <div className="AccessibilityBarGraphScoreContainer">
                 <h3>Accessibility Score</h3>
                 <div id="PosterPopUpMenuBarGraphDiv">
-                  <BarGraph data={BarGraphData.build} />
+                  <BarGraph
+                    data={BarGraphData.build}
+                    BarGraphCallback={BarGarphCallbackHandler}
+                  />
                 </div>
               </div>
             </div>
+            <h1>Informational Text</h1>
+            <div style={{"display": "flex", "gap": "1em"}}>
+              <button onClick={() => {setMoreInfoText("Text")}}>Text</button>
+              <button onClick={() => {setMoreInfoText("Structure")}}>Structure</button>
+              <button onClick={() => {setMoreInfoText("Color")}}>Color</button>
+            </div>
+            {MoreInformationText(moreInfoText)}
           </div>
         </div>
       </div>
