@@ -24,6 +24,7 @@
     "color.js": "^1.2.0",
     "dotenv": "^16.0.1",
     "firebase": "^9.9.2",
+    "framer-motion": "^7.2.0",
     "image-js": "^0.34.1",
     "jspdf": "^2.5.1",
     "react": "^18.2.0",

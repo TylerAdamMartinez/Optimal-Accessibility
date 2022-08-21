@@ -1,8 +1,10 @@
 import "./MyPostersSection.css";
 import MyPoster from "./MyPoster";
+import AddPoster from "./AddPoster";
 import { useEffect, useId, useState } from "react";
-import { accessibilityScore, poster } from "../../oaTypes";
+import { poster } from "../../oaTypes";
 import MyFolder from "./MyFolder";
+import { motion } from "framer-motion";
 
 interface MyPostersSectionProp {
   myPosters: Array<poster> | null;
@@ -20,11 +22,16 @@ function MyPostersSection(props: MyPostersSectionProp) {
     SetOldPosterEdited(title);
   }
 
-  let AddPosterAccessibilitScore: accessibilityScore = {
-    textRating: 0,
-    structureRating: 0,
-    colorRating: 0,
-  };
+  let folders: Array<{ folderType: string; folderName: string }> = [
+    {
+      folderType: "old",
+      folderName: "My Folder example",
+    },
+    {
+      folderType: "old",
+      folderName: "Other Folder example",
+    },
+  ];
 
   let unquie_id: string = useId();
   return (
@@ -32,33 +39,44 @@ function MyPostersSection(props: MyPostersSectionProp) {
       <div id="InnerMyPostersDiv">
         <h2>My Posters</h2>
         <span className="FolderSpan">
-          <MyFolder folderType="old" folderName="My Folder example" />
-          <MyFolder folderType="old" folderName="Other Folder example" />
+          {folders.map((folder, index) => {
+            return (
+              <motion.div
+                key={Math.random()}
+                initial={{ opacity: 0, translateX: -50, translateY: -50 }}
+                animate={{ opacity: 1, translateX: 0, translateY: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.5 }}
+              >
+                <MyFolder
+                  folderType={folder.folderType}
+                  folderName={folder.folderName}
+                />
+              </motion.div>
+            );
+          })}
           <MyFolder folderType="new" folderName="Create a new folder" />
         </span>
         <span className="PosterSpan">
           {props.myPosters?.map((poster, index) => {
             return (
-              <MyPoster
-                posterType="old"
-                name={poster.name}
+              <motion.div
                 key={Math.random()}
-                Id={unquie_id + index}
-                data={poster.data}
-                accessibilityRating={poster.accessibilityScore}
-                editPosterCallback={editPosterCallbackHandler}
-              />
+                initial={{ opacity: 0, translateX: -50, translateY: -50 }}
+                animate={{ opacity: 1, translateX: 0, translateY: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.5 }}
+              >
+                <MyPoster
+                  name={poster.name}
+                  key={Math.random()}
+                  Id={unquie_id + index}
+                  data={poster.data}
+                  accessibilityRating={poster.accessibilityScore}
+                  editPosterCallback={editPosterCallbackHandler}
+                />
+              </motion.div>
             );
           })}
-          <MyPoster
-            posterType="new"
-            name={"Add a new poster"}
-            key={Math.random()}
-            Id={unquie_id}
-            data={""}
-            accessibilityRating={AddPosterAccessibilitScore}
-            editPosterCallback={editPosterCallbackHandler}
-          />
+          <AddPoster />
         </span>
       </div>
     </div>

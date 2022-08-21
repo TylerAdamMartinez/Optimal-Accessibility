@@ -7,7 +7,6 @@ import AccessibilityBarGraphData from "../../Components/AccessibilityBarGraphDat
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseRounded from "@mui/icons-material/CloseRounded";
-import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import ConvertImageToBase64 from "../../Utils/ConvertImageToBase64";
 import { getImageGrid } from "../../Utils/Structure";
 import { ToastContainer, toast } from "react-toastify";
@@ -16,22 +15,15 @@ import { db } from "../../FirebaseConfig";
 import { ref, set } from "firebase/database";
 import { GlobalPosters } from "../../Pages/DashBoard/DashBoard";
 import { accessibilityScore, poster } from "../../oaTypes";
+import { motion } from "framer-motion";
 
 const MyPoster: React.FC<{
-  posterType: string;
   name: string;
   data: string;
   accessibilityRating: accessibilityScore;
   editPosterCallback: (arg0: string) => void;
   Id: string;
-}> = ({
-  posterType,
-  name,
-  data,
-  accessibilityRating,
-  editPosterCallback,
-  Id,
-}) => {
+}> = ({ name, data, accessibilityRating, editPosterCallback, Id }) => {
   const imgRef = useRef<HTMLImageElement>(null);
   function onImageError() {
     if (imgRef.current === undefined || imgRef.current === null) return;
@@ -44,28 +36,7 @@ const MyPoster: React.FC<{
   let [editPosterData, setEditPosterData] = useState<string | File>(data);
   const [IsProcessing, setIsProcessing] = useState<boolean>(false);
   const [moreInfoText, setMoreInfoText] = useState<string>("Text");
-
-  function GetPosterClass(type: string): string {
-    if (type === "new") {
-      return "CreatePoster";
-    }
-    return "MadePoster";
-  }
-
-  function GetPosterPreview(type: string): JSX.Element {
-    if (type === "new") {
-      return <AddAPhotoIcon style={{ alignSelf: "center" }} fontSize="large" />;
-    }
-
-    return (
-      <img
-        src={`data:image/png;base64,${data}`}
-        ref={imgRef}
-        onError={onImageError}
-        alt={`Poster number ${Id}`}
-      />
-    );
-  }
+  const [isMyPosterDragging, setIsMyPosterDragging] = useState<boolean>(false);
 
   function DeletePoster() {
     setIsProcessing(true);
@@ -383,30 +354,45 @@ const MyPoster: React.FC<{
   function MoreInformationText(state: string): JSX.Element {
     if (state === "Text") {
       return (
-        <p>
-          Text Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus
-          omnis eligendi veniam. Cupiditate corporis dicta, nihil porro
-          praesentium quam dolorem omnis nobis voluptatibus voluptatum maiores
-          impedit fugit reiciendis voluptates eum!
-        </p>
+        <div
+          className="MoreInformationText"
+          style={{ backgroundColor: "rgba(1, 127, 1, 1)" }}
+        >
+          <p>
+            Text Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus
+            omnis eligendi veniam. Cupiditate corporis dicta, nihil porro
+            praesentium quam dolorem omnis nobis voluptatibus voluptatum maiores
+            impedit fugit reiciendis voluptates eum!
+          </p>
+        </div>
       );
     } else if (state === "Structure") {
       return (
-        <p>
-          Strucuture Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-          Quibusdam cum id quia explicabo dolores aut officiis? Incidunt modi
-          aliquid perferendis natus consectetur amet, blanditiis excepturi vel
-          nisi, reiciendis quis adipisci?
-        </p>
+        <div
+          className="MoreInformationText"
+          style={{ backgroundColor: "rgba(100, 6, 101, 1)" }}
+        >
+          <p>
+            Strucuture Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+            Quibusdam cum id quia explicabo dolores aut officiis? Incidunt modi
+            aliquid perferendis natus consectetur amet, blanditiis excepturi vel
+            nisi, reiciendis quis adipisci?
+          </p>
+        </div>
       );
     } else if (state === "Color") {
       return (
-        <p>
-          Color Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-          Inventore maiores autem, animi quasi temporibus, necessitatibus
-          praesentium recusandae quam id ipsam veritatis aliquid, molestias nisi
-          atque unde repellendus laborum voluptas perspiciatis!
-        </p>
+        <div
+          className="MoreInformationText"
+          style={{ backgroundColor: "rgba(218, 54, 74, 1)" }}
+        >
+          <p>
+            Color Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+            Inventore maiores autem, animi quasi temporibus, necessitatibus
+            praesentium recusandae quam id ipsam veritatis aliquid, molestias
+            nisi atque unde repellendus laborum voluptas perspiciatis!
+          </p>
+        </div>
       );
     }
 
@@ -435,137 +421,204 @@ const MyPoster: React.FC<{
   }
 
   return (
-    <Popup
-      trigger={
-        <div id="MyPoster" className={GetPosterClass(posterType)}>
-          <div id="PosterImage">{GetPosterPreview(posterType)}</div>
-          <div id="PosterNameSection">
-            <h3>{name}</h3>
-          </div>
-          <ToastContainer autoClose={1000} limit={1} />
-        </div>
-      }
-      open={isOpen}
-      onOpen={handlePopupOpen}
+    <motion.div
+      style={{
+        zIndex: isMyPosterDragging ? 999 : 1,
+      }}
+      drag
+      dragSnapToOrigin={true}
+      dragConstraints={{
+        bottom: -100,
+      }}
+      dragElastic={0.2}
+      onDrag={(event) => {
+        event.preventDefault();
+      }}
+      onDragStart={() => {
+        setIsMyPosterDragging(true);
+      }}
+      onDragEnd={() => {
+        setIsMyPosterDragging(false);
+      }}
     >
-      <div className="PopUpBackground" onClick={handlePopupClose}>
-        <div id="PosterPopUpMenuContainerDiv">
-          <div
-            className="PosterPopUpMenuDivContainer"
-            onClick={stopPropagation}
-          >
-            <CloseRounded
-              id="closePosterPopupBtn"
-              className="CloseIcon"
-              fontSize="large"
-              onClick={handlePopupClose}
-            />
-            <div id="PosterPopUpMenuDiv">
-              <div className="PosterImgAndNameContainer">
-                <div id="PosterPopUpMenuPosterNameDiv">
-                  {isEditing ? (
-                    <form id="editForm" onSubmit={UpdatePosterName}>
-                      <input
-                        readOnly={IsProcessing}
-                        id="editPosterNameInput"
-                        placeholder={name}
-                        type="text"
-                        value={editPosterName}
-                        onChange={editPosterNameHandler}
-                        onBlur={validateEditPosterName}
-                      />
-                      <input
-                        readOnly={IsProcessing}
-                        id="editPosterNameBtn"
-                        type="submit"
-                        value={"Enter"}
-                      />
-                    </form>
-                  ) : (
-                    <h3>{name}</h3>
-                  )}
-                </div>
-                <div id="PosterPopUpMenuImgDiv">
-                  {isEditing ? (
-                    <>
-                      <div id="editingPosterDataFrom">
-                        <form onSubmit={UpdatePosterData}>
-                          <input
-                            disabled={IsProcessing}
-                            readOnly={IsProcessing}
-                            type="File"
-                            accept=".png, .jpg, .jpeg"
-                            onChange={editPosterDatahandler}
-                          />
-                          <input
-                            readOnly={IsProcessing}
-                            id="editPosterDataBtn"
-                            type="submit"
-                            value={"Enter"}
-                          />
-                        </form>
+      <Popup
+        trigger={
+          <div id="MyPoster" className="MadePoster">
+            <div id="PosterImage">
+              {" "}
+              <img
+                src={`data:image/png;base64,${data}`}
+                ref={imgRef}
+                onError={onImageError}
+                alt={`Poster number ${Id}`}
+              />
+            </div>
+            <div id="PosterNameSection">
+              <h3>{name}</h3>
+            </div>
+            <ToastContainer autoClose={1000} limit={1} />
+          </div>
+        }
+        open={isOpen}
+        onOpen={handlePopupOpen}
+      >
+        <div className="PopUpBackground" onClick={handlePopupClose}>
+          <div id="PosterPopUpMenuContainerDiv">
+            <div
+              className="PosterPopUpMenuDivContainer"
+              onClick={stopPropagation}
+            >
+              <CloseRounded
+                id="closePosterPopupBtn"
+                className="CloseIcon"
+                fontSize="large"
+                onClick={handlePopupClose}
+              />
+              <div id="PosterPopUpMenuDiv">
+                <div className="PosterImgAndNameContainer">
+                  <div id="PosterPopUpMenuPosterNameDiv">
+                    {isEditing ? (
+                      <form id="editForm" onSubmit={UpdatePosterName}>
+                        <input
+                          readOnly={IsProcessing}
+                          id="editPosterNameInput"
+                          placeholder={name}
+                          type="text"
+                          value={editPosterName}
+                          onChange={editPosterNameHandler}
+                          onBlur={validateEditPosterName}
+                        />
+                        <input
+                          readOnly={IsProcessing}
+                          id="editPosterNameBtn"
+                          type="submit"
+                          value={"Enter"}
+                        />
+                      </form>
+                    ) : (
+                      <h3>{name}</h3>
+                    )}
+                  </div>
+                  <div id="PosterPopUpMenuImgDiv">
+                    {isEditing ? (
+                      <>
+                        <div id="editingPosterDataFrom">
+                          <form onSubmit={UpdatePosterData}>
+                            <input
+                              disabled={IsProcessing}
+                              readOnly={IsProcessing}
+                              type="File"
+                              accept=".png, .jpg, .jpeg"
+                              onChange={editPosterDatahandler}
+                            />
+                            <input
+                              readOnly={IsProcessing}
+                              id="editPosterDataBtn"
+                              type="submit"
+                              value={"Enter"}
+                            />
+                          </form>
+                        </div>
+                        <img
+                          id="editingPosterDataImage"
+                          ref={imgRef}
+                          onError={onImageError}
+                          src={`data:image/png;base64,${data}`}
+                          alt={`Poster number ${Id}`}
+                        />
+                      </>
+                    ) : (
+                      <div className="ScaleOnHover">
+                        <img
+                          ref={imgRef}
+                          onError={onImageError}
+                          src={`data:image/png;base64,${data}`}
+                          alt={`Poster number ${Id}`}
+                        />
                       </div>
-                      <img
-                        id="editingPosterDataImage"
-                        ref={imgRef}
-                        onError={onImageError}
-                        src={`data:image/png;base64,${data}`}
-                        alt={`Poster number ${Id}`}
+                    )}
+                  </div>
+                  <div className="PosterPopUpMenuIconContainer">
+                    <div className="tooltip">
+                      <DeleteForeverIcon
+                        className="PopupIcon"
+                        fontSize="large"
+                        onClick={DeleteForeverHandler}
                       />
-                    </>
-                  ) : (
-                    <div className="ScaleOnHover">
-                      <img
-                        ref={imgRef}
-                        onError={onImageError}
-                        src={`data:image/png;base64,${data}`}
-                        alt={`Poster number ${Id}`}
-                      />
+                      <span className="tooltiptext">Delete poster</span>
                     </div>
-                  )}
-                </div>
-                <div className="PosterPopUpMenuIconContainer">
-                  <div className="tooltip">
-                    <DeleteForeverIcon
-                      className="PopupIcon"
-                      fontSize="large"
-                      onClick={DeleteForeverHandler}
-                    />
-                    <span className="tooltiptext">Delete poster</span>
+                    <div className="tooltip">
+                      <EditIcon
+                        className="PopupIcon"
+                        fontSize="large"
+                        onClick={() => {
+                          setIsEditing(!isEditing);
+                        }}
+                      />
+                      <span className="tooltiptext">Edit poster</span>
+                    </div>
                   </div>
-                  <div className="tooltip">
-                    <EditIcon
-                      className="PopupIcon"
-                      fontSize="large"
-                      onClick={() => {
-                        setIsEditing(!isEditing);
-                      }}
+                </div>
+                <div className="AccessibilityBarGraphScoreContainer">
+                  <h3>Accessibility Score</h3>
+                  <div id="PosterPopUpMenuBarGraphDiv">
+                    <BarGraph
+                      data={BarGraphData.build}
+                      BarGraphCallback={BarGarphCallbackHandler}
                     />
-                    <span className="tooltiptext">Edit poster</span>
                   </div>
                 </div>
               </div>
-              <div className="AccessibilityBarGraphScoreContainer">
-                <h3>Accessibility Score</h3>
-                <div id="PosterPopUpMenuBarGraphDiv">
-                  <BarGraph
-                    data={BarGraphData.build}
-                    BarGraphCallback={BarGarphCallbackHandler}
-                  />
-                </div>
+              <h1>Informational Text</h1>
+              <div style={{ display: "flex", gap: "0.25em" }}>
+                <button
+                  className="MoreInformationTextBtn"
+                  id="TextInformationBtn"
+                  style={{
+                    borderBottom:
+                      moreInfoText === "Text" ? "none" : "0.15em solid #333",
+                  }}
+                  onClick={() => {
+                    setMoreInfoText("Text");
+                  }}
+                >
+                  Text
+                </button>
+                <button
+                  className="MoreInformationTextBtn"
+                  id="StructureInformationBtn"
+                  style={{
+                    borderBottom:
+                      moreInfoText === "Structure"
+                        ? "none"
+                        : "0.15em solid #333",
+                  }}
+                  onClick={() => {
+                    setMoreInfoText("Structure");
+                  }}
+                >
+                  Structure
+                </button>
+                <button
+                  className="MoreInformationTextBtn"
+                  style={{
+                    borderBottom:
+                      moreInfoText === "Color" ? "none" : "0.15em solid #333",
+                  }}
+                  id="ColorInformationBtn"
+                  onClick={() => {
+                    setMoreInfoText("Color");
+                  }}
+                >
+                  Color
+                </button>
               </div>
+              {MoreInformationText(moreInfoText)}
             </div>
-            <h1>Informational Text</h1>
-            <div style={{"display": "flex", "gap": "1em"}}>
-              <button onClick={() => {setMoreInfoText("Text")}}>Text</button>
-              <button onClick={() => {setMoreInfoText("Structure")}}>Structure</button>
-              <button onClick={() => {setMoreInfoText("Color")}}>Color</button>
-            </div>
-            {MoreInformationText(moreInfoText)}
           </div>
         </div>
-      </div>
-    </Popup>
+      </Popup>{" "}
+    </motion.div>
   );
 };
 

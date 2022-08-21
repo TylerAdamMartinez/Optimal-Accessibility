@@ -24,6 +24,11 @@
   scale: 1.05;
 }
 
+#MyPoster:active {
+  box-shadow: 2px 2px 6px rgb(90, 90, 90);
+  scale: 0.95;
+}
+
 #PosterImage {
   padding: 1em;
   grid-row: 1 / 2;
@@ -350,4 +355,40 @@
   background-color: #33333387;
   height: 100vh;
   width: 100vw;
+}
+
+.MoreInformationText {
+  border: 0.15em solid #333;
+  border-radius: 0px 15px 15px 15px;
+  padding: 0.5em;
+  color: white;
+}
+
+.MoreInformationTextBtn {
+  transform: translate(0em, 0.15em);
+  border: 0.15em solid #333;
+  border-radius: 15px 15px 0px 0px;
+  padding: 0.5em;
+  font-size: 18px;
+  color: white;
+}
+
+.MoreInformationTextBtn:focus {
+  outline: none;
+}
+
+.MoreInformationTextBtn:hover {
+  font-weight: bolder;
+}
+
+#TextInformationBtn {
+  background-color: rgba(1, 127, 1, 1);
+}
+
+#StructureInformationBtn {
+  background-color: rgba(100, 6, 101, 1);
+}
+
+#ColorInformationBtn {
+  background-color: rgba(218, 54, 74, 1);
 }

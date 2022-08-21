@@ -69,6 +69,13 @@ function BarGraph(props: BarGraphProp) {
               min: 0,
               max: 100,
             },
+            x: {
+              ticks: {
+                font: {
+                  size: 20,
+                },
+              },
+            },
           },
         }}
       />
