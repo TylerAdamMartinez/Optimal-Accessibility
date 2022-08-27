@@ -1,4 +1,6 @@
 #OverallAccessibilityDiv {
+  grid-row: 2 / 3;
+  grid-column: 1 / 2;
   display: grid;
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 8fr 1fr;
@@ -20,6 +22,7 @@
   display: grid;
   grid-template-columns: 1fr;
   box-shadow: 4px 4px 10px rgb(90, 90, 90);
+  border: 0.15em solid #333;
 }
 
 #InnerOverallAccessibilityDiv h2 {
@@ -33,9 +36,9 @@
 }
 
 #InnerOverallAccessibilityDiv canvas {
-  overflow-y: hidden;
-  overflow-x: hidden;
-  padding: 1em;
   width: 100% !important;
-  height: auto !important;
+}
+
+#InnerOverallAccessibilityDiv p {
+  padding: 1em;
 }

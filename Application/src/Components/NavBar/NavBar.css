@@ -1,0 +1,338 @@
+.NavBar {
+  background-color: #b90504;
+  border-bottom: 3px solid #333;
+  position: fixed;
+  z-index: 950;
+  height: 100%;
+}
+
+#LogoImg {
+  cursor: pointer;
+  height: 2.5em;
+  width: auto;
+  translate: 0.085em;
+}
+
+@media screen and (max-width: 1150px) {
+  #LogoBox img {
+    height: 2em;
+  }
+
+  #LogoBox h1 {
+    font-size: 0.75em;
+  }
+}
+
+#ExitSpot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #f6f6f6;
+}
+
+#ExitSpot p {
+  margin: 0;
+  padding: 0;
+}
+
+#NavItemsBox {
+  align-self: center;
+  grid-row: 2 / 3;
+  grid-column: 1 / 2;
+}
+
+#NavItemsBox ul {
+  padding-inline-start: 0px;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  display: grid;
+  justify-items: center;
+  padding: 0.5em;
+}
+
+#NavItemsBox ul li {
+  list-style-type: none;
+  cursor: pointer;
+  color: #f6f6f6;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+  transition: scale 0.1s ease-in-out;
+}
+
+#NavItemsBox ul li:hover {
+  scale: 1.2;
+}
+
+#NavItemsBox ul li:active {
+  scale: 0.8;
+}
+
+#PopUpHelpMenuDivSection,
+#PopUpAccountsMenuDivSection {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 3fr 1fr;
+}
+
+#PopUpHelpMenuDiv,
+#PopUpAccountMenuDiv {
+  grid-row: 1 / 2;
+  grid-column: 2 / 3;
+  border-top: none !important;
+  border: 5px solid#333;
+  background-color: #f6f6f6;
+  padding: 1em;
+  margin-top: 0;
+  margin-bottom: 0;
+  border-bottom-left-radius: 10px;
+}
+
+#PopUpHelpMenuDiv li,
+#PopUpAccountMenuDiv li {
+  list-style-type: none;
+  padding: 0.25em;
+  color: #f6f6f6;
+  font-size: 32px;
+  cursor: pointer;
+}
+
+#PopUpHelpMenuDivTextField {
+  background-color: #017f01;
+  margin-bottom: 0.5em;
+  border-radius: 10px;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+#PopUpHelpMenuDivTextField:hover {
+  box-shadow: 2px 2px 5px rgb(90, 90, 90);
+}
+
+#PopUpHelpMenuDivStructureField {
+  background-color: #640665;
+  margin-bottom: 0.5em;
+  border-radius: 10px;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+#PopUpHelpMenuDivStructureField:hover {
+  box-shadow: 2px 2px 5px rgb(90, 90, 90);
+}
+
+#PopUpHelpMenuDivColorField {
+  background-color: #da364a;
+  border-radius: 10px;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+#PopUpHelpMenuDivColorField:hover {
+  box-shadow: 2px 2px 5px rgb(90, 90, 90);
+}
+
+#PopUpAddMenuDivSection {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 3fr 1fr;
+}
+
+#PopUpAddMenuDiv {
+  grid-row: 1 / 2;
+  grid-column: 2 / 3;
+  border-top: none !important;
+  border: 3px solid#333;
+  background-color: #f6f6f6;
+  padding: 1em;
+  margin-top: 0;
+  margin-bottom: 0;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  box-shadow: 4px 4px 10px rgb(90, 90, 90);
+}
+
+#PopUpAddMenuForm {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 2fr 1fr;
+  padding: 1em;
+  gap: 2em;
+}
+
+#PopUpAddMenuForm input {
+  font-size: 20pt;
+  color: #333;
+  background-color: #f6f6f6;
+  border: none;
+  border-bottom: 3pt solid #b90504;
+  border-radius: 3px;
+}
+
+#PopUpAddMenuForm input::placeholder {
+  color: #333;
+}
+
+#PopUpAddMenuForm input:focus-visible {
+  outline: none;
+}
+
+#PopUpAddMenuHeaderDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#PopUpAddMenuHeaderDiv h2 {
+  flex-grow: 2;
+}
+
+#PopUpAddMenuHeaderDiv #PopUpAddMenuHeadeCloseBtn {
+  align-self: flex-start;
+}
+
+#PopUpAddMenuHeaderDiv #PopUpAddMenuHeadeCloseBtn:hover {
+  color: #990100;
+}
+
+#PopUpAddMenuDiv h2 {
+  font-size: 34px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-bottom: 10px;
+  color: #333333;
+  border-bottom: 3px solid #333333;
+  user-select: none;
+}
+
+.PopUpAccountMenuDivbtn {
+  background-color: #b90504 !important;
+  cursor: pointer;
+  color: #f6f6f6 !important;
+  border: none !important;
+  border-radius: 10px !important;
+  transition: box-shadow 0.2s ease-in-out;
+  transition: scale 0.1s ease-in-out;
+}
+
+.PopUpAccountMenuDivbtn:hover {
+  box-shadow: 2px 2px 4px rgb(90, 90, 90);
+  scale: 1.05;
+}
+
+.PopUpAccountMenuDivbtn:active {
+  box-shadow: 2px 2px 4px rgb(90, 90, 90);
+  scale: 0.95;
+}
+
+.PopUpBackground {
+  background-color: #33333387;
+  height: 100vh;
+  width: 100vw;
+}
+
+.CreateAccountButton {
+  display: flex;
+  margin-left: 3em;
+  margin-right: 3em;
+  cursor: pointer;
+  background-color: #b90504;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  color: #fff;
+  box-shadow: 0px 0px 4px rgb(255, 255, 255);
+  padding: 4px 8px 4px 8px;
+  transition: 0.3s box-shadow ease-in-out;
+}
+
+.CreateAccountButton:hover {
+  box-shadow: 0px 0px 10px rgb(255, 255, 255);
+}
+
+.DragAndDropSection {
+  cursor: copy;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  background-color: #e1e1e1;
+  border-radius: 15px;
+  border: 1px dashed #a2a2a2;
+  transition: 0.3s all ease-in-out;
+  overflow: hidden;
+}
+
+.DragAndDropSection:hover {
+  background-color: #33333387;
+  border: 1px dashed #b90504;
+  content-visibility: inherit;
+}
+
+.tooltip {
+  position: relative;
+  display: flex;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: max-content;
+  background-color: #333;
+  color: #fff;
+  border-radius: 6px;
+  padding: 0.5em;
+
+  position: absolute;
+  z-index: 99999;
+  margin-left: 3em;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+.spinning_loader {
+  font-size: 32px;
+  animation: rotation 1s infinite linear;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinning_loader_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#AccountPanelDrop {
+  position: fixed;
+  width: max-content;
+  background: white;
+  height: 100%;
+  top: 0;
+  padding: 3em;
+  border: 0.15em solid #333;
+}
+
+#AccountPanelDrop ul {
+  list-style-type: none;
+}
+
+#AccountPanelDrop ul a li {
+  font-size: 20px;
+  padding: 1em 1.5em 1em 1.5em;
+  text-align: center;
+  transition: scale 0.1s ease-in-out;
+}
+
+#AccountPanelDrop ul a li:hover {
+  scale: 1.05;
+}
+
+#AccountPanelDrop ul a li:active {
+  scale: 0.95;
+}

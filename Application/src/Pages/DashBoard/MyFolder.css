@@ -1,0 +1,46 @@
+.MyFolder {
+  display: flex;
+  justify-content: center;
+  gap: 0.5em;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  align-items: center;
+  border-radius: 0.5em;
+  width: calc(200px - 1em);
+  height: 75px;
+  background-color: #d0d0d0;
+  margin: 1em;
+  cursor: pointer;
+  transition: box-shadow 0.1s ease-in-out;
+  transition: scale 0.1s ease-in-out;
+}
+
+.MyFolder:hover {
+  box-shadow: 2px 2px 6px rgb(90, 90, 90);
+  scale: 1.05;
+}
+
+.MyFolder:active {
+  box-shadow: 2px 2px 6px rgb(90, 90, 90);
+  scale: 0.95;
+}
+
+.selectedFolder {
+  background-color: #abb2b9;
+  scale: 0.95;
+}
+
+.selectedFolder:hover {
+  scale: 0.95 !important;
+  box-shadow: 0.5px 0.5px 1.5px rgb(90, 90, 90) !important;
+}
+
+.MadeFolder {
+  border: 0.15em dashed #333;
+}
+
+.CreateFolder {
+  border: 0.15em solid #333;
+}

@@ -1,0 +1,122 @@
+import "./../../App.css";
+import NavBar from "../../Components/NavBar/NavBar";
+import MyPostersSection from "./MyPostersSection";
+import OverallAccessibilitySection from "./OverallAccessibilitySection";
+import { SetStateAction, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { db } from "../../FirebaseConfig";
+import { ref, child, get, set } from "firebase/database";
+import { poster, chartData, accessibilityScore } from "../../oaTypes";
+import AccessibilityPieGraphData from "../../Components/Graphs/PieGraph/AccessibilityPieGraphData";
+import { motion } from "framer-motion";
+
+export var GlobalPosters: Array<poster>;
+
+function DashBoard() {
+  const [NewPosterAdded, SetNewPosterAdded] = useState<string>("");
+  const [OldPosterEdited, SetOldPosterEdited] = useState<string>("");
+  const [OverallAccessibilityRating, SetOverallAccessibilityRating] =
+    useState<accessibilityScore>({
+      textRating: 0,
+      structureRating: 0,
+      colorRating: 0,
+    });
+
+  const [Posters, SetPosters] = useState<Array<poster> | null>(null);
+
+  useEffect(() => {
+    let uid = localStorage.getItem("uid");
+    const dbRef = ref(db);
+    get(child(dbRef, `Posters/${uid}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          let posters = snapshot.val().posters;
+          SetPosters(posters);
+          GlobalPosters = posters;
+          sessionStorage.setItem("cached-posters", "true");
+        } else {
+          set(ref(db, "Posters/" + uid), {
+            posters: [],
+          })
+            .then(() => {
+              toast.info("Successfully initiated Posters", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 4000,
+              });
+            })
+            .catch(() => {
+              toast.error("Failed to initiate Posters", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 4000,
+              });
+            });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [NewPosterAdded, OldPosterEdited]);
+
+  useEffect(() => {
+    let uid = localStorage.getItem("uid");
+    const dbRef = ref(db);
+    get(child(dbRef, `OverallAccessibilityRating/${uid}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          SetOverallAccessibilityRating(snapshot.val());
+        } else {
+          set(ref(db, "OverallAccessibilityRating/" + uid), {
+            textRating: 5,
+            structureRating: 5,
+            colorRating: 5,
+          })
+            .then(() => {
+              toast.info("Successfully initiated OverallAccessibilityRating", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 4000,
+              });
+            })
+            .catch(() => {
+              toast.error("Failed to initiate OverallAccessibilityRating", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 4000,
+              });
+            });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [NewPosterAdded, OldPosterEdited]);
+
+  function addPosterCallbackHandler(name: SetStateAction<string>) {
+    SetNewPosterAdded(name);
+  }
+
+  function editPosterCallbackHandler(title: SetStateAction<string>) {
+    SetOldPosterEdited(title);
+  }
+
+  let OverallAccessibilityPieGraphData: AccessibilityPieGraphData =
+    new AccessibilityPieGraphData(OverallAccessibilityRating);
+
+  let chartData: chartData = OverallAccessibilityPieGraphData.build;
+
+  return (
+    <motion.div
+      className="App"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <NavBar addPosterCallback={addPosterCallbackHandler} />
+      <MyPostersSection
+        myPosters={Posters}
+        editPosterCallback={editPosterCallbackHandler}
+      />
+      <OverallAccessibilitySection data={chartData} />
+    </motion.div>
+  );
+}
+
+export default DashBoard;

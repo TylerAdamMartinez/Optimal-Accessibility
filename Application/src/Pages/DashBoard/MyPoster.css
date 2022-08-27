@@ -1,5 +1,6 @@
 #MyPoster {
   width: 200px;
+  height: 250px;
   background-color: #d0d0d0;
   display: grid;
   grid-template-rows: 7fr 2fr;
@@ -7,11 +8,26 @@
   border-radius: 15px;
   margin: 1em;
   cursor: pointer;
-  transition: box-shadow 0.2s ease-in-out;
+  transition: box-shadow 0.1s ease-in-out;
+  transition: scale 0.1s ease-in-out;
+}
+
+.MadePoster {
+  border: 0.15em solid #333;
+}
+
+.CreatePoster {
+  border: 0.15em dashed #333;
 }
 
 #MyPoster:hover {
   box-shadow: 2px 2px 6px rgb(90, 90, 90);
+  scale: 1.05;
+}
+
+#MyPoster:active {
+  box-shadow: 2px 2px 6px rgb(90, 90, 90);
+  scale: 0.95;
 }
 
 #PosterImage {
@@ -48,9 +64,9 @@
 
 .popup-content {
   position: fixed !important;
-  top: 3em !important;
   left: 0 !important;
   z-index: 900 !important;
+  top: 0 !important;
 }
 
 .my-popup-overlay {
@@ -168,8 +184,7 @@
 }
 
 .ScaleOnHover:hover {
-  transform: scale(1.7) translateX(25%);
-  box-shadow: 2px 2px 6px rgb(90, 90, 90);
+  transform: scale(1.2);
 }
 
 #PosterPopUpMenuImgDiv img {
@@ -219,10 +234,12 @@
 
 .CloseIcon:hover {
   color: #990100;
+  scale: 1.15;
 }
 
 .PopupIcon:hover {
   color: #990100;
+  scale: 1.15;
 }
 
 #editForm {
@@ -339,4 +356,40 @@
   background-color: #33333387;
   height: 100vh;
   width: 100vw;
+}
+
+.MoreInformationText {
+  border: 0.15em solid #333;
+  border-radius: 0px 15px 15px 15px;
+  padding: 0.5em;
+  color: white;
+}
+
+.MoreInformationTextBtn {
+  transform: translate(0em, 0.15em);
+  border: 0.15em solid #333;
+  border-radius: 15px 15px 0px 0px;
+  padding: 0.5em;
+  font-size: 18px;
+  color: white;
+}
+
+.MoreInformationTextBtn:focus {
+  outline: none;
+}
+
+.MoreInformationTextBtn:hover {
+  font-weight: bolder;
+}
+
+#TextInformationBtn {
+  background-color: rgba(1, 127, 1, 1);
+}
+
+#StructureInformationBtn {
+  background-color: rgba(100, 6, 101, 1);
+}
+
+#ColorInformationBtn {
+  background-color: rgba(218, 54, 74, 1);
 }
