@@ -1,5 +1,5 @@
 import "./../../App.css";
-import NavBar from "../../Components/NavBar";
+import NavBar from "../../Components/NavBar/NavBar";
 import MyPostersSection from "./MyPostersSection";
 import OverallAccessibilitySection from "./OverallAccessibilitySection";
 import { SetStateAction, useEffect, useState } from "react";
@@ -7,7 +7,8 @@ import { toast } from "react-toastify";
 import { db } from "../../FirebaseConfig";
 import { ref, child, get, set } from "firebase/database";
 import { poster, chartData, accessibilityScore } from "../../oaTypes";
-import AccessibilityPieGraphData from "../../Components/AccessibilityPieGraphData";
+import AccessibilityPieGraphData from "../../Components/Graphs/PieGraph/AccessibilityPieGraphData";
+import { motion } from "framer-motion";
 
 export var GlobalPosters: Array<poster>;
 
@@ -102,14 +103,19 @@ function DashBoard() {
   let chartData: chartData = OverallAccessibilityPieGraphData.build;
 
   return (
-    <div className="App">
+    <motion.div
+      className="App"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <NavBar addPosterCallback={addPosterCallbackHandler} />
       <MyPostersSection
         myPosters={Posters}
         editPosterCallback={editPosterCallbackHandler}
       />
       <OverallAccessibilitySection data={chartData} />
-    </div>
+    </motion.div>
   );
 }
 

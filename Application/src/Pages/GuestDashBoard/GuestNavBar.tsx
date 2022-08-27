@@ -1,7 +1,7 @@
 import "./GuestNavBar.css";
 import HelpIcon from "@mui/icons-material/Help";
 import Popup from "reactjs-popup";
-import HelpPage from "./../../Components/HelpPage";
+import HelpPage from "./../../Pages/HelpPage/HelpPage";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";

@@ -1,4 +1,4 @@
-import NavBar from "../../Components/NavBar";
+import NavBar from "../../Components/NavBar/NavBar";
 import "./SettingsPage.css";
 import { SetStateAction, useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
@@ -7,6 +7,7 @@ import Cookies from "universal-cookie";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { motion } from "framer-motion";
 
 function Settings() {
   const navigate = useNavigate();
@@ -104,7 +105,13 @@ function Settings() {
     <>
       <NavBar addPosterCallback={undefined} />
       <div id="MyPostersDiv">
-        <div id="InnerMyPostersDiv">
+        <motion.div
+          id="InnerMyPostersDiv"
+          initial={{ scaleY: 0 }}
+          animate={{ scaleY: 1 }}
+          exit={{ scaleY: 0 }}
+          transition={{ duration: 0.3, delay: 0.3 }}
+        >
           <div id="SettingsPageHeaderDiv">
             <h2>Settings</h2>
             <div className="tooltip">
@@ -231,7 +238,7 @@ function Settings() {
               </div>
             </>
           )}
-        </div>
+        </motion.div>
       </div>
       <ToastContainer />
     </>

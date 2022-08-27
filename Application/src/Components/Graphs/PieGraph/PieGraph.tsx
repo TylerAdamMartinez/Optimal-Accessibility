@@ -7,7 +7,7 @@ import {
   Legend,
 } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import { chartData } from "../oaTypes";
+import { chartData } from "../../../oaTypes";
 
 ChartJs.register(RadialLinearScale, ArcElement, Title, Tooltip, Legend);
 

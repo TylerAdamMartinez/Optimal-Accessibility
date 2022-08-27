@@ -3,11 +3,12 @@ import React, { useState } from "react";
 import MagicDropZone from "react-magic-dropzone";
 import { ToastContainer, toast } from "react-toastify";
 import GuestNavBar from "./GuestNavBar";
-import BarGraph from "../../Components/BarGraph";
-import AccessibilityBarGraphData from "../../Components/AccessibilityBarGraphData";
+import BarGraph from "../../Components/Graphs/BarGraph/BarGraph";
+import AccessibilityBarGraphData from "../../Components/Graphs/BarGraph/AccessibilityBarGraphData";
 import ConvertImageToBase64 from "../../Utils/ConvertImageToBase64";
 import { getImageGrid } from "../../Utils/Structure";
 import { accessibilityScore } from "../../oaTypes";
+import { motion } from "framer-motion";
 
 const GuestDashboard = () => {
   const [filePreview, setFilePreview] = useState(null);
@@ -74,10 +75,20 @@ const GuestDashboard = () => {
   let BarGraphData = new AccessibilityBarGraphData(posterGrade);
 
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <GuestNavBar />
       <div className="GuestUIContainer">
-        <div className="PosterDragAndDrop">
+        <motion.div
+          className="PosterDragAndDrop"
+          initial={{ scaleY: 0 }}
+          animate={{ scaleY: 1 }}
+          exit={{ scaleY: 0 }}
+          transition={{ duration: 0.3, delay: 0.3 }}
+        >
           <h2 className="SectionHeading">Upload a Poster</h2>
           <MagicDropZone
             className="DragAndDropArea"
@@ -90,8 +101,14 @@ const GuestDashboard = () => {
               <img className="PosterImg" src={filePreview} alt="User Upload" />
             )}
           </MagicDropZone>
-        </div>
-        <div className="PosterRatingContainer">
+        </motion.div>
+        <motion.div
+          className="PosterRatingContainer"
+          initial={{ scaleY: 0 }}
+          animate={{ scaleY: 1 }}
+          exit={{ scaleY: 0 }}
+          transition={{ duration: 0.3, delay: 0.3 }}
+        >
           <h2 className="SectionHeading">Accessibility Score</h2>
           <div style={{ width: "95%" }}>
             <BarGraph
@@ -104,10 +121,10 @@ const GuestDashboard = () => {
                 : `Calculated in ${totalCalculationTime} seconds`}
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
       <ToastContainer autoClose={1000} limit={1} />
-    </div>
+    </motion.div>
   );
 };
 

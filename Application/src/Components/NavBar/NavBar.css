@@ -56,11 +56,17 @@
   color: #f6f6f6;
   margin-top: 0.25em;
   margin-bottom: 0.25em;
+  transition: scale 0.1s ease-in-out;
 }
 
 #NavItemsBox ul li:hover {
   scale: 1.2;
 }
+
+#NavItemsBox ul li:active {
+  scale: 0.8;
+}
+
 #PopUpHelpMenuDivSection,
 #PopUpAccountsMenuDivSection {
   display: grid;
@@ -202,10 +208,17 @@
   border: none !important;
   border-radius: 10px !important;
   transition: box-shadow 0.2s ease-in-out;
+  transition: scale 0.1s ease-in-out;
 }
 
 .PopUpAccountMenuDivbtn:hover {
   box-shadow: 2px 2px 4px rgb(90, 90, 90);
+  scale: 1.05;
+}
+
+.PopUpAccountMenuDivbtn:active {
+  box-shadow: 2px 2px 4px rgb(90, 90, 90);
+  scale: 0.95;
 }
 
 .PopUpBackground {
@@ -293,4 +306,33 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+#AccountPanelDrop {
+  position: fixed;
+  width: max-content;
+  background: white;
+  height: 100%;
+  top: 0;
+  padding: 3em;
+  border: 0.15em solid #333;
+}
+
+#AccountPanelDrop ul {
+  list-style-type: none;
+}
+
+#AccountPanelDrop ul a li {
+  font-size: 20px;
+  padding: 1em 1.5em 1em 1.5em;
+  text-align: center;
+  transition: scale 0.1s ease-in-out;
+}
+
+#AccountPanelDrop ul a li:hover {
+  scale: 1.05;
+}
+
+#AccountPanelDrop ul a li:active {
+  scale: 0.95;
 }

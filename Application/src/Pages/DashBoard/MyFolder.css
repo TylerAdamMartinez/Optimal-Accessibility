@@ -9,6 +9,7 @@
   align-items: center;
   border-radius: 0.5em;
   width: calc(200px - 1em);
+  height: 75px;
   background-color: #d0d0d0;
   margin: 1em;
   cursor: pointer;

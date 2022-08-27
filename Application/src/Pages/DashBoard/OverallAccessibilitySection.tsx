@@ -1,6 +1,7 @@
 import "./OverallAccessibilitySection.css";
-import PolarGraph from "../../Components/PieGraph";
+import PolarGraph from "../../Components/Graphs/PieGraph/PieGraph";
 import { chartData } from "../../oaTypes";
+import { motion } from "framer-motion";
 
 interface OverallAccessibilitySectionProp {
   data: chartData;
@@ -8,7 +9,13 @@ interface OverallAccessibilitySectionProp {
 
 function OverallAccessibilitySection(props: OverallAccessibilitySectionProp) {
   return (
-    <div id="OverallAccessibilityDiv">
+    <motion.div
+      id="OverallAccessibilityDiv"
+      initial={{ scaleY: 0 }}
+      animate={{ scaleY: 1 }}
+      exit={{ scaleY: 0 }}
+      transition={{ duration: 0.3, delay: 0.2 }}
+    >
       <div id="InnerOverallAccessibilityDiv">
         <h2>My Average Accessibility Rating</h2>
         <PolarGraph data={props.data} />
@@ -19,7 +26,7 @@ function OverallAccessibilitySection(props: OverallAccessibilitySectionProp) {
           reprehenderit dolores illo deleniti soluta ipsam.
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

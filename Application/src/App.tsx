@@ -6,21 +6,24 @@ import PrivateRoutes from "./Components/PrivateRoutes";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SettingsPage from "./Pages/SettingsPage/SettingsPage";
 import GuestDashboard from "./Pages/GuestDashBoard/GuestDashboard";
+import { AnimatePresence } from "framer-motion";
 // import { analytics } from "./FirebaseConfig";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/guest" element={<GuestDashboard />} />
-        <Route element={<PrivateRoutes />}>
-          <Route path="/dashboard" element={<DashBoard />} />
-          <Route path="/settings" element={<SettingsPage />} />
-        </Route>
-        <Route path="*" element={<NotFound404ErrorPage />} />
-      </Routes>
-    </Router>
+    <AnimatePresence mode="wait">
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/guest" element={<GuestDashboard />} />
+          <Route element={<PrivateRoutes />}>
+            <Route path="/dashboard" element={<DashBoard />} />
+            <Route path="/settings" element={<SettingsPage />} />
+          </Route>
+          <Route path="*" element={<NotFound404ErrorPage />} />
+        </Routes>
+      </Router>
+    </AnimatePresence>
   );
 }
 

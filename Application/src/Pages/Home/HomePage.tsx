@@ -6,6 +6,8 @@ import GIF from "../../Images/HomePage_gif.gif";
 import Logo from "./../../Images/Optimal-Accessibility-Logo.png";
 import Cookies from "universal-cookie";
 import { ToastContainer, toast } from "react-toastify";
+import LoginIcon from "@mui/icons-material/Login";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import "react-toastify/dist/ReactToastify.css";
 import Menu from "@mui/icons-material/Menu";
 import {
@@ -16,6 +18,12 @@ import {
   createUserWithEmailAndPassword,
   signInAnonymously,
 } from "firebase/auth";
+import {
+  AnimatePresence,
+  motion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 
 function HomePage(): JSX.Element {
   const [homePageMode, setHomePageMode] = useState<string>("hero");
@@ -24,6 +32,8 @@ function HomePage(): JSX.Element {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const navigate = useNavigate();
+  const { scrollYProgress } = useScroll();
+  const scale = useTransform(scrollYProgress, [2, 0], [0, 1]);
 
   useEffect(() => {
     let cookies = new Cookies();
@@ -256,28 +266,56 @@ function HomePage(): JSX.Element {
   function HomePageModeHandler(state: string): JSX.Element {
     if (state === "hero") {
       return (
-        <div id="heroSection">
+        <motion.div id="heroSection" style={{ scale }}>
           <div id="heroSectionCall_to_Action">
-            <h1>Optimal Accessibility</h1>
-            <p>
+            <motion.h1
+              initial={{ translateX: -500, opacity: 0 }}
+              animate={{ translateX: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              Optimal Accessibility
+            </motion.h1>
+            <motion.p
+              initial={{ translateX: -500, opacity: 0 }}
+              animate={{ translateX: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 1.0 }}
+            >
               We believe that the web should be accessible. Optimal
               Accessibility is a <strong>free</strong> and{" "}
               <strong>open-source</strong> image accessibility tool.
-            </p>
-            <button className="PopUpAccountMenuDivbtn" onClick={LinkToSignUp}>
+            </motion.p>
+            <motion.button
+              className="PopUpAccountMenuDivbtn"
+              style={{ display: "flex", alignItems: "center", gap: "0.5em" }}
+              onClick={LinkToSignUp}
+              initial={{ translateX: -500, opacity: 0 }}
+              animate={{ translateX: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 1.5 }}
+            >
               Sign Up
-            </button>
+              <ArrowForwardIcon />
+            </motion.button>
           </div>
-          <img
+          <motion.img
             id="heroSectionVisualFocus"
             src={GIF}
             alt={"product demostration"}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 3 }}
           />
-        </div>
+        </motion.div>
       );
     } else if (state === "signup") {
       return (
-        <div id="RegistrationPageSignInFormDiv">
+        <motion.div
+          id="RegistrationPageSignInFormDiv"
+          style={{ scale }}
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          exit={{ scaleX: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <h2>SIGN UP</h2>
           <form onSubmit={handleSignUpSubmit} id="SignInForm">
             <input
@@ -316,11 +354,18 @@ function HomePage(): JSX.Element {
               </button>
             </div>
           </form>
-        </div>
+        </motion.div>
       );
     } else if (state === "login") {
       return (
-        <div id="LoginPageSignInFormDiv">
+        <motion.div
+          id="LoginPageSignInFormDiv"
+          style={{ scale }}
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          exit={{ scaleX: 0 }}
+          transition={{ duration: 0.5, type: "tween" }}
+        >
           <h2>LOGIN</h2>
           <form onSubmit={handleLoginSubmit} id="SignInForm">
             <input
@@ -356,7 +401,7 @@ function HomePage(): JSX.Element {
               </button>
             </div>
           </form>
-        </div>
+        </motion.div>
       );
     } else if (state === "mobileMenu") {
       return <></>;
@@ -366,44 +411,99 @@ function HomePage(): JSX.Element {
   }
 
   return (
-    <div id="LoginPageDiv">
-      <div id="HomeBanner">
-        <div id="LogoBanner" onClick={LinkToHero}>
-          <img src={Logo} alt="logo" />
-          <h1>Optimal Accessibility</h1>
+    <>
+      <div id="LoginPageDiv">
+        <div id="HomeBanner">
+          <div id="LogoBanner" onClick={LinkToHero}>
+            <img src={Logo} alt="logo" />
+            <h1>Optimal Accessibility</h1>
+          </div>
+          <div id="OptionsBanner">
+            <Menu
+              fontSize="large"
+              className="MenuActivity"
+              onClick={() => {
+                if (!mobileMenu) {
+                  setHomePageMode("mobileMenu");
+                } else {
+                  setHomePageMode("hero");
+                }
+                setMobileMenu(!mobileMenu);
+              }}
+            />
+            <motion.button
+              className="PopUpAccountMenuDivbtn ButtonActivity"
+              style={{ display: "flex", alignItems: "center", gap: "0.5em" }}
+              onClick={LinkToLogin}
+              initial={{ translateX: 300 }}
+              animate={{ translateX: 0 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+            >
+              Login
+              <LoginIcon />
+            </motion.button>
+            <motion.p
+              id="GuestModeLink"
+              className="ButtonActivity"
+              onClick={handleGuestModeSubmit}
+              initial={{ translateX: 300 }}
+              animate={{ translateX: 0 }}
+              transition={{ duration: 0.3, delay: 0.4 }}
+            >
+              Continue as Guest
+            </motion.p>
+          </div>
         </div>
-        <div id="OptionsBanner">
-          <Menu
-            fontSize="large"
-            className="MenuActivity"
-            onClick={() => {
-              if (!mobileMenu) {
-                setHomePageMode("mobileMenu");
-              } else {
-                setHomePageMode("hero");
-              }
-              setMobileMenu(!mobileMenu);
-            }}
-          />
-          <button
-            className="PopUpAccountMenuDivbtn ButtonActivity"
-            onClick={LinkToLogin}
-          >
-            Login
-          </button>
-          <p
-            id="GuestModeLink"
-            className="ButtonActivity"
-            onClick={handleGuestModeSubmit}
-          >
-            Continue as Guest
-          </p>
-        </div>
+        {mobileMenuHandler(mobileMenu)}
+        <AnimatePresence mode="sync">
+          {HomePageModeHandler(homePageMode)}
+        </AnimatePresence>
       </div>
-      {mobileMenuHandler(mobileMenu)}
-      {HomePageModeHandler(homePageMode)}
+      <div id="LoginPageAdditionInfoDiv">
+        <motion.div
+          style={{ transformStyle: "preserve-3d" }}
+          initial={{ transform: "rotateX(-45deg) rotateY(15deg)" }}
+          whileInView={{ transform: "rotateX(0deg) rotateY(0deg)" }}
+          viewport={{ once: false, amount: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.h2>DESIGNERS SHOULD </motion.h2>
+          <motion.h2>ALWAYS KEEP THEIR </motion.h2>
+          <motion.h2>USERS IN MIND. </motion.h2>
+        </motion.div>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis quae
+          dolores, aspernatur molestiae libero corporis suscipit ex distinctio
+          dolore voluptatem laboriosam, quo quia autem. Dolor recusandae illo
+          dolore iusto quibusdam!
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis quae
+          dolores, aspernatur molestiae libero corporis suscipit ex distinctio
+          dolore voluptatem laboriosam, quo quia autem. Dolor recusandae illo
+          dolore iusto quibusdam!
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis quae
+          dolores, aspernatur molestiae libero corporis suscipit ex distinctio
+          dolore voluptatem laboriosam, quo quia autem. Dolor recusandae illo
+          dolore iusto quibusdam!
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis quae
+          dolores, aspernatur molestiae libero corporis suscipit ex distinctio
+          dolore voluptatem laboriosam, quo quia autem. Dolor recusandae illo
+          dolore iusto quibusdam!
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis quae
+          dolores, aspernatur molestiae libero corporis suscipit ex distinctio
+          dolore voluptatem laboriosam, quo quia autem. Dolor recusandae illo
+          dolore iusto quibusdam!
+        </p>
+      </div>
       <ToastContainer autoClose={4000} limit={3} />
-    </div>
+    </>
   );
 }
 

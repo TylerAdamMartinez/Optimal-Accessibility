@@ -1,5 +1,6 @@
 #MyPoster {
   width: 200px;
+  height: 250px;
   background-color: #d0d0d0;
   display: grid;
   grid-template-rows: 7fr 2fr;

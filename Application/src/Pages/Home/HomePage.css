@@ -14,6 +14,7 @@
 #HomeBanner {
   position: -webkit-sticky;
   position: sticky;
+  z-index: 2;
   top: 0;
   background: #f6f6f6;
   grid-row: 1 / 2;
@@ -77,10 +78,17 @@
   border-radius: 5px;
   outline: 2px solid #b90504;
   transition: 0.2s box-shadow ease-in-out;
+  transition: scale 0.1s ease-in-out;
 }
 
 #HomeBanner #OptionsBanner #GuestModeLink:hover {
   box-shadow: 0px 0px 8px #b90504;
+  scale: 1.05;
+}
+
+#HomeBanner #OptionsBanner #GuestModeLink:active {
+  box-shadow: 0px 0px 8px #b90504;
+  scale: 0.95;
 }
 
 #HomeBanner #OptionsBanner .MenuActivity {
@@ -191,7 +199,7 @@
   }
 
   #HomeBanner #OptionsBanner .ButtonActivity {
-    display: none;
+    display: none !important;
   }
 
   #HomeBanner #LogoBanner h1 {
@@ -380,6 +388,7 @@
   color: #333;
   border-radius: 10px;
   transition: box-shadow 0.2s ease-in-out;
+  transition: scale 0.1s ease-in-out;
 }
 
 @media screen and (max-width: 1500px) {
@@ -390,6 +399,12 @@
 
 #SignInWithGooglebtn:hover {
   box-shadow: 0px 0px 8px #b90504;
+  scale: 1.05;
+}
+
+#SignInWithGooglebtn:active {
+  box-shadow: 0px 0px 8px #b90504;
+  scale: 0.95;
 }
 
 #RegistrationPageDiv {
@@ -453,4 +468,10 @@
 
 #SignInForm input:focus-visible {
   outline: none;
+}
+
+#LoginPageAdditionInfoDiv {
+  height: 100vh;
+  width: 100vw;
+  background-color: aqua;
 }
