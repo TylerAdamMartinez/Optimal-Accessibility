@@ -1,0 +1,11 @@
+[package]
+name = "optimal_accessibility_get_colors"
+authors = ["Tyler Adam Martinez <TylerAdamMartinez@outlook.com>"]
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+image = "0.24.3"
+chrono = "0.4.22"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
