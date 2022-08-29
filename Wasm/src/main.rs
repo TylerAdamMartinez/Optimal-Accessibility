@@ -34,21 +34,21 @@ impl ImageMetaData {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct ImageColorData {
+struct ImageColorData<T> {
     height: u32,
     width: u32,
     color_type: String,
     unique_colors: usize,
-    color_map: HashMap<u8, usize>,
+    color_map: Vec<T>,
 }
 
-impl ImageColorData {
+impl<T> ImageColorData<T> {
     fn new(
         height: u32,
         width: u32,
         color_type: String,
         unique_colors: usize,
-        color_map: HashMap<u8, usize>,
+        color_map: Vec<T>,
     ) -> Self {
         ImageColorData {
             height,
@@ -127,26 +127,32 @@ fn get_image_colors(image_path: &str) -> Result<String, Box<dyn std::error::Erro
 
     match color_type {
         ColorType::Rgb8 => {
-            let rgb_image = image_from_path.to_rgb8().into_vec();
-            let rgb_image_unique_values = rgb_image.clone().into_iter().collect::<HashSet<u8>>();
-            let mut rgb_image_dictionary = HashMap::<u8, usize>::new();
+            let rgb_image = image_from_path;
+            let mut rgb_image_unique_values = HashSet::<[u8; 3]>::new();
+            let mut rgb_image_dictionary = HashMap::<[u8; 3], usize>::new();
 
-            for value in rgb_image_unique_values.iter() {
-                rgb_image_dictionary.insert(value.to_owned(), 0);
-            }
+            for rgb in rgb_image.to_rgb8().pixels() {
+                let rgb_array = [rgb[0], rgb[1], rgb[2]];
 
-            for rgb_value in rgb_image.iter() {
-                if let Some(current_count) = rgb_image_dictionary.get_mut(rgb_value) {
-                    *current_count = *current_count + 1;
+                if rgb_image_unique_values.contains(&rgb_array) {
+                    if let Some(current_count) = rgb_image_dictionary.get_mut(&rgb_array) {
+                        *current_count = *current_count + 1;
+                    }
+                } else {
+                    rgb_image_unique_values.insert(rgb_array);
+                    rgb_image_dictionary.insert(rgb_array, 0);
                 }
             }
+
+            let mut count_vec: Vec<(&[u8; 3], &usize)> = rgb_image_dictionary.iter().collect();
+            count_vec.sort_by(|a, b| b.1.cmp(a.1));
 
             let image_color_data = ImageColorData::new(
                 image_from_path_width,
                 image_from_path_height,
                 to_string(&color_type),
                 rgb_image_dictionary.len(),
-                rgb_image_dictionary,
+                count_vec,
             );
 
             return Ok(match serde_json::to_string(&image_color_data) {
@@ -155,26 +161,32 @@ fn get_image_colors(image_path: &str) -> Result<String, Box<dyn std::error::Erro
             });
         }
         ColorType::Rgba8 => {
-            let rgba_image = image_from_path.to_rgba8().into_vec();
-            let rgba_image_unique_values = rgba_image.clone().into_iter().collect::<HashSet<u8>>();
-            let mut rgba_image_dictionary = HashMap::<u8, usize>::new();
+            let rgba_image = image_from_path;
+            let mut rgba_image_unique_values = HashSet::<[u8; 4]>::new();
+            let mut rgba_image_dictionary = HashMap::<[u8; 4], usize>::new();
 
-            for value in rgba_image_unique_values.iter() {
-                rgba_image_dictionary.insert(value.to_owned(), 0);
-            }
+            for rgba in rgba_image.to_rgba8().pixels() {
+                let rgba_array = [rgba[0], rgba[1], rgba[2], rgba[3]];
 
-            for rgba_value in rgba_image.iter() {
-                if let Some(current_count) = rgba_image_dictionary.get_mut(rgba_value) {
-                    *current_count = *current_count + 1;
+                if rgba_image_unique_values.contains(&rgba_array) {
+                    if let Some(current_count) = rgba_image_dictionary.get_mut(&rgba_array) {
+                        *current_count = *current_count + 1;
+                    }
+                } else {
+                    rgba_image_unique_values.insert(rgba_array);
+                    rgba_image_dictionary.insert(rgba_array, 0);
                 }
             }
+
+            let mut count_vec: Vec<(&[u8; 4], &usize)> = rgba_image_dictionary.iter().collect();
+            count_vec.sort_by(|a, b| b.1.cmp(a.1));
 
             let image_color_data = ImageColorData::new(
                 image_from_path_width,
                 image_from_path_height,
                 to_string(&color_type),
                 rgba_image_dictionary.len(),
-                rgba_image_dictionary,
+                count_vec,
             );
 
             return Ok(match serde_json::to_string(&image_color_data) {
